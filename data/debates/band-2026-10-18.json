@@ -1,0 +1,1322 @@
+{
+  "id": "band-2026-10-18",
+  "title": "Debate da Band",
+  "subtitle": "2º turno · Lula x Flávio Bolsonaro",
+  "date": "2026-10-18",
+  "broadcaster": "Band / Estadão",
+  "video": {
+    "youtubeId": "BgjpOorIXoI",
+    "channel": "Rádio Bandeirantes",
+    "broadcaster_logo": "assets/logo-band.svg",
+    "title": "ÍNTEGRA: 1º debate entre Lula e Flávio Bolsonaro nas eleições 2026",
+    "note": "Per-claim t (seconds) points into this upload. Missing t = not aligned yet.",
+    "aligned_note": "t verified against the upload's Portuguese auto-captions on 2026-10-19; 4 claims not found in captions have no t."
+  },
+  "candidates": {
+    "lula": {
+      "name": "Lula",
+      "full": "Luiz Inácio Lula da Silva",
+      "party": "PT",
+      "color": "#e3262e",
+      "photo": "assets/lula.jpg",
+      "photo_credit": "Palácio do Planalto / Ricardo Stuckert (CC BY 2.0)",
+      "party_logo": "assets/logo-pt.svg"
+    },
+    "flavio": {
+      "name": "Flávio",
+      "full": "Flávio Bolsonaro",
+      "party": "PL",
+      "color": "#1f52d9",
+      "photo": "assets/flavio.jpg",
+      "photo_credit": "Agência Senado (uso livre com atribuição)",
+      "party_logo": "assets/logo-pl.svg"
+    }
+  },
+  "agencies": {
+    "lupa": {
+      "name": "Agência Lupa",
+      "logo": "assets/logo-lupa.jpg",
+      "url": "https://www.agencialupa.org/checagem/2026/10/18/ao-vivo-checagem-do-debate-entre-lula-e-flavio-bolsonaro-na-band/"
+    },
+    "aosfatos": {
+      "name": "Aos Fatos",
+      "logo": "assets/logo-aosfatos.png",
+      "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/"
+    },
+    "uol": {
+      "name": "UOL Confere",
+      "logo": "assets/logo-uol.svg",
+      "url": "https://noticias.uol.com.br/confere/"
+    },
+    "estadao": {
+      "name": "Estadão Verifica",
+      "logo": "assets/logo-estadao.svg",
+      "url": "https://www.estadao.com.br/estadao-verifica/"
+    }
+  },
+  "agency_totals": {
+    "note": "Cada agência escolhe quais falas checa e usa rótulos próprios. Os números não devem ser somados entre agências.",
+    "lupa": {
+      "lula": {
+        "problematic": 7,
+        "false": 2
+      },
+      "flavio": {
+        "problematic": 19,
+        "false": 8
+      }
+    },
+    "aosfatos": {
+      "lula": {
+        "checked": 23,
+        "problematic": 4,
+        "false": null
+      },
+      "flavio": {
+        "checked": 26,
+        "problematic": 24,
+        "false": null
+      }
+    },
+    "uol": {
+      "lula": {
+        "problematic": 5,
+        "false": 1
+      },
+      "flavio": {
+        "problematic": 10,
+        "false": 3
+      }
+    },
+    "estadao": {
+      "lula": {
+        "problematic": 5,
+        "false": 0
+      },
+      "flavio": {
+        "problematic": 13,
+        "false": 2
+      }
+    }
+  },
+  "claims": [
+    {
+      "id": "b01",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O Brasil cresceu 7,5% em 2010.",
+      "why": "A série do IBGE confirma crescimento de 7,5% do PIB em 2010.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 574,
+      "clip": "assets/clips/b01.mp4",
+      "clip_start": 572,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b02",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo atual está deixando uma dívida recorde de R$ 11 trilhões.",
+      "why": "A dívida bruta chegou a R$ 11,1 trilhões (82,9% do PIB) em agosto de 2026, segundo o Banco Central.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Acerta"
+        }
+      ],
+      "t": 652,
+      "clip": "assets/clips/b02.mp4",
+      "clip_start": 650,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b03",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Chefes de facção vão cumprir até 80 anos de prisão com a Lei Antifacção.",
+      "why": "As penas vão de 20 a 40 anos e o Código Penal limita o cumprimento a 40 anos, salvo novas condenações.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 338,
+      "clip": "assets/clips/b03.mp4",
+      "clip_start": 336,
+      "clip_dur": 10.2
+    },
+    {
+      "id": "b04",
+      "candidate": "lula",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Aprovou a Lei Antifacção, que aumentou o tempo de prisão de membros de facção.",
+      "why": "O projeto saiu do Executivo, passou pelas duas Casas e virou lei em março de 2026.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ]
+    },
+    {
+      "id": "b05",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Áudio de Vorcaro mostra R$ 30 milhões em dinheiro vivo ilegal para o Instituto Lula.",
+      "why": "A alegação se apoia numa reportagem não confirmada; PGR e PF negam que o suposto depoimento exista.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Insustentável"
+        }
+      ],
+      "t": 1332,
+      "clip": "assets/clips/b05.mp4",
+      "clip_start": 1330,
+      "clip_dur": 13.6
+    },
+    {
+      "id": "b06",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Bolsonaro elevou o Bolsa Família para um mínimo de R$ 600.",
+      "why": "Os R$ 600 vieram do auxílio da pandemia e do Auxílio Brasil de 2022; o orçamento de 2023 de Bolsonaro previa R$ 400.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ],
+      "t": 1805,
+      "clip": "assets/clips/b06.mp4",
+      "clip_start": 1803,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b07",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O governo solta bandidos perigosos porque não há vagas nas prisões.",
+      "why": "Não existe regra de soltura automática por falta de vaga; solturas dependem de decisão judicial caso a caso.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Não é bem assim"
+        }
+      ],
+      "t": 376,
+      "clip": "assets/clips/b07.mp4",
+      "clip_start": 374,
+      "clip_dur": 13.6
+    },
+    {
+      "id": "b08",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "O Bolsa Família médio no governo Lula era R$ 190 e Bolsonaro triplicou.",
+      "why": "A média era cerca de R$ 190 no início de 2019, mas o salto para R$ 600 veio do auxílio da pandemia e da reestruturação de 2022.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ],
+      "t": 1817,
+      "clip": "assets/clips/b08.mp4",
+      "clip_start": 1815,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b09",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Perdoou R$ 12,6 bilhões em dívidas de MEIs.",
+      "why": "O Congresso aprovou o perdão (PLC 186/2026), que aguarda sanção.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 6211,
+      "clip": "assets/clips/b09.mp4",
+      "clip_start": 6209,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b10",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Lula gastou R$ 7 bilhões em viagens com a Janja.",
+      "why": "Os R$ 7 bilhões são o gasto de todo o governo federal com viagens entre 2023 e 2025, não só do casal.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 2560,
+      "clip": "assets/clips/b10.mp4",
+      "clip_start": 2558,
+      "clip_dur": 12.2
+    },
+    {
+      "id": "b11",
+      "candidate": "lula",
+      "topic": "costumes",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Em 2009, Flávio foi o único de 49 deputados estaduais a votar contra ampliar a licença-maternidade.",
+      "why": "Registros da Alerj confirmam o voto isolado contra a PEC estadual.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 755,
+      "clip": "assets/clips/b11.mp4",
+      "clip_start": 753,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b12",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O salário mínimo comprava 1,8 cesta básica com Bolsonaro e compra 2,2 hoje.",
+      "why": "A análise citada mostra 1,8 cesta em agosto de 2026 contra 1,62 em agosto de 2022.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ],
+      "t": 3978,
+      "clip": "assets/clips/b12.mp4",
+      "clip_start": 3976,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b13",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Roberta Luchsinger fez acusações gravíssimas contra Lula na véspera.",
+      "why": "Ela fez declarações em entrevista, mas não há denúncia formal contra Lula.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 814,
+      "clip": "assets/clips/b13.mp4",
+      "clip_start": 812,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b14",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O governo tinha déficit de 2,8% quando ele assumiu.",
+      "why": "O governo central fechou 2022 com superávit primário de R$ 54,1 bilhões (0,5% do PIB).",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ],
+      "t": 6260,
+      "clip": "assets/clips/b14.mp4",
+      "clip_start": 6258,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b15",
+      "candidate": "flavio",
+      "topic": "costumes",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "O filho de Lula bateu na esposa.",
+      "why": "O inquérito de 2024 não indiciou Luís Cláudio, e um vídeo viral de outra pessoa foi falsamente atribuído a ele.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Insustentável"
+        }
+      ],
+      "t": 2199,
+      "clip": "assets/clips/b15.mp4",
+      "clip_start": 2197,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b16",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Mais de 40 milhões de brasileiros vivem em áreas dominadas por narcoterroristas.",
+      "why": "Estudos apontam números maiores: 50 a 61 milhões sob governança criminal. O dado foi subestimado.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Subestimado"
+        }
+      ],
+      "t": 2711,
+      "clip": "assets/clips/b16.mp4",
+      "clip_start": 2709,
+      "clip_dur": 11.6
+    },
+    {
+      "id": "b17",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "73% dos presidiários votaram em Lula.",
+      "why": "O TSE registra 72,57% dos votos válidos em seções prisionais, mas essas seções também atendem não presos.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Distorcido"
+        }
+      ],
+      "t": 1909,
+      "clip": "assets/clips/b17.mp4",
+      "clip_start": 1907,
+      "clip_dur": 13.6
+    },
+    {
+      "id": "b18",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Deixou R$ 270 bilhões em reservas internacionais.",
+      "why": "As reservas chegaram a US$ 288,6 bilhões no fim de 2010, número até maior que o citado.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Subestimado"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 569,
+      "clip": "assets/clips/b18.mp4",
+      "clip_start": 567,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b19",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "A esquerda argentina deixou tanta gente na pobreza que a direita teve que consertar.",
+      "why": "A pobreza caiu com Milei, mas voltou a subir para 32,3% no primeiro semestre de 2026.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 2438,
+      "clip": "assets/clips/b19.mp4",
+      "clip_start": 2436,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b20",
+      "candidate": "lula",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Bolsonaro liberou mais de 1 milhão de armas.",
+      "why": "Sou da Paz e Igarapé contam mais de um milhão de novas armas particulares registradas entre 2019 e 2022.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 2123,
+      "clip": "assets/clips/b20.mp4",
+      "clip_start": 2121,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b21",
+      "candidate": "lula",
+      "topic": "seguranca",
+      "verdict": "divergente",
+      "quiz": false,
+      "claim": "O governo Bolsonaro liberou 1,1 bilhão de balas.",
+      "why": "Lupa não achou dado oficial que sustente o número (o decreto de 2019 autorizou compra de até 2,1 bilhões); Aos Fatos considerou a afirmação confirmada.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Insustentável"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 2128,
+      "clip": "assets/clips/b21.mp4",
+      "clip_start": 2126,
+      "clip_dur": 20.7
+    },
+    {
+      "id": "b22",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "No governo atual, a pessoa tem medo de ser roubada no ônibus e de ter o celular furtado.",
+      "why": "Policiamento de rua e investigação de furtos são atribuições principalmente das polícias estaduais.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 3840,
+      "clip": "assets/clips/b22.mp4",
+      "clip_start": 3838,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b23",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O país só voltou a crescer acima de 3% quando ele voltou à Presidência.",
+      "why": "O PIB cresceu 3,9% em 2011, 3,0% em 2013, 4,8% em 2021 e 3,0% em 2022.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 6514,
+      "clip": "assets/clips/b23.mp4",
+      "clip_start": 6512,
+      "clip_dur": 20.6
+    },
+    {
+      "id": "b24",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Lula vetou o fim da saidinha e o Congresso teve que derrubar o veto.",
+      "why": "O Congresso derrubou o veto em 28 de maio de 2024.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 3690,
+      "clip": "assets/clips/b24.mp4",
+      "clip_start": 3688,
+      "clip_dur": 18.5
+    },
+    {
+      "id": "b25",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Lula foi à Justiça para trazer a saidinha de volta.",
+      "why": "A ação contra a lei (ADI 7663) foi movida pela associação Anacrim, não pelo governo.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ],
+      "t": 3700,
+      "clip": "assets/clips/b25.mp4",
+      "clip_start": 3698,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b26",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "O governo apresenta agora um orçamento com superávit de 0,1%.",
+      "why": "O orçamento de 2027 prevê superávit de R$ 18,6 bilhões (0,13% do PIB).",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 6269,
+      "clip": "assets/clips/b26.mp4",
+      "clip_start": 6267,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b27",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "É a primeira vez que o governo apresenta um resultado positivo.",
+      "why": "Projeções anteriores de superávit, como as de 2024 e 2025, terminaram em déficit.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 6271,
+      "clip": "assets/clips/b27.mp4",
+      "clip_start": 6269,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b28",
+      "candidate": "lula",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Condenados por crime hediondo, estupro ou violência contra a mulher não têm direito à saidinha.",
+      "why": "A Lei 14.843/2024 veda a saída temporária para esses condenados.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 3766,
+      "clip": "assets/clips/b28.mp4",
+      "clip_start": 3764,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b29",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "\"Nós criamos\" o Simples.",
+      "why": "O Simples original é de 1996, no governo FHC; o governo Lula criou o Simples Nacional em 2006.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto"
+        }
+      ],
+      "t": 6197,
+      "clip": "assets/clips/b29.mp4",
+      "clip_start": 6195,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b30",
+      "candidate": "lula",
+      "topic": "corrupcao",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Flávio empregou a irmã e a esposa de um integrante do Escritório do Crime.",
+      "why": "O Globo mostrou em 2019 que Flávio empregou a mãe e a esposa de Adriano da Nóbrega.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 2071,
+      "clip": "assets/clips/b30.mp4",
+      "clip_start": 2069,
+      "clip_dur": 13.9
+    },
+    {
+      "id": "b31",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O PIB da indústria cresceu 3,4%.",
+      "why": "A indústria cresceu 1,4% em 2025; 3,4% foi o crescimento do PIB total em 2024.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ],
+      "t": 5189,
+      "clip": "assets/clips/b31.mp4",
+      "clip_start": 5187,
+      "clip_dur": 12.8
+    },
+    {
+      "id": "b32",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Flávio foi aos EUA defender produtos brasileiros e o governo não mandou ninguém.",
+      "why": "Diplomatas da embaixada acompanharam a audiência e ministros tiveram várias reuniões com autoridades americanas.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ],
+      "t": 5500,
+      "clip": "assets/clips/b32.mp4",
+      "clip_start": 5498,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b33",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Lula já gastou R$ 350 bilhões tentando se reeleger.",
+      "why": "A ferramenta do Estadão soma R$ 354 bilhões em medidas fiscais no ano eleitoral, mas nem tudo foi desembolsado nem prova intenção eleitoral.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ],
+      "t": 6638,
+      "clip": "assets/clips/b33.mp4",
+      "clip_start": 6636,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b34",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Eduardo Bolsonaro está exilado e perseguido.",
+      "why": "Eduardo foi aos EUA voluntariamente, foi investigado formalmente em 2025 e condenado pelo STF em junho de 2026.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado"
+        }
+      ]
+    },
+    {
+      "id": "b35",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "No governo Lula, a criminalidade explodiu.",
+      "why": "Mortes violentas caíram 8,2% em 2025, menor nível da série histórica.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 1906,
+      "clip": "assets/clips/b35.mp4",
+      "clip_start": 1904,
+      "clip_dur": 11.2
+    },
+    {
+      "id": "b36",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "Lula liberou armas para traficantes.",
+      "why": "Lula revogou os decretos da era Bolsonaro que facilitavam o acesso a armas.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ],
+      "t": 2141,
+      "clip": "assets/clips/b36.mp4",
+      "clip_start": 2139,
+      "clip_dur": 13.4
+    },
+    {
+      "id": "b37",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "Lula está deixando armas ilegais entrarem no país, oprimindo moradores de comunidades.",
+      "why": "O governo mantém operações contra tráfico de armas e as apreensões da PF cresceram; boa parte do arsenal é de origem nacional.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Insustentável"
+        }
+      ],
+      "t": 2052,
+      "clip": "assets/clips/b37.mp4",
+      "clip_start": 2050,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b38",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O roubo de celular não caiu no governo atual.",
+      "why": "Roubos de celular caíram 37,4% entre 2022 e 2025, segundo o Anuário de Segurança Pública.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Contrariado pelos dados"
+        }
+      ],
+      "t": 2009,
+      "clip": "assets/clips/b38.mp4",
+      "clip_start": 2007,
+      "clip_dur": 18.0
+    },
+    {
+      "id": "b39",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "Não existe repressão a quem revende celular roubado.",
+      "why": "O governo sancionou lei que aumenta a pena de receptação e fez a Operação Última Chamada.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ]
+    },
+    {
+      "id": "b40",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "A inflação de alimentos foi 56% com Bolsonaro e 13% nos seus quatro anos.",
+      "why": "O IPCA mostra alta de 54,2% nos alimentos de 2019 a julho de 2022 e 13,6% nos primeiros 43 meses de Lula.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 3958,
+      "clip": "assets/clips/b40.mp4",
+      "clip_start": 3956,
+      "clip_dur": 17.3
+    },
+    {
+      "id": "b41",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Lula foi condenado em todas as instâncias e \"descondenado\" pelos amigos.",
+      "why": "As condenações foram anuladas por incompetência territorial, não no mérito, e o STF nunca as confirmou.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso"
+        }
+      ],
+      "t": 1974,
+      "clip": "assets/clips/b41.mp4",
+      "clip_start": 1972,
+      "clip_dur": 22.1
+    },
+    {
+      "id": "b42",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Os juros caíram 2% por causa do resultado do primeiro turno.",
+      "why": "Não há relação causal demonstrada entre o resultado eleitoral e a queda dos juros.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Não é correto"
+        }
+      ],
+      "t": 646,
+      "clip": "assets/clips/b42.mp4",
+      "clip_start": 644,
+      "clip_dur": 13.6
+    },
+    {
+      "id": "b43",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Não mantém escritório com o \"Careca do INSS\".",
+      "why": "Registros públicos mostram o contrário do que ele afirmou.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Contrariado pelos dados"
+        }
+      ],
+      "t": 876,
+      "clip": "assets/clips/b43.mp4",
+      "clip_start": 874,
+      "clip_dur": 17.0
+    },
+    {
+      "id": "b44",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "O \"Careca do INSS\" fez parte do governo Lula.",
+      "why": "Não há base para dizer que ele integrou o governo.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 885,
+      "clip": "assets/clips/b44.mp4",
+      "clip_start": 883,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b45",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "Um condenado do Mensalão integra o governo Lula.",
+      "why": "Nenhum condenado do Mensalão integra o governo.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 2080,
+      "clip": "assets/clips/b45.mp4",
+      "clip_start": 2078,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b46",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "O governo Lula é responsável pelo recorde de mulheres assassinadas.",
+      "why": "Parte da alta se deve à melhora nos registros, não só ao aumento dos casos.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Impreciso"
+        }
+      ],
+      "t": 2375,
+      "clip": "assets/clips/b46.mp4",
+      "clip_start": 2373,
+      "clip_dur": 21.0
+    },
+    {
+      "id": "b47",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Recorde de empresas fechadas no atual governo.",
+      "why": "Não houve recorde desse tipo.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 2379,
+      "clip": "assets/clips/b47.mp4",
+      "clip_start": 2377,
+      "clip_dur": 12.8
+    },
+    {
+      "id": "b48",
+      "candidate": "flavio",
+      "topic": "saude",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Lula tomou vacina da Covid comprada no governo Bolsonaro.",
+      "why": "A compra só ocorreu depois de Bolsonaro dizer que não compraria a vacina.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Impreciso"
+        }
+      ],
+      "t": 4209,
+      "clip": "assets/clips/b48.mp4",
+      "clip_start": 4207,
+      "clip_dur": 11.9
+    },
+    {
+      "id": "b49",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O governo Lula não fez nada sobre o tarifaço dos EUA.",
+      "why": "O governo tomou medidas em resposta ao tarifaço.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 5490,
+      "clip": "assets/clips/b49.mp4",
+      "clip_start": 5488,
+      "clip_dur": 22.5
+    },
+    {
+      "id": "b50",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "Lula foi aos EUA defender organizações criminosas.",
+      "why": "Não há base para a acusação.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 5705,
+      "clip": "assets/clips/b50.mp4",
+      "clip_start": 5703,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b51",
+      "candidate": "flavio",
+      "topic": "costumes",
+      "verdict": "falso",
+      "quiz": false,
+      "claim": "O governo Lula trata abusadores sexuais de crianças apenas como doentes.",
+      "why": "O governo trata esses casos como crime.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 5928,
+      "clip": "assets/clips/b51.mp4",
+      "clip_start": 5926,
+      "clip_dur": 12.4
+    },
+    {
+      "id": "b52",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Brasileiros já podem vender pela internet e gerir lojas virtuais de casa.",
+      "why": "A afirmação está correta.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 5389,
+      "clip": "assets/clips/b52.mp4",
+      "clip_start": 5387,
+      "clip_dur": 12.9
+    },
+    {
+      "id": "b53",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Recorde de mulheres espancadas.",
+      "why": "O dado citado está correto.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Acerta"
+        }
+      ],
+      "t": 2377,
+      "clip": "assets/clips/b53.mp4",
+      "clip_start": 2375,
+      "clip_dur": 14.8
+    },
+    {
+      "id": "b54",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Foi o primeiro presidente a conquistar dois graus de investimento (2007-2010).",
+      "why": "A conquista é confirmada pelas agências de risco.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 560,
+      "clip": "assets/clips/b54.mp4",
+      "clip_start": 558,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b55",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Há 17,5 milhões de MEIs hoje.",
+      "why": "O número bate com os registros oficiais.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ]
+    },
+    {
+      "id": "b56",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "O governo bancarizou 22 milhões de brasileiros.",
+      "why": "O dado é confirmado.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 576,
+      "clip": "assets/clips/b56.mp4",
+      "clip_start": 574,
+      "clip_dur": 13.3
+    },
+    {
+      "id": "b57",
+      "candidate": "lula",
+      "topic": "corrupcao",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "O governo já devolveu mais de R$ 3,5 bilhões a aposentados do INSS.",
+      "why": "O valor citado está correto.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Acerta"
+        }
+      ],
+      "t": 1046,
+      "clip": "assets/clips/b57.mp4",
+      "clip_start": 1044,
+      "clip_dur": 15.0
+    },
+    {
+      "id": "b58",
+      "candidate": "lula",
+      "topic": "corrupcao",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Flávio comprou uma casa de R$ 10 milhões, com parte paga pelo BRB.",
+      "why": "O valor é R$ 6 milhões; a suspeita é de que R$ 3,1 milhões tenham sido pagos pelo BRB.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Impreciso"
+        }
+      ],
+      "t": 1635,
+      "clip": "assets/clips/b58.mp4",
+      "clip_start": 1633,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "b59",
+      "candidate": "lula",
+      "topic": "corrupcao",
+      "verdict": "distorcido",
+      "quiz": false,
+      "claim": "Atribuiu a si a prisão de Daniel Vorcaro.",
+      "why": "A prisão não foi decisão direta do presidente.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Impreciso"
+        }
+      ],
+      "t": 1432,
+      "clip": "assets/clips/b59.mp4",
+      "clip_start": 1430,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b60",
+      "candidate": "lula",
+      "topic": "seguranca",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Flávio interferiu para que o policial que matou uma criança de 5 anos não fosse preso.",
+      "why": "A interferência no caso Ana Clara é confirmada.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 1895,
+      "clip": "assets/clips/b60.mp4",
+      "clip_start": 1893,
+      "clip_dur": 12.7
+    },
+    {
+      "id": "b61",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Os governos do PT fizeram a maior demarcação de terras indígenas.",
+      "why": "Não há base para essa afirmação.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso"
+        }
+      ],
+      "t": 2649,
+      "clip": "assets/clips/b61.mp4",
+      "clip_start": 2647,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "b62",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": false,
+      "claim": "Flávio ganha o mesmo salário que Lula.",
+      "why": "Os salários são iguais.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro"
+        }
+      ],
+      "t": 1648,
+      "clip": "assets/clips/b62.mp4",
+      "clip_start": 1646,
+      "clip_dur": 10.0
+    }
+  ]
+}

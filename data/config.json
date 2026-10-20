@@ -1,0 +1,9 @@
+{
+  "posthog": {
+    "key": "phc_ug4Ymu4n5EnUGZ8U6opnZDkBqLbuatd6J9YsD2jEcPWE",
+    "host": "https://us.i.posthog.com",
+    "assets": "https://us-assets.i.posthog.com",
+    "replay": false
+  },
+  "note": "Fill posthog.key with the project API key (phc_...) to turn analytics on. replay=true enables session recordings (show the consent banner first)."
+}

@@ -1,0 +1,6 @@
+{
+  "default": "band-2026-10-18",
+  "debates": [
+    { "id": "band-2026-10-18", "title": "Debate da Band", "date": "2026-10-18", "file": "debates/band-2026-10-18.json" }
+  ]
+}
