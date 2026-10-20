@@ -510,3 +510,14 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 .agency .name .agbtn img { max-width: 96px; height: 18px; object-fit: contain; }
 .agency .src-link { white-space: nowrap; }
 .src img { max-width: 70px; object-fit: contain; }
+
+.vs-note { font-size: 14px; font-weight: 600; color: var(--ink-2); margin: 0 0 10px; }
+.hero .display { max-width: 16ch; }
+@media (min-width: 900px) { .hero .display { font-size: clamp(42px, 3.7vw, 58px); max-width: none; } }
+@media (max-width: 899px) { .hero .display { font-size: clamp(32px, 9vw, 44px); } }
+@media (max-width: 899px) {
+  .tile { min-height: 214px; }
+  .hero-copy .lede { font-size: 16px; }
+  .vs-note { font-size: 13px; margin-bottom: 8px; }
+}
+@media (max-width: 899px) { .hero-copy .kicker { display: none; } }

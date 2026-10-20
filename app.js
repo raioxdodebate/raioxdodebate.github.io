@@ -171,10 +171,10 @@ function renderHome() {
   <section class="hero">
     <div class="hero-copy">
       <div class="kicker">${esc(d.title)} · ${esc(dateBR(d.date))} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências</div>
-      <h1 class="display">Quem passou no teste da verdade?</h1>
+      <h1 class="display">Fato, distorcido ou fake? O debate checado por ${Object.keys(d.agencies).length} agências.</h1>
       <p class="lede">Cada fala do debate que as agências de checagem verificaram, com veredito, fonte e o corte do vídeo oficial no momento exato.</p>
     </div>
-    <div class="hero-vs"><div class="vs">${tile(ids[0])}<div class="x">VS</div>${tile(ids[1])}</div></div>
+    <div class="hero-vs"><p class="vs-note">O que as agências encontraram nas falas que escolheram checar</p><div class="vs">${tile(ids[0])}<div class="x">VS</div>${tile(ids[1])}</div></div>
     <div class="hero-tape">${tapeHtml()}<div class="export"><button class="btn sm ghost" data-act="tapecard">Gerar ficha pra compartilhar</button></div></div>
     <div class="hero-cta">
       <a class="btn big accent" href="#/quiz">Você acerta? Jogar o quiz</a>
