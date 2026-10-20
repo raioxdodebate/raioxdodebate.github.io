@@ -16,9 +16,7 @@ const TOPIC = {
   politica_externa: "Política externa", costumes: "Família e costumes", saude: "Saúde", outro: "Outros",
 };
 const QUIZ_SIZE = 10;
-const LENSES = [
-  ["ficha", "Ficha"], ["malha", "Malha"], ["placar", "Placar"], ["temas", "Temas"], ["fluxo", "Fluxo"], ["agencias", "Agências"], ["lista", "Todas as falas"],
-];
+
 
 const state = {
   debate: null,
@@ -81,7 +79,7 @@ function route() {
   });
   $app.innerHTML = fn();
   afterRender(path);
-  pageview(path, path === "/raiox" ? { lens: state.lens } : {});
+  pageview(path, path === "/raiox" ? { ...dash() } : {});
 }
 
 // ---------- shared bits ----------
@@ -126,7 +124,7 @@ function tile(cid) {
   const c = cand(cid); const cl = state.debate.claims.filter((x) => x.candidate === cid); const t = tally(cl);
   const prob = (t.distorcido || 0) + (t.falso || 0); const pct = cl.length ? Math.round(100 * prob / cl.length) : 0;
   const seg = ORDER.map((v) => t[v] ? `<i class="${v}" style="flex:${t[v]}"></i>` : "").join("");
-  return `<a class="tile" href="#/raiox" style="--c:${c.color}" data-cand="${cid}" aria-label="${esc(c.name)}: ${pct}% das falas checadas com problema">
+  return `<a class="tile" href="#/raiox?c=${cid}" style="--c:${c.color}" data-cand="${cid}" aria-label="${esc(c.name)}: ${pct}% das falas checadas com problema">
     ${c.photo ? `<div class="photo" style="background-image:url('${esc(c.photo)}')"></div><div class="tint"></div>` : `<div class="initials">${esc(c.name[0])}</div>`}
     ${c.party_logo ? `<span class="plogo" style="background-image:url('${esc(c.party_logo)}')" title="${esc(c.party)}"></span>` : ""}
     <div class="meta">
@@ -155,7 +153,7 @@ function tapeHtml() {
     <div class="tape-head"><span class="corner red">${ca.party_logo ? `<img src="${esc(ca.party_logo)}" alt="">` : ""}${esc(ca.party)}</span><span class="corner blue">${esc(cb.party)}${cb.party_logo ? `<img src="${esc(cb.party_logo)}" alt="">` : ""}</span></div>
     <div class="tape-names"><b>${esc(ca.name)}</b><span>Ficha técnica</span><b>${esc(cb.name)}</b></div>
     ${rows.map(([label, va, vb, v]) => `<div class="tape-row ${v || ""}"><b>${va}</b><span>${esc(label)}</span><b>${vb}</b></div>`).join("")}
-    <div class="tape-foot">Vereditos de Lupa e Aos Fatos · ${state.debate.claims.length} falas</div>
+    <div class="tape-foot">Vereditos de ${Object.keys(state.debate.agencies).length} agências · ${state.debate.claims.length} falas</div>
   </div>`;
 }
 function dailyHook() {
@@ -196,7 +194,7 @@ function renderHome() {
     </div>
   </section>`;
 }
-function lensFicha() { return `<div class="panel">${tapeHtml()}<div class="export"><button class="btn sm" data-act="tapecard">Gerar ficha pra compartilhar</button></div></div>`; }
+function lensFicha_unused() { return `<div class="panel">${tapeHtml()}<div class="export"><button class="btn sm" data-act="tapecard">Gerar ficha pra compartilhar</button></div></div>`; }
 
 // ---------- quiz ----------
 function renderQuiz() {
@@ -259,16 +257,57 @@ function renderResult() {
   </section>`;
 }
 
-// ---------- raio-x portal ----------
+// ---------- raio-x dashboard (one screen, every visual filters the others) ----------
+const LABEL_CLASS = {
+  "Verdadeiro": "V", "#FATO": "V", "Acerta": "V",
+  "Exagerado": "D", "Subestimado": "D", "Falta contexto": "D", "Impreciso": "D", "Enganoso": "D",
+  "Não é bem assim": "D", "#NÃOÉBEMASSIM": "D", "#FATO / #FAKE (parcial)": "D", "Acerta, mas impreciso": "D",
+  "Falso": "F", "#FAKE": "F", "Insustentável": "F", "Erra": "F",
+};
+const DKEYS = ["c", "v", "tp", "ag", "gv"]; // candidate, verdict, topic, agency, government period
+const DUR = 6855; // debate upload length, seconds
+function dash() { return state.dash || (state.dash = {}); }
+function readDashFromHash() {
+  const q = new URLSearchParams(location.hash.split("?")[1] || "");
+  state.dash = {}; for (const k of DKEYS) if (q.get(k)) state.dash[k] = q.get(k);
+  state.graphSelected = q.get("f") || null;
+}
+function writeDashToHash() {
+  const q = new URLSearchParams(); const f = dash();
+  for (const k of DKEYS) if (f[k]) q.set(k, f[k]);
+  if (state.graphSelected) q.set("f", state.graphSelected);
+  const s = q.toString(); history.replaceState(null, "", location.pathname + location.search + "#/raiox" + (s ? "?" + s : ""));
+}
+function fits(c, f, skip = []) {
+  return (skip.includes("c") || !f.c || c.candidate === f.c) && (skip.includes("v") || !f.v || c.verdict === f.v)
+    && (skip.includes("tp") || !f.tp || c.topic === f.tp) && (skip.includes("ag") || !f.ag || c.sources.some((s) => s.agency === f.ag))
+    && (skip.includes("gv") || !f.gv || (c.eras || []).includes(f.gv));
+}
+function setBtn(pairs, label, cls = "", active = false) {
+  return `<button class="${cls}" data-act="dset" data-set="${esc(pairs)}" aria-pressed="${active}">${label}</button>`;
+}
+function isActive(pairs) { const f = dash(); return pairs.split(",").every((p) => { const [k, v] = p.split(":"); return f[k] === v; }); }
+function setHTML(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
+
 function renderRaiox() {
+  readDashFromHash();
   const d = state.debate;
-  const tabs = LENSES.map(([k, label]) => `<button class="lens" role="tab" aria-selected="${state.lens === k}" data-act="lens" data-lens="${k}">${esc(label)}</button>`).join("");
-  const body = { ficha: lensFicha, malha: lensMalha, placar: lensPlacar, temas: lensTemas, fluxo: lensFluxo, agencias: lensAgencias, lista: lensLista }[state.lens]();
   return `
-  <section class="rx">
-    <div class="section-head"><h1 class="h2">Raio-X do ${esc(d.title)}</h1><p class="muted small">${esc(d.subtitle)} · ${esc(d.broadcaster)} · ${d.claims.length} falas checadas. Escolha uma lente.</p></div>
-    <div class="lenses" role="tablist">${tabs}</div>
-    ${body}
+  <section class="rx dash">
+    <div class="section-head"><h1 class="h2">Raio-X do ${esc(d.title)}</h1>
+      <p class="muted small">${esc(d.subtitle)} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências. Toque em qualquer gráfico pra filtrar todos.</p></div>
+    <div class="dash-bar" id="dash-bar"></div>
+    <div class="dash-grid">
+      <div class="panel d-graph"><div class="panel-head"><h2 class="h3">Malha</h2><p>Ponto é fala. Toque num ponto, num candidato ou num tema.</p></div>
+        <div class="graph-wrap"><canvas id="rx-canvas" aria-label="Malha das falas; a lista abaixo traz o mesmo conteúdo"></canvas></div></div>
+      <div class="panel d-detail" id="d-detail"></div>
+      <div class="panel d-score" id="d-score"></div>
+      <div class="panel d-time" id="d-time"></div>
+      <div class="panel d-gov" id="d-gov"></div>
+      <div class="panel d-topics" id="d-topics"></div>
+      <div class="panel d-agencies" id="d-agencies"></div>
+      <div class="panel d-list" id="d-list"></div>
+    </div>
     <div class="panel">
       <div class="panel-head"><h2 class="h3">Levar os dados pro grupo</h2><p>Imagem e vídeo gerados aqui, no seu navegador, direto dos dados.</p></div>
       <div class="export">
@@ -280,109 +319,179 @@ function renderRaiox() {
   </section>`;
 }
 
-function lensMalha() {
-  const f = state.graphFilter || {};
-  const vlegend = ORDER.map((v) => `<button class="legend-btn ${v}" data-act="gverdict" data-v="${v}" aria-pressed="${f.verdict === v}"><i class="${v}"></i>${esc(VERDICT[v].label)}</button>`).join("");
-  return `<div class="panel malha">
-    <div class="panel-head"><p>Cada ponto é uma fala. Toque num ponto pra abrir, num candidato pra filtrar, num tema pra isolar.</p>
-      <button class="iconbtn" data-act="gclear" ${(f.candidate || f.topic || f.verdict) ? "" : "hidden"}>Limpar filtros</button></div>
-    <div class="malha-grid">
-      <div class="graph-wrap"><canvas id="rx-canvas" aria-label="Malha das falas; toque nos pontos"></canvas></div>
-      <div class="peek sticky" id="rx-peek">${peekHtml(null)}</div>
-    </div>
-    <div class="legend legend-filters">${vlegend}</div>
-    <div class="export"><button class="btn sm ghost" data-act="graphpng">Baixar a malha como imagem</button></div>
-  </div>`;
+function dBar() {
+  const d = state.debate; const f = dash();
+  const seg = (k, opts) => `<div class="seg">${opts.map(([v, label, cls]) => setBtn(`${k}:${v}`, esc(label), "fbtn " + (cls || ""), f[k] === v)).join("")}</div>`;
+  const sel = (k, all, opts) => `<label class="dsel"><span class="sr-only">${all}</span><select data-dsel="${k}"><option value="">${all}</option>${opts.map(([v, l]) => `<option value="${esc(v)}" ${f[k] === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></label>`;
+  const n = d.claims.filter((c) => fits(c, f)).length;
+  const any = DKEYS.some((k) => f[k]) || state.graphSelected;
+  return `
+    ${seg("c", cands().map((c) => [c, d.candidates[c].name]))}
+    ${seg("v", ORDER.map((v) => [v, VERDICT[v].label, "vt " + v]))}
+    ${sel("tp", "Todos os temas", topicsUsed().map((t) => [t, TOPIC[t]]))}
+    ${sel("ag", "Todas as agências", Object.entries(d.agencies).map(([k, a]) => [k, a.name]))}
+    ${sel("gv", "Todos os governos", GOV.map(([k, n, y]) => [k, `${n} (${y})`]))}
+    <span class="dcount"><b>${n}</b> de ${d.claims.length} falas</span>
+    ${any ? `<button class="iconbtn" data-act="dclear">Limpar</button><button class="iconbtn" data-act="dlink">Copiar link desta visão</button>` : ""}`;
 }
+
+function dScore() {
+  const d = state.debate; const f = dash();
+  const rows = cands().map((cid) => {
+    const cl = d.claims.filter((c) => c.candidate === cid && fits(c, f, ["c", "v"])); const t = tally(cl);
+    const segs = ORDER.map((v) => t[v] ? `<button class="segv ${v} ${isActive(`c:${cid},v:${v}`) ? "on" : ""}" style="flex:${t[v]}" data-act="dset" data-set="c:${cid},v:${v}" title="${esc(d.candidates[cid].name)}: ${t[v]} ${esc(VERDICT[v].label)}">${t[v]}</button>` : "").join("");
+    const prob = (t.distorcido || 0) + (t.falso || 0); const pct = cl.length ? Math.round(100 * prob / cl.length) : 0;
+    return `<div class="cand-row ${f.c && f.c !== cid ? "dim" : ""}" style="--c:${d.candidates[cid].color}">
+      <div class="name">${setBtn(`c:${cid}`, `<b>${esc(d.candidates[cid].name)}</b>`, "linkish", f.c === cid)}<span>${pct}% com problema · ${t.falso || 0} fake · ${cl.length} falas</span></div>
+      <div class="bar">${segs || `<i class="none"></i>`}</div></div>`;
+  }).join("");
+  return `<div class="panel-head"><h2 class="h3">Placar</h2><p>Toque numa faixa.</p></div>${rows}${legend()}`;
+}
+
+function dTime() {
+  const d = state.debate; const f = dash(); const W = 1000, H = 150, padL = 70, padR = 16;
+  const x = (t) => padL + (W - padL - padR) * (t / DUR);
+  const rowY = Object.fromEntries(cands().map((c, i) => [c, 50 + i * 60]));
+  const ticks = []; for (let m = 0; m * 60 <= DUR; m += 15) ticks.push(`<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="20" y2="${H - 18}" class="tick"/><text x="${x(m * 60)}" y="${H - 4}" class="tl" text-anchor="middle">${m === 0 ? "0" : m + "min"}</text>`);
+  const lanes = cands().map((c) => `<text x="8" y="${rowY[c] + 5}" class="ln">${esc(d.candidates[c].name)}</text><line x1="${padL}" x2="${W - padR}" y1="${rowY[c]}" y2="${rowY[c]}" class="lane"/>`).join("");
+  const dots = d.claims.filter((c) => c.t != null).sort((a, b) => a.t - b.t).map((c) => {
+    const on = fits(c, f); const sel = state.graphSelected === c.id;
+    return `<circle cx="${x(c.t).toFixed(1)}" cy="${rowY[c.candidate]}" r="${sel ? 11 : 8}" class="tdot ${c.verdict} ${on ? "" : "off"} ${sel ? "sel" : ""}" data-act="dsel" data-id="${c.id}"><title>${mmss(c.t)} · ${esc(c.claim)}</title></circle>`;
+  }).join("");
+  const missing = d.claims.filter((c) => c.t == null && fits(c, f)).length;
+  return `<div class="panel-head"><h2 class="h3">Minuto a minuto</h2><p>Cada fala no momento em que foi dita. Toque pra abrir.</p></div>
+    <div class="tl-wrap"><svg viewBox="0 0 ${W} ${H}" class="tl-svg" role="img" aria-label="Linha do tempo do debate">${ticks.join("")}${lanes}${dots}</svg></div>
+    ${missing ? `<p class="small muted">${missing} fala${missing > 1 ? "s" : ""} do filtro sem minuto localizado.</p>` : ""}`;
+}
+
+function dTopics() {
+  const d = state.debate; const f = dash();
+  const head = `<div></div>${cands().map((c) => `<div class="hd">${esc(d.candidates[c].name)}</div>`).join("")}`;
+  const rows = topicsUsed().map((tp) => {
+    const cells = cands().map((cid) => {
+      const cl = d.claims.filter((c) => c.topic === tp && c.candidate === cid && fits(c, f, ["tp", "c"])); const t = tally(cl);
+      const prob = (t.distorcido || 0) + (t.falso || 0);
+      const dots = ORDER.flatMap((v) => Array(t[v] || 0).fill(`<i class="${v}"></i>`)).join("");
+      const on = isActive(`tp:${tp},c:${cid}`);
+      return `<button class="cell ${cl.length ? "" : "empty"} ${on ? "on" : ""}" data-act="dset" data-set="tp:${tp},c:${cid}" aria-pressed="${on}"><div class="n">${cl.length}<small>${cl.length ? `${prob} c/ problema` : "nenhuma"}</small></div><div class="dots">${dots}</div></button>`;
+    }).join("");
+    return `${setBtn(`tp:${tp}`, esc(TOPIC[tp]), "rl linkish", f.tp === tp)}${cells}`;
+  }).join("");
+  return `<div class="panel-head"><h2 class="h3">Temas</h2><p>Toque num tema ou numa célula.</p></div><div class="heat">${head}${rows}</div>`;
+}
+
+function dAgencies() {
+  const d = state.debate; const f = dash();
+  const stats = Object.entries(d.agencies).map(([a, info]) => {
+    const per = cands().map((cid) => {
+      const cl = d.claims.filter((c) => c.candidate === cid && fits(c, f, ["ag", "c"]) && c.sources.some((s) => s.agency === a));
+      const prob = cl.filter((c) => { const s = c.sources.find((s) => s.agency === a); return LABEL_CLASS[s.label] !== "V"; }).length;
+      return { cid, n: cl.length, prob };
+    });
+    return { a, info, per };
+  });
+  const max = Math.max(1, ...stats.flatMap((s) => s.per.map((p) => p.n)));
+  const rows = stats.map(({ a, info, per }) => `<div class="agency ${f.ag && f.ag !== a ? "dim" : ""}">
+      <div class="name">${setBtn(`ag:${a}`, `${info.logo ? `<img src="${esc(info.logo)}" alt="">` : ""}<b>${esc(info.name)}</b>`, "linkish agbtn", f.ag === a)}<a class="src-link" href="${esc(info.url)}" target="_blank" rel="noopener">checagem original</a></div>
+      ${per.map((p) => `<div class="mini"><span class="who">${esc(d.candidates[p.cid].name)}</span><div class="track"><i class="all" style="width:${Math.round(100 * p.n / max)}%"></i><i class="prob" style="width:${Math.round(100 * p.prob / max)}%"></i></div><b>${p.prob}<span class="muted">/${p.n}</span></b></div>`).join("")}
+    </div>`).join("");
+  return `<div class="panel-head"><h2 class="h3">Agências</h2><p>Falas com problema / falas checadas por cada uma, nesta base. Toque pra ver só as de uma agência.</p></div><div class="agencies two-col">${rows}</div>`;
+}
+
+function dList() {
+  const d = state.debate; const f = dash();
+  const list = d.claims.filter((c) => fits(c, f)).sort((a, b) => (a.t ?? 1e9) - (b.t ?? 1e9));
+  const items = list.length ? list.map((c) => `
+    <article class="item ${c.verdict} ${state.graphSelected === c.id ? "sel" : ""}" id="it-${c.id}">
+      <div class="top-line"><span>${chip(c.candidate)} <span class="muted">${esc(TOPIC[c.topic])}${c.t != null ? ` · ${mmss(c.t)}` : ""}</span></span><span class="vt ${c.verdict}">${esc(VERDICT[c.verdict].label)}</span></div>
+      <p class="q">${esc(c.claim)}</p>
+      <p class="w">${esc(c.why)}</p>
+      ${sources(c)}
+      ${videoActions(c)}
+    </article>`).join("") : `<div class="empty">Nenhuma fala com esse filtro. <button class="iconbtn" data-act="dclear">Limpar filtros</button></div>`;
+  return `<div class="panel-head"><h2 class="h3">Todas as falas do filtro</h2><p>${list.length} falas, em ordem de quando foram ditas.</p></div><div class="list">${items}</div>`;
+}
+
+function dDetail() {
+  const c = state.graphSelected && claimById(state.graphSelected);
+  if (!c) return `<div class="panel-head"><h2 class="h3">Fala selecionada</h2></div><p class="muted">Toque num ponto da malha, da linha do tempo ou numa fala da lista pra ver o veredito, as fontes e o corte do vídeo.</p>`;
+  return `<div class="panel-head"><h2 class="h3">Fala selecionada</h2><button class="iconbtn" data-act="dsel" data-id="${c.id}">Fechar</button></div>${selectedHtml(c)}`;
+}
+
+function dashUpdate({ scroll = false } = {}) {
+  const f = dash();
+  setHTML("dash-bar", dBar()); setHTML("d-score", dScore()); setHTML("d-time", dTime()); setHTML("d-gov", dGov()); setHTML("d-topics", dTopics());
+  setHTML("d-agencies", dAgencies()); setHTML("d-list", dList()); setHTML("d-detail", dDetail());
+  if (liveGraph) { liveGraph.setFilter({ candidate: f.c || null, verdict: f.v || null, topic: f.tp || null, agency: f.ag || null, era: f.gv || null }); liveGraph.select(state.graphSelected || null); }
+  writeDashToHash();
+  if (scroll && state.graphSelected && window.innerWidth < 900) document.getElementById("d-detail")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function dashSet(pairs) {
+  const f = dash(); const kv = pairs.split(",").map((p) => p.split(":"));
+  const allOn = kv.every(([k, v]) => f[k] === v);
+  for (const [k, v] of kv) { if (allOn) delete f[k]; else f[k] = v; }
+  track("dash_filter", { ...f });
+  dashUpdate();
+}
+function dashSelect(id) {
+  state.graphSelected = state.graphSelected === id ? null : id;
+  if (state.graphSelected) track("dash_select", { claim: id });
+  dashUpdate({ scroll: !!state.graphSelected });
+}
+
+
+// ---------- facts by government (historical timeline) ----------
+const GOV = [
+  ["fhc", "FHC", "1995–2002", 8], ["lula12", "Lula 1 e 2", "2003–2010", 8], ["dilma", "Dilma", "2011–2016", 5.5],
+  ["temer", "Temer", "2016–2018", 2.5], ["bolsonaro", "Bolsonaro", "2019–2022", 4], ["lula3", "Lula 3", "2023–2026", 4],
+];
+const GOV_NAME = Object.fromEntries(GOV.map(([k, n]) => [k, n]));
+function dGov() {
+  const d = state.debate; const f = dash();
+  const ROWS = 3, CELL = 20, W = 1000, top = 46, laneH = ROWS * CELL + 14;
+  const lanes = cands();
+  const placed = d.claims.filter((c) => (c.eras || []).length);
+  const need = GOV.map(([k]) => Math.max(...lanes.map((cid) => Math.ceil(placed.filter((c) => c.candidate === cid && c.eras.includes(k)).length / ROWS))));
+  const raw = need.map((cols, i) => Math.max(GOV[i][3] * 10, cols * CELL + 16, 96));
+  const padL = 64, scale = (W - padL - 8) / raw.reduce((a, b) => a + b, 0);
+  let x0 = padL; const bands = GOV.map(([k, name, years], i) => { const w = raw[i] * scale; const b = { k, name, years, x: x0, w }; x0 += w; return b; });
+  const H = top + lanes.length * laneH + 10;
+  const out = [];
+  bands.forEach((b, i) => {
+    const on = f.gv === b.k;
+    out.push(`<g class="gband ${on ? "on" : ""} ${f.gv && !on ? "dim" : ""}" data-act="dset" data-set="gv:${b.k}"><rect x="${b.x + 2}" y="6" width="${b.w - 4}" height="${H - 10}" rx="10" class="gbg ${i % 2 ? "alt" : ""}"/>
+      <text x="${b.x + b.w / 2}" y="24" text-anchor="middle" class="gname">${esc(b.name)}</text><text x="${b.x + b.w / 2}" y="39" text-anchor="middle" class="gyears">${b.years}</text></g>`);
+  });
+  lanes.forEach((cid, li) => {
+    const y0 = top + li * laneH + 8;
+    out.push(`<text x="8" y="${y0 + (ROWS * CELL) / 2 + 4}" class="ln">${esc(d.candidates[cid].name)}</text>`);
+    bands.forEach((b) => {
+      const list = placed.filter((c) => c.candidate === cid && c.eras.includes(b.k)).sort((a, z) => ORDER.indexOf(a.verdict) - ORDER.indexOf(z.verdict));
+      const cols = Math.max(1, Math.floor((b.w - 12) / CELL));
+      list.forEach((c, j) => {
+        const col = Math.floor(j / ROWS), row = j % ROWS;
+        if (col >= cols) return;
+        const cx = b.x + 8 + CELL / 2 + col * CELL, cy = y0 + CELL / 2 + row * CELL;
+        const sel = state.graphSelected === c.id;
+        out.push(`<circle cx="${cx}" cy="${cy}" r="${sel ? 9 : 7}" class="tdot ${c.verdict} ${fits(c, f) ? "" : "off"} ${sel ? "sel" : ""}" data-act="dsel" data-id="${c.id}"><title>${esc(GOV_NAME[b.k])} · ${esc(c.claim)}</title></circle>`);
+      });
+    });
+  });
+  const outside = d.claims.filter((c) => !(c.eras || []).length && fits(c, f, ["gv"])).length;
+  return `<div class="panel-head"><h2 class="h3">Os fatos por governo</h2><p>Em que governo aconteceu o que cada um citou. Toque num governo pra filtrar, ou numa bolinha pra abrir.</p></div>
+    <div class="tl-wrap"><svg viewBox="0 0 ${W} ${H}" class="tl-svg gov-svg" role="img" aria-label="Falas organizadas pelo governo a que se referem">${out.join("")}</svg></div>
+    <p class="small muted">Falas que comparam dois períodos aparecem nos dois. ${outside ? `${outside} fala${outside > 1 ? "s" : ""} sem período definido (promessa, outro país ou data não confirmada).` : ""}</p>`;
+}
+
 function selectedHtml(claim) {
   if (!claim) return peekHtml(null);
   return `<article class="item ${claim.verdict} in-peek">
-    <div class="top-line"><span>${chip(claim.candidate)} <span class="muted">${esc(TOPIC[claim.topic])}</span></span><span class="vt ${claim.verdict}">${esc(VERDICT[claim.verdict].label)}</span></div>
+    <div class="top-line"><span>${chip(claim.candidate)} <span class="muted">${esc(TOPIC[claim.topic])}${claim.t != null ? ` · ${mmss(claim.t)}` : ""}</span></span><span class="vt ${claim.verdict}">${esc(VERDICT[claim.verdict].label)}</span></div>
     <p class="q">${esc(claim.claim)}</p>
     <p class="w">${esc(claim.why)}</p>
     ${sources(claim)}
     ${videoActions(claim)}
   </article>`;
-}
-
-function lensPlacar() {
-  const d = state.debate;
-  const rows = cands().map((cid) => {
-    const cl = d.claims.filter((c) => c.candidate === cid); const t = tally(cl);
-    const seg = ORDER.map((v) => t[v] ? `<i class="${v}" style="flex:${t[v]}" title="${esc(VERDICT[v].label)}: ${t[v]}">${t[v]}</i>` : "").join("");
-    const prob = (t.distorcido || 0) + (t.falso || 0); const pct = cl.length ? Math.round(100 * prob / cl.length) : 0;
-    return `<div class="cand-row" style="--c:${d.candidates[cid].color}"><div class="name"><b>${esc(d.candidates[cid].name)}</b><span>${cl.length} falas checadas</span></div><div class="bar">${seg}</div>
-      <div class="pct"><div class="k"><b>${pct}%</b><span>das falas checadas com problema (distorcido ou fake)</span></div><div class="k"><b>${t.falso || 0}</b><span>classificadas como fake</span></div></div></div>`;
-  }).join("");
-  return `<div class="panel two">${rows}${legend()}<p class="small muted">Conta só as falas que alguma agência escolheu checar. Não é uma amostra de tudo que foi dito.</p></div>`;
-}
-
-function lensTemas() {
-  const d = state.debate;
-  const head = `<div></div>${cands().map((c) => `<div class="hd">${esc(d.candidates[c].name)}</div>`).join("")}`;
-  const rows = topicsUsed().map((tp) => {
-    const cells = cands().map((cid) => {
-      const cl = d.claims.filter((c) => c.topic === tp && c.candidate === cid); const t = tally(cl);
-      const prob = (t.distorcido || 0) + (t.falso || 0);
-      const dots = ORDER.flatMap((v) => Array(t[v] || 0).fill(`<i class="${v}"></i>`)).join("");
-      return `<button class="cell ${cl.length ? "" : "empty"}" data-act="gofilter" data-topic="${tp}" data-cand="${cid}" title="Ver falas"><div class="n">${cl.length}<small>${cl.length ? `${prob} c/ problema` : "sem checagem"}</small></div><div class="dots">${dots}</div></button>`;
-    }).join("");
-    return `<div class="rl">${esc(TOPIC[tp])}</div>${cells}`;
-  }).join("");
-  return `<div class="panel"><div class="panel-head"><p>Quantas falas de cada tema foram checadas, e quantas tinham problema. Toque numa célula para ver as falas.</p></div><div class="heat">${head}${rows}</div>${legend()}</div>`;
-}
-
-function lensFluxo() {
-  const d = state.debate; const narrow = window.innerWidth < 600; const W = narrow ? 360 : 640, H = narrow ? 600 : 460, colW = 12, padY = narrow ? 12 : 10, fs = narrow ? 13 : 13;
-  const left = cands().map((cid) => ({ id: cid, label: d.candidates[cid].name, n: d.claims.filter((c) => c.candidate === cid).length }));
-  const mid = ORDER.map((v) => ({ id: v, label: VERDICT[v].label, n: d.claims.filter((c) => c.verdict === v).length })).filter((x) => x.n);
-  const right = topicsUsed().map((tp) => ({ id: tp, label: TOPIC[tp], n: d.claims.filter((c) => c.topic === tp).length }));
-  const layout = (col, x) => { const total = col.reduce((s, x) => s + x.n, 0); const avail = H - padY * (col.length - 1) - 20; let y = 10; for (const n of col) { n.h = (n.n / total) * avail; n.y = y; n.x = x; n.cur = 0; n.cur2 = 0; y += n.h + padY; } };
-  layout(left, 20); layout(mid, W / 2 - colW / 2); layout(right, W - 20 - colW);
-  const byId = (col) => Object.fromEntries(col.map((n) => [n.id, n]));
-  const L = byId(left), M = byId(mid), R = byId(right);
-  const scale = (H - padY * (mid.length - 1) - 20) / d.claims.length;
-  const ribbons = [];
-  const ribbon = (a, b, n, color, aKey, bKey) => { const h = n * scale; const y0 = a.y + a[aKey], y1 = b.y + b[bKey]; a[aKey] += h; b[bKey] += h; const x0 = a.x + colW, x1 = b.x, cx = (x0 + x1) / 2; return `<path d="M${x0},${y0} C${cx},${y0} ${cx},${y1} ${x1},${y1} L${x1},${y1 + h} C${cx},${y1 + h} ${cx},${y0 + h} ${x0},${y0 + h} Z" fill="${color}" opacity=".45"/>`; };
-  for (const c of cands()) for (const v of ORDER) { const n = d.claims.filter((x) => x.candidate === c && x.verdict === v).length; if (n) ribbons.push(ribbon(L[c], M[v], n, COLORS[v], "cur", "cur")); }
-  for (const v of ORDER) for (const tp of topicsUsed()) { const n = d.claims.filter((x) => x.verdict === v && x.topic === tp).length; if (n) ribbons.push(ribbon(M[v], R[tp], n, COLORS[v], "cur2", "cur")); }
-  const node = (n, color, anchor, tx) => `<rect x="${n.x}" y="${n.y}" width="${colW}" height="${Math.max(2, n.h)}" rx="4" fill="${color}"/><text x="${tx}" y="${n.y + n.h / 2 + 4}" font-size="${fs}" text-anchor="${anchor}">${esc(n.label)} <tspan fill="#a4adc2" font-weight="500">${n.n}</tspan></text>`;
-  const svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Fluxo candidato, veredito, tema">${ribbons.join("")}
-    ${left.map((n) => node(n, "#eef1f8", "start", n.x + colW + 6)).join("")}
-    ${mid.map((n) => node(n, COLORS[n.id], "middle", n.x + colW / 2).replace("<text ", '<text dy="-12" ')).join("")}
-    ${right.map((n) => node(n, "#a4adc2", "end", n.x - 6)).join("")}
-  </svg>`;
-  return `<div class="panel flow"><div class="panel-head"><p>De quem saiu, no que deu, sobre o quê. A largura de cada fita é o número de falas.</p></div>${svg}</div>`;
-}
-
-function lensAgencias() {
-  const d = state.debate; const ag = d.agency_totals;
-  const maxProb = Math.max(1, ...Object.keys(d.agencies).flatMap((a) => cands().map((c) => ag[a]?.[c]?.problematic || 0)));
-  const rows = Object.keys(d.agencies).map((a) => {
-    const info = d.agencies[a]; const tot = ag[a]; if (!tot) return "";
-    const lines = cands().map((cid) => { const p = tot[cid]?.problematic ?? 0; const chk = tot[cid]?.checked; return `<div class="mini"><span class="who">${esc(d.candidates[cid].name)}</span><div class="track"><i style="width:${Math.round(100 * p / maxProb)}%"></i></div><b>${p}${chk ? `<span class="muted">/${chk}</span>` : ""}</b></div>`; }).join("");
-    return `<div class="agency"><div class="name"><a href="${esc(info.url)}" target="_blank" rel="noopener">${esc(info.name)}</a><span>falas com problema</span></div>${lines}</div>`;
-  }).join("");
-  return `<div class="panel"><div class="panel-head"><p>Quatro equipes, quatro critérios, mesma direção. Aos Fatos mostra também o total checado.</p></div><div class="agencies two-col">${rows}</div><p class="small muted">${esc(ag.note)}</p></div>`;
-}
-
-function lensLista() {
-  const d = state.debate; const f = state.filters;
-  const fb = (group, val, label, extra = "") => `<button class="fbtn ${extra}" data-act="filter" data-g="${group}" data-v="${val}" aria-pressed="${f[group] === val}">${esc(label)}</button>`;
-  const filters = `
-    <div class="filters">${fb("candidate", "all", "Todos")}${cands().map((c) => fb("candidate", c, d.candidates[c].name)).join("")}</div>
-    <div class="filters">${fb("verdict", "all", "Qualquer veredito")}${ORDER.map((v) => fb("verdict", v, VERDICT[v].label, "vt " + v)).join("")}</div>
-    <div class="filters">${fb("topic", "all", "Todos os temas")}${topicsUsed().map((tp) => fb("topic", tp, TOPIC[tp])).join("")}</div>`;
-  const list = d.claims.filter((c) => (f.candidate === "all" || c.candidate === f.candidate) && (f.verdict === "all" || c.verdict === f.verdict) && (f.topic === "all" || c.topic === f.topic));
-  const items = list.length ? list.map((c) => `
-    <article class="item ${c.verdict}">
-      <div class="top-line"><span>${esc(d.candidates[c.candidate].name)} · ${esc(TOPIC[c.topic])}</span><span class="vt ${c.verdict}">${esc(VERDICT[c.verdict].label)}</span></div>
-      <p class="q">${esc(c.claim)}</p>
-      <p class="w">${esc(c.why)}</p>
-      ${sources(c)}
-      ${videoActions(c)}
-    </article>`).join("") : `<div class="empty">Nenhuma fala com esse filtro.</div>`;
-  return `<div class="panel">${filters}<div class="count">${list.length} de ${d.claims.length} falas</div><div class="list">${items}</div></div>`;
 }
 
 // ---------- methodology ----------
@@ -394,27 +503,33 @@ function renderMethod() {
     <p>Este site não checa nada por conta própria. Ele organiza, numa tela só, as checagens que agências profissionais publicaram sobre o debate. Nenhum veredito é gerado por inteligência artificial.</p>
     <h2 class="h3">De onde vêm os vereditos</h2>
     <div class="aglogos">${Object.values(d.agencies).map((a) => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${a.logo ? `<img src="${esc(a.logo)}" alt="">` : ""}${esc(a.name)}</a>`).join("")}</div>
-    <p>Para o placar e para cada fala, usamos as checagens com rótulo publicado da Lupa e do Aos Fatos. Para UOL Confere e Estadão Verifica usamos só os totais divulgados, porque não tivemos acesso à lista fala a fala. Cada card leva ao texto original da agência.</p>
+    <p>Usamos as seis checagens publicadas sobre este debate, lidas fala a fala nas páginas originais. Cada fala mostra o rótulo exato que cada agência deu, com link para a checagem. Quando a agência tem link para o item, o link vai direto a ele.</p>
     <h2 class="h3">Como os rótulos foram unificados</h2>
-    <p>Cada agência tem a própria escala. Para o jogo caber em três botões, agrupamos assim:</p>
+    <p>Cada agência tem a própria escala. Agrupamos os rótulos em três classes:</p>
     <div class="maptable">
-      <div>${verdictPill("verdadeiro")}<span>Verdadeiro, Acerta, Correto</span></div>
-      <div>${verdictPill("distorcido")}<span>Exagerado, Subestimado, Falta contexto, Impreciso, Enganoso, Não é bem assim</span></div>
-      <div>${verdictPill("falso")}<span>Falso, Não é correto, Contrariado pelos dados, e Insustentável (afirmação feita como fato sem nenhuma evidência que a sustente)</span></div>
-      <div>${verdictPill("divergente")}<span>Quando duas agências chegaram a conclusões opostas sobre a mesma fala. Fica fora do quiz.</span></div>
+      <div>${verdictPill("verdadeiro")}<span>Verdadeiro (Lupa, Aos Fatos, Estadão), #FATO (g1), "acerta" (Folha)</span></div>
+      <div>${verdictPill("distorcido")}<span>Exagerado, Subestimado, Falta contexto, Impreciso, Enganoso, Não é bem assim, #NÃOÉBEMASSIM</span></div>
+      <div>${verdictPill("falso")}<span>Falso, #FAKE, "erra" (Folha) e Insustentável (afirmação feita como fato sem evidência que a sustente)</span></div>
     </div>
-    <p>Quando duas agências checaram a mesma fala e concordaram, ela aparece uma vez, com as duas fontes. Para o Aos Fatos, que publica as checagens como manchetes em tempo real, o rótulo exibido é o da manchete.</p>
+    <h2 class="h3">Quando as agências discordam</h2>
+    <p>A mesma regra vale para as duas candidaturas, sem preferência por agência:</p>
+    <ul>
+      <li>Se uma agência diz verdadeiro e outra diz falso sobre a mesma fala, ela aparece como ${verdictPill("divergente")} e fica fora do quiz.</li>
+      <li>Fora isso, vale a classe da maioria das agências que checaram a fala.</li>
+      <li>Empate entre verdadeiro e distorcido, ou entre distorcido e falso, vira distorcido.</li>
+    </ul>
+    <p>As falas aparecem resumidas, sem aspas, porque o texto é nosso. O que o candidato disse de fato está no corte do vídeo e no link para o minuto exato.</p>
     <h2 class="h3">O que isso não é</h2>
     <ul>
       <li>Não é uma amostra de tudo que foi dito. As agências escolhem o que checar, e cada uma escolhe diferente.</li>
       <li>Não é um placar de quem "venceu". É um mapa de quais falas sobreviveram à checagem.</li>
-      <li>Os totais das agências não devem ser somados entre si: a mesma fala pode aparecer em várias.</li>
+      <li>Os números por agência contam as falas desta base que cada uma checou. Não devem ser somados entre si: a mesma fala pode ter várias fontes.</li>
     </ul>
     <h2 class="h3">O quiz</h2>
     <p>São 10 falas por dia, 5 de cada candidato, sorteadas entre as que têm veredito claro. Todo mundo que joga no mesmo dia recebe as mesmas 10, então dá pra comparar resultado. "Jogar outras 10" sorteia um conjunto novo.</p>
     <h2 class="h3">Imagens, cortes e vídeo</h2>
     <p>Tudo que você gera aqui é desenhado no seu navegador a partir dos mesmos dados, com a fonte escrita no próprio arquivo. Nada é enviado a servidor nenhum.</p>
-    <p>Os "cortes" não usam imagem da transmissão: são peças próprias com a fala, o veredito, a fonte e o link para o minuto exato no vídeo oficial da Band no YouTube. O botão "Ver no debate" abre esse vídeo no momento da fala, pelo player do próprio YouTube.</p>
+    <p>Os cortes são trechos curtos do vídeo oficial do debate publicado no YouTube, com a legenda automática do trecho, o veredito, as fontes e o crédito "Imagens: Band" gravados no vídeo, para fins de checagem e comentário. A legenda é automática e pode ter erros de transcrição. O botão "Ver no debate" toca o trecho e dá o link para o momento exato no YouTube.</p>
     <h2 class="h3">Fotos e marcas</h2>
     <ul>${Object.values(d.candidates).filter((c) => c.photo_credit).map((c) => `<li>${esc(c.full)}: ${esc(c.photo_credit)}</li>`).join("")}
     <li>Logos de partidos, emissora e agências são marcas dos respectivos donos, usadas só para identificar quem é quem. Nenhum deles endossa este site.</li></ul>
@@ -537,33 +652,33 @@ async function shareResult() {
 // ---------- after render / events ----------
 function afterRender(path) {
   const tl = (t) => TOPIC[t] || t;
-  if (path === "/raiox" && state.lens === "malha") {
-    const c = document.getElementById("rx-canvas"); const peek = document.getElementById("rx-peek");
+  if (path === "/raiox") {
+    const c = document.getElementById("rx-canvas");
     if (c) liveGraph = mountGraph(c, state.debate, {
-      topicLabel: tl, filter: state.graphFilter || {},
-      onHover: (cl) => { if (!state.graphSelected) peek.innerHTML = peekHtml(cl); },
-      onSelect: (cl) => { if (cl) track("graph_select", { claim: cl.id }); state.graphSelected = cl ? cl.id : null; peek.innerHTML = selectedHtml(cl); if (cl && window.innerWidth < 900) peek.scrollIntoView({ behavior: "smooth", block: "nearest" }); },
-      onFilter: (f) => { state.graphFilter = f; const btn = document.querySelector('[data-act="gclear"]'); if (btn) btn.hidden = !(f.candidate || f.topic || f.verdict); },
+      topicLabel: tl, filter: {},
+      onSelect: (cl) => dashSelect(cl ? cl.id : state.graphSelected),
+      onFilter: (gf) => { const f = dash(); for (const [gk, dk] of [["candidate", "c"], ["topic", "tp"]]) { if (gf[gk]) f[dk] = gf[gk]; else delete f[dk]; } track("dash_filter", { ...f }); dashUpdate(); },
     });
-    if (state.graphSelected) { liveGraph.select(state.graphSelected); peek.innerHTML = selectedHtml(claimById(state.graphSelected)); }
+    dashUpdate();
   }
+
   if (path === "/resultado") { const c = document.getElementById("share-canvas"); if (c) document.fonts.ready.then(() => drawResultCard(c, { score: score(), total: state.quiz.ids.length, title: title(score(), state.quiz.ids.length)[0], marks: state.quiz.ids.map((id) => state.quiz.answers[id].hit), debate: state.debate })); }
 }
 
 $app.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-act]"); if (!btn) return;
+  const btn = e.target.closest("[data-act]");
+  if (!btn) { const it = e.target.closest(".dash .item[id^='it-']"); if (it && !e.target.closest("a")) dashSelect(it.id.slice(3)); return; }
   const act = btn.dataset.act;
   if (act === "answer") { btn.classList.add("pressed"); btn.closest(".keypad").querySelectorAll(".key").forEach((k) => (k.disabled = true)); setTimeout(() => answer(btn.dataset.v), 110); }
   else if (act === "next") next();
   else if (act === "again") { startQuiz(`${state.debate.id}|${Date.now()}|${Math.random()}`); location.hash = "#/quiz"; }
   else if (act === "share") shareResult();
-  else if (act === "lens") { state.lens = btn.dataset.lens; track("lens", { lens: state.lens }); const y = window.scrollY; route(); window.scrollTo({ top: y }); }
-  else if (act === "filter") { state.filters[btn.dataset.g] = btn.dataset.v; track("filter", { group: btn.dataset.g, value: btn.dataset.v }); const y = window.scrollY; route(); window.scrollTo({ top: y }); }
-  else if (act === "gofilter") { state.filters = { candidate: btn.dataset.cand, verdict: "all", topic: btn.dataset.topic }; state.lens = "lista"; route(); }
   else if (act === "claimcard") makeClaimCard(btn.dataset.id);
   else if (act === "watch") showEmbed(claimById(btn.dataset.id));
-  else if (act === "gverdict") { const f = state.graphFilter || {}; f.verdict = f.verdict === btn.dataset.v ? null : btn.dataset.v; state.graphFilter = f; liveGraph && liveGraph.setFilter(f); document.querySelectorAll('[data-act="gverdict"]').forEach((b) => b.setAttribute("aria-pressed", b.dataset.v === f.verdict)); const cl = document.querySelector('[data-act="gclear"]'); if (cl) cl.hidden = !(f.candidate || f.topic || f.verdict); }
-  else if (act === "gclear") { state.graphFilter = {}; state.graphSelected = null; const y = window.scrollY; route(); window.scrollTo({ top: y }); }
+  else if (act === "dset") dashSet(btn.dataset.set);
+  else if (act === "dsel") dashSelect(btn.dataset.id);
+  else if (act === "dclear") { state.dash = {}; state.graphSelected = null; dashUpdate(); }
+  else if (act === "dlink") { navigator.clipboard?.writeText(location.href).then(() => { btn.textContent = "Link copiado"; }).catch(() => {}); track("share", { what: "dash_link" }); }
   else if (act === "clip") makeClip(btn, btn.dataset.id);
   else if (act === "realclip") realClip(btn, btn.dataset.id);
   else if (act === "raioxcard") makeRaioxCard();
@@ -571,6 +686,12 @@ $app.addEventListener("click", (e) => {
   else if (act === "video") { track("video_summary"); makeVideo(btn); }
   else if (act === "graphpng") { const c = document.getElementById("rx-canvas"); if (c) toBlob(c).then((blob) => showMedia({ blob, kind: "image", filename: "malha-do-debate.png", text: `A malha do ${state.debate.title}: cada ponto é uma fala checada. ${siteUrl()}` })); }
 });
+$app.addEventListener("change", (e) => {
+  const sel = e.target.closest("select[data-dsel]"); if (!sel) return;
+  const f = dash(); if (sel.value) f[sel.dataset.dsel] = sel.value; else delete f[sel.dataset.dsel];
+  track("dash_filter", { ...f }); dashUpdate();
+});
+// timeline dots are SVG circles: clicks bubble with data-act, handled above
 document.addEventListener("keydown", (e) => {
   if (!location.hash.startsWith("#/quiz") || !state.quiz) return;
   const map = { "1": "verdadeiro", "2": "distorcido", "3": "falso" };

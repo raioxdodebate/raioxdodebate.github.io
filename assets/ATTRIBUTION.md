@@ -25,3 +25,5 @@ Both credits lists are shown in `#/metodologia`.
 `tools/make_clips.py` for fact-checking commentary, with "Imagens: Band" and the link to the moment
 burned in. The footage belongs to Band; keeping the excerpts short and credited is the owner's choice
 under the quotation right (Lei 9.610, art. 46).
+- `logo-g1.png` — g1. Commons: "G1 logo.png" (public domain as simple shapes; trademarked).
+- `logo-folha.svg` — Folha de S.Paulo. Commons: "Folha de S.Paulo logo.svg" (public domain; trademarked).

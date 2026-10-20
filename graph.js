@@ -94,7 +94,7 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
   const total = nodes.filter((n) => n.kind === "claim").length;
   const shown = Math.floor(progress * total + 0.0001);
   const visible = (n) => n.kind !== "claim" || n.born < shown;
-  const passes = (n) => n.kind !== "claim" || ((!filter.candidate || n.claim.candidate === filter.candidate) && (!filter.topic || n.claim.topic === filter.topic) && (!filter.verdict || n.claim.verdict === filter.verdict));
+  const passes = (n) => n.kind !== "claim" || ((!filter.candidate || n.claim.candidate === filter.candidate) && (!filter.topic || n.claim.topic === filter.topic) && (!filter.verdict || n.claim.verdict === filter.verdict) && (!filter.agency || n.claim.sources.some((s) => s.agency === filter.agency)) && (!filter.era || (n.claim.eras || []).includes(filter.era)));
   const lit = (id) => id === hover || id === selected;
 
   // links

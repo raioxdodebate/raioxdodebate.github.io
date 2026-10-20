@@ -155,7 +155,7 @@ export async function drawTapeCard(canvas, { debate }) {
     y += 112;
   }
   ctx.fillStyle = "#b9c1d6"; ctx.font = `500 26px ${FONT}`; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-  ctx.fillText(`${debate.title} · vereditos de Lupa e Aos Fatos · só o que as agências checaram`, pad, H - pad - 44);
+  ctx.fillText(`${debate.title} · vereditos de 6 agências · só o que elas checaram`, pad, H - pad - 44);
   footerUrl(ctx, W, H, pad);
 }
 
