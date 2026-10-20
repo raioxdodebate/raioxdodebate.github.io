@@ -12,28 +12,30 @@ export const COLORS = {
   bg: "#090c14",
 };
 
+const TOPIC_ORDER = ["economia", "seguranca", "corrupcao", "saude", "politica_externa", "costumes", "outro"];
 export function buildGraph(debate, { width, height }) {
   const cands = Object.keys(debate.candidates);
-  const topics = [...new Set(debate.claims.map((c) => c.topic))];
-  const nodes = [];
-  const links = [];
-  const byId = new Map();
-
+  const present = new Set(debate.claims.map((c) => c.topic));
+  const topics = [...TOPIC_ORDER.filter((t) => present.has(t)), ...[...present].filter((t) => !TOPIC_ORDER.includes(t))];
+  const nodes = [], links = [], byId = new Map();
+  const cx = width / 2, cy = height / 2, m = Math.min(width, height);
+  const narrow = width < 520; // phones: smaller dots, hubs kept apart, wider ring
   cands.forEach((cid, i) => {
-    const n = { id: "cand:" + cid, kind: "hub", label: debate.candidates[cid].name, color: debate.candidates[cid].color || COLORS.hub, x: width * (i === 0 ? 0.28 : 0.72), y: height * 0.5, fx: true, r: 22 };
+    const n = { id: "cand:" + cid, kind: "hub", label: debate.candidates[cid].name, color: debate.candidates[cid].color || COLORS.hub, x: cx + (i === 0 ? -1 : 1) * Math.max(width * 0.085, narrow ? 34 : 0), y: cy, fx: true, r: narrow ? 17 : 22 };
     nodes.push(n); byId.set(n.id, n);
   });
+  const rx = width * (narrow ? 0.34 : 0.37), ry = height * (narrow ? 0.37 : 0.35);
   topics.forEach((tp, i) => {
     const a = (i / topics.length) * Math.PI * 2 - Math.PI / 2;
-    const n = { id: "topic:" + tp, kind: "topic", label: tp, x: width / 2 + Math.cos(a) * width * 0.30, y: height / 2 + Math.sin(a) * height * 0.36, r: 5, fx: true };
+    const n = { id: "topic:" + tp, kind: "topic", label: tp, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry, r: 5, fx: true };
     nodes.push(n); byId.set(n.id, n);
   });
   debate.claims.forEach((c, i) => {
-    const hub = byId.get("cand:" + c.candidate);
-    const n = { id: c.id, kind: "claim", claim: c, x: hub.x + (Math.random() - 0.5) * 20, y: hub.y + (Math.random() - 0.5) * 20, vx: 0, vy: 0, r: 4 + Math.min(c.sources.length, 3) * 1.5, born: i };
+    const t = byId.get("topic:" + c.topic), hub = byId.get("cand:" + c.candidate);
+    const n = { id: c.id, kind: "claim", claim: c, x: t.x + (Math.random() - 0.5) * 30, y: t.y + (Math.random() - 0.5) * 30, vx: 0, vy: 0, r: narrow ? 3 + Math.min(c.sources.length, 3) * 0.8 : 4 + Math.min(c.sources.length, 3) * 1.5, born: i };
     nodes.push(n); byId.set(n.id, n);
-    links.push({ a: n, b: hub, k: 0.03, len: Math.min(width, height) * 0.24, kind: "hub" });
-    links.push({ a: n, b: byId.get("topic:" + c.topic), k: 0.02, len: Math.min(width, height) * 0.14, kind: "topic" });
+    links.push({ a: n, b: t, k: 0.09, len: 0, kind: "topic" });          // strong pull into its topic cluster
+    links.push({ a: n, b: hub, k: 0.003, len: m * 0.45, kind: "hub" });  // faint line to the candidate, almost no pull
   });
   return { nodes, links, width, height, byId, alpha: 1 };
 }
@@ -52,12 +54,12 @@ export function step(g, dt = 1) {
       let d2 = dx * dx + dy * dy;
       if (d2 > 90000) continue;
       d2 = Math.max(d2, 144); // soften: no stronger than at 12px
-      const strength = (b.kind === "hub" ? 1400 : b.kind === "topic" ? 260 : 160);
+      const strength = (b.kind === "hub" ? 2200 : b.kind === "topic" ? 40 : 150);
       const f = strength / d2; const d = Math.sqrt(dx * dx + dy * dy) || 1;
       fx += (dx / d) * f; fy += (dy / d) * f;
     }
     // centering, stronger vertically because the canvas is wide; soft walls near the edges
-    fx += (width / 2 - a.x) * 0.004; fy += (height / 2 - a.y) * 0.006;
+    fx += (width / 2 - a.x) * 0.0008; fy += (height / 2 - a.y) * 0.0012;
     const m = 30;
     if (a.x < m) fx += (m - a.x) * 0.2; if (a.x > width - m) fx -= (a.x - (width - m)) * 0.2;
     if (a.y < m) fy += (m - a.y) * 0.2; if (a.y > height - m) fy -= (a.y - (height - m)) * 0.2;
@@ -116,19 +118,6 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
     const active = filter.topic === n.label;
     ctx.fillStyle = active ? "#fff" : COLORS.topic; ctx.globalAlpha = 0.9;
     ctx.beginPath(); ctx.arc(n.x, n.y, (active ? 5 : 3) * z, 0, Math.PI * 2); ctx.fill();
-    if (labels) {
-      const text = topicLabel(n.label);
-      ctx.font = `700 ${11 * z}px Archivo, sans-serif`; ctx.textBaseline = "middle";
-      const tw = ctx.measureText(text).width;
-      // top/bottom anchors get the label stacked above/below; side anchors get it beside, facing the centre
-      const vertical = Math.abs(n.y - height / 2) > height * 0.28;
-      let tx, ty;
-      if (vertical) { tx = Math.max(6, Math.min(width - 6 - tw, n.x - tw / 2)); ty = n.y + (n.y > height / 2 ? 14 * z : -14 * z); }
-      else { const left = n.x > width / 2; tx = left ? Math.max(6, n.x - 8 * z - tw) : Math.min(width - 6 - tw, n.x + 8 * z); ty = n.y; }
-      ctx.globalAlpha = 0.85; ctx.fillStyle = COLORS.bg; ctx.fillRect(tx - 3 * z, ty - 8 * z, tw + 6 * z, 16 * z);
-      ctx.globalAlpha = 0.95; ctx.fillStyle = active ? "#fff" : COLORS.topic; ctx.textAlign = "left"; ctx.fillText(text, tx, ty);
-      n.labelBox = { x: tx - 3 * z, y: ty - 8 * z, w: tw + 6 * z, h: 16 * z };
-    }
   }
   ctx.globalAlpha = 1;
 
@@ -149,6 +138,31 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
     ctx.globalAlpha = 1;
   }
 
+  // topic labels, on top of everything, pushed outside their cluster
+  if (labels) {
+    const cx = width / 2, cy = height / 2;
+    for (const n of nodes) {
+      if (n.kind !== "topic") continue;
+      const active = filter.topic === n.label;
+      let ext = 0;
+      for (const c of nodes) if (c.kind === "claim" && c.claim.topic === n.label && visible(c)) ext = Math.max(ext, Math.hypot(c.x - n.x, c.y - n.y) + c.r * z);
+      let dx = n.x - cx, dy = n.y - cy; const d = Math.hypot(dx, dy) || 1; dx /= d; dy /= d;
+      const text = topicLabel(n.label);
+      ctx.font = `800 ${12 * z}px Archivo, sans-serif`; ctx.textBaseline = "middle"; ctx.textAlign = "left";
+      const tw = ctx.measureText(text).width, bw = tw + 14 * z, bh = 22 * z;
+      let px = n.x + dx * (ext + 16 * z), py = n.y + dy * (ext + 14 * z);
+      let bx = px - (dx < -0.35 ? bw : dx > 0.35 ? 0 : bw / 2), by = py - bh / 2;
+      if (bx < 4 || bx + bw > width - 4) { // no room beside the cluster: put the label above or below it
+        const up = dy < 0; bx = n.x - bw / 2; by = up ? n.y - ext - bh - 6 * z : n.y + ext + 6 * z;
+      }
+      bx = Math.max(4, Math.min(width - bw - 4, bx)); by = Math.max(4, Math.min(height - bh - 4, by));
+      ctx.globalAlpha = 0.92; ctx.fillStyle = active ? "#f3f5fa" : "#1f2842";
+      ctx.beginPath(); ctx.roundRect ? ctx.roundRect(bx, by, bw, bh, 6 * z) : ctx.rect(bx, by, bw, bh); ctx.fill();
+      ctx.globalAlpha = 1; ctx.fillStyle = active ? "#090c14" : "#e6e9f2"; ctx.fillText(text, bx + 7 * z, by + bh / 2 + 1);
+      n.labelBox = { x: bx, y: by, w: bw, h: bh };
+    }
+  }
+
   // hubs
   for (const n of nodes) {
     if (n.kind !== "hub") continue;
@@ -157,7 +171,7 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
     if (glow) { ctx.shadowColor = n.color; ctx.shadowBlur = (active ? 30 : 18) * z; }
     ctx.strokeStyle = n.color; ctx.lineWidth = 2.5 * z; ctx.stroke(); ctx.shadowBlur = 0;
     ctx.fillStyle = COLORS.hub; ctx.font = `800 ${13 * z}px Archivo, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText(n.label.toUpperCase(), n.x, n.y);
+    ctx.font = `800 ${(n.r < 20 ? 10 : 13) * z}px Archivo, sans-serif`; ctx.fillText(n.label.toUpperCase(), n.x, n.y);
   }
   ctx.restore();
 }

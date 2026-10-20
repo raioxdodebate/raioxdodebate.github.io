@@ -536,3 +536,5 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 .ex-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
 .ex-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .ex-grid { grid-template-columns: 1fr 1fr; } .hero-facts { align-self: start; } }
+
+@media (max-width: 899px) { .d-graph .graph-wrap { height: min(118vw, 470px); } }
