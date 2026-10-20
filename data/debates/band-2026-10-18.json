@@ -1705,7 +1705,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/n01.mp4",
+      "clip_start": 2049,
+      "clip_dur": 10.0
     },
     {
       "id": "n02",
@@ -1728,7 +1731,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n02.mp4",
+      "clip_start": 852,
+      "clip_dur": 24.0
     },
     {
       "id": "n03",
@@ -1755,7 +1761,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n03.mp4",
+      "clip_start": 1503,
+      "clip_dur": 24.0
     },
     {
       "id": "n04",
@@ -1774,7 +1783,10 @@
       "quiz": true,
       "eras": [
         "lula12"
-      ]
+      ],
+      "clip": "assets/clips/n04.mp4",
+      "clip_start": 6278,
+      "clip_dur": 10.0
     },
     {
       "id": "n05",
@@ -1803,7 +1815,10 @@
         "dilma",
         "bolsonaro",
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n05.mp4",
+      "clip_start": 4257,
+      "clip_dur": 12.9
     },
     {
       "id": "n06",
@@ -1826,7 +1841,10 @@
       "quiz": true,
       "eras": [
         "lula12"
-      ]
+      ],
+      "clip": "assets/clips/n06.mp4",
+      "clip_start": 559,
+      "clip_dur": 24.0
     },
     {
       "id": "n07",
@@ -1849,7 +1867,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/n07.mp4",
+      "clip_start": 3987,
+      "clip_dur": 22.5
     },
     {
       "id": "n08",
@@ -1872,7 +1893,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n08.mp4",
+      "clip_start": 1209,
+      "clip_dur": 20.7
     },
     {
       "id": "n09",
@@ -1895,7 +1919,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/n09.mp4",
+      "clip_start": 1221,
+      "clip_dur": 10.0
     },
     {
       "id": "n10",
@@ -1914,7 +1941,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n10.mp4",
+      "clip_start": 970,
+      "clip_dur": 10.0
     },
     {
       "id": "n11",
@@ -1933,7 +1963,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n11.mp4",
+      "clip_start": 6533,
+      "clip_dur": 13.7
     },
     {
       "id": "n12",
@@ -1954,7 +1987,10 @@
         "lula12",
         "dilma",
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n12.mp4",
+      "clip_start": 598,
+      "clip_dur": 10.0
     },
     {
       "id": "n13",
@@ -1973,7 +2009,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n13.mp4",
+      "clip_start": 1106,
+      "clip_dur": 11.8
     },
     {
       "id": "n14",
@@ -1992,7 +2031,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/n14.mp4",
+      "clip_start": 1264,
+      "clip_dur": 13.1
     },
     {
       "id": "n15",
@@ -2011,7 +2053,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n15.mp4",
+      "clip_start": 6105,
+      "clip_dur": 22.6
     },
     {
       "id": "n16",
@@ -2030,7 +2075,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n16.mp4",
+      "clip_start": 1425,
+      "clip_dur": 24.0
     },
     {
       "id": "n17",
@@ -2049,7 +2097,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n17.mp4",
+      "clip_start": 1323,
+      "clip_dur": 20.6
     },
     {
       "id": "n18",
@@ -2068,7 +2119,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/n18.mp4",
+      "clip_start": 848,
+      "clip_dur": 15.7
     },
     {
       "id": "n19",
@@ -2087,7 +2141,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/n19.mp4",
+      "clip_start": 4160,
+      "clip_dur": 13.4
     },
     {
       "id": "a01",
@@ -2107,7 +2164,10 @@
       "eras": [
         "bolsonaro",
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/a01.mp4",
+      "clip_start": 1170,
+      "clip_dur": 14.6
     },
     {
       "id": "a02",
@@ -2144,7 +2204,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/a03.mp4",
+      "clip_start": 2381,
+      "clip_dur": 10.0
     },
     {
       "id": "a04",
@@ -2160,7 +2223,10 @@
       ],
       "t": 3335,
       "verdict": "distorcido",
-      "quiz": true
+      "quiz": true,
+      "clip": "assets/clips/a04.mp4",
+      "clip_start": 3333,
+      "clip_dur": 24.0
     },
     {
       "id": "a05",
@@ -2176,7 +2242,10 @@
       ],
       "t": 421,
       "verdict": "distorcido",
-      "quiz": true
+      "quiz": true,
+      "clip": "assets/clips/a05.mp4",
+      "clip_start": 419,
+      "clip_dur": 18.3
     },
     {
       "id": "a06",
@@ -2199,7 +2268,10 @@
       "quiz": true,
       "eras": [
         "lula12"
-      ]
+      ],
+      "clip": "assets/clips/a06.mp4",
+      "clip_start": 6195,
+      "clip_dur": 10.0
     },
     {
       "id": "a07",
@@ -2218,7 +2290,10 @@
       "quiz": true,
       "eras": [
         "lula12"
-      ]
+      ],
+      "clip": "assets/clips/a07.mp4",
+      "clip_start": 6506,
+      "clip_dur": 24.0
     },
     {
       "id": "a08",
@@ -2237,7 +2312,10 @@
       "quiz": true,
       "eras": [
         "lula3"
-      ]
+      ],
+      "clip": "assets/clips/a08.mp4",
+      "clip_start": 1044,
+      "clip_dur": 15.0
     },
     {
       "id": "a09",
@@ -2256,7 +2334,10 @@
       "quiz": true,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "clip": "assets/clips/a09.mp4",
+      "clip_start": 2043,
+      "clip_dur": 14.7
     }
   ],
   "sources_note": "Vereditos de seis checagens publicadas sobre este debate: Agência Lupa, Aos Fatos, g1 Fato ou Fake, Estadão Verifica, UOL Confere e Folha. Lidas nas páginas originais em 20/10/2026."
