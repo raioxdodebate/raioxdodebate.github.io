@@ -455,8 +455,7 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 
 @media (min-width: 900px) {
   .dash-grid { grid-template-columns: repeat(12, 1fr); gap: 16px; }
-  .d-graph { grid-column: span 8; }
-  .d-detail { grid-column: span 4; position: sticky; top: 72px; max-height: calc(100dvh - 90px); overflow: auto; }
+  .d-graph { grid-column: 1 / -1; }
   .d-score { grid-column: span 5; }
   .d-time { grid-column: span 7; }
   .d-topics { grid-column: span 5; }
@@ -490,3 +489,24 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 .gov-svg .gname { fill: var(--ink); font-size: 15px; font-weight: 800; font-family: inherit; }
 .gov-svg .gyears { fill: var(--ink-2); font-size: 12px; font-family: inherit; }
 @media (min-width: 900px) { .d-gov { grid-column: 1 / -1; } }
+
+/* selected-claim drawer: pushes the page on desktop, bottom sheet on mobile */
+.drawer { position: fixed; z-index: 35; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line), 0 -10px 40px rgba(0,0,0,.45); overflow: auto; padding: 16px 18px 22px; display: grid; gap: 12px; align-content: start; }
+.drawer[hidden] { display: none; }
+.drawer-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; position: sticky; top: -16px; background: var(--surface); padding: 6px 0; z-index: 1; }
+.drawer .item.in-peek { padding: 0; box-shadow: none; border-left: 0; background: transparent; }
+@media (max-width: 899px) {
+  .drawer { left: 0; right: 0; bottom: 0; max-height: 72dvh; border-radius: 18px 18px 0 0; animation: sheet 180ms ease-out; }
+  body.drawer-open .foot { padding-bottom: 60dvh; }
+}
+@media (min-width: 900px) {
+  .drawer { top: 0; right: 0; bottom: 0; width: 420px; border-radius: 0; box-shadow: inset 1px 0 0 var(--line), -12px 0 40px rgba(0,0,0,.35); animation: side 180ms ease-out; }
+  body.drawer-open { padding-right: 420px; }
+}
+@keyframes sheet { from { transform: translateY(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+@keyframes side { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+
+.agency .name { flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.agency .name .agbtn img { max-width: 96px; height: 18px; object-fit: contain; }
+.agency .src-link { white-space: nowrap; }
+.src img { max-width: 70px; object-fit: contain; }

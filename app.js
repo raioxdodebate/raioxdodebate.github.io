@@ -69,6 +69,7 @@ function startQuiz(seedStr) { state.quiz = { seed: seedStr, ids: pickQuiz(seedSt
 // ---------- router ----------
 const routes = { "/": renderHome, "/quiz": renderQuiz, "/resultado": renderResult, "/raiox": renderRaiox, "/metodologia": renderMethod };
 function route() {
+  document.body.classList.remove("drawer-open");
   if (liveGraph) { liveGraph.destroy(); liveGraph = null; }
   const path = (location.hash.replace(/^#/, "") || "/").split("?")[0];
   const fn = routes[path] || renderHome;
@@ -300,7 +301,6 @@ function renderRaiox() {
     <div class="dash-grid">
       <div class="panel d-graph"><div class="panel-head"><h2 class="h3">Malha</h2><p>Ponto é fala. Toque num ponto, num candidato ou num tema.</p></div>
         <div class="graph-wrap"><canvas id="rx-canvas" aria-label="Malha das falas; a lista abaixo traz o mesmo conteúdo"></canvas></div></div>
-      <div class="panel d-detail" id="d-detail"></div>
       <div class="panel d-score" id="d-score"></div>
       <div class="panel d-time" id="d-time"></div>
       <div class="panel d-gov" id="d-gov"></div>
@@ -308,6 +308,7 @@ function renderRaiox() {
       <div class="panel d-agencies" id="d-agencies"></div>
       <div class="panel d-list" id="d-list"></div>
     </div>
+    <aside class="drawer" id="d-drawer" aria-label="Fala selecionada" hidden></aside>
     <div class="panel">
       <div class="panel-head"><h2 class="h3">Levar os dados pro grupo</h2><p>Imagem e vídeo gerados aqui, no seu navegador, direto dos dados.</p></div>
       <div class="export">
@@ -414,17 +415,23 @@ function dList() {
 
 function dDetail() {
   const c = state.graphSelected && claimById(state.graphSelected);
-  if (!c) return `<div class="panel-head"><h2 class="h3">Fala selecionada</h2></div><p class="muted">Toque num ponto da malha, da linha do tempo ou numa fala da lista pra ver o veredito, as fontes e o corte do vídeo.</p>`;
-  return `<div class="panel-head"><h2 class="h3">Fala selecionada</h2><button class="iconbtn" data-act="dsel" data-id="${c.id}">Fechar</button></div>${selectedHtml(c)}`;
+  if (!c) return "";
+  return `<div class="drawer-head"><h2 class="h3">Fala selecionada</h2><button class="iconbtn" data-act="dclose" aria-label="Fechar a fala selecionada">Fechar ✕</button></div>${selectedHtml(c)}`;
+}
+function drawerSync() {
+  const el = document.getElementById("d-drawer"); if (!el) return;
+  const open = !!(state.graphSelected && claimById(state.graphSelected));
+  el.innerHTML = dDetail(); el.hidden = !open;
+  document.body.classList.toggle("drawer-open", open);
 }
 
 function dashUpdate({ scroll = false } = {}) {
   const f = dash();
   setHTML("dash-bar", dBar()); setHTML("d-score", dScore()); setHTML("d-time", dTime()); setHTML("d-gov", dGov()); setHTML("d-topics", dTopics());
-  setHTML("d-agencies", dAgencies()); setHTML("d-list", dList()); setHTML("d-detail", dDetail());
+  setHTML("d-agencies", dAgencies()); setHTML("d-list", dList()); drawerSync();
   if (liveGraph) { liveGraph.setFilter({ candidate: f.c || null, verdict: f.v || null, topic: f.tp || null, agency: f.ag || null, era: f.gv || null }); liveGraph.select(state.graphSelected || null); }
   writeDashToHash();
-  if (scroll && state.graphSelected && window.innerWidth < 900) document.getElementById("d-detail")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (scroll && state.graphSelected) document.querySelector("#d-drawer .drawer-head button")?.focus({ preventScroll: true });
 }
 function dashSet(pairs) {
   const f = dash(); const kv = pairs.split(",").map((p) => p.split(":"));
@@ -677,6 +684,7 @@ $app.addEventListener("click", (e) => {
   else if (act === "watch") showEmbed(claimById(btn.dataset.id));
   else if (act === "dset") dashSet(btn.dataset.set);
   else if (act === "dsel") dashSelect(btn.dataset.id);
+  else if (act === "dclose") { state.graphSelected = null; dashUpdate(); }
   else if (act === "dclear") { state.dash = {}; state.graphSelected = null; dashUpdate(); }
   else if (act === "dlink") { navigator.clipboard?.writeText(location.href).then(() => { btn.textContent = "Link copiado"; }).catch(() => {}); track("share", { what: "dash_link" }); }
   else if (act === "clip") makeClip(btn, btn.dataset.id);
@@ -693,6 +701,7 @@ $app.addEventListener("change", (e) => {
 });
 // timeline dots are SVG circles: clicks bubble with data-act, handled above
 document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.body.classList.contains("drawer-open") && !document.querySelector(".modal")) { state.graphSelected = null; dashUpdate(); return; }
   if (!location.hash.startsWith("#/quiz") || !state.quiz) return;
   const map = { "1": "verdadeiro", "2": "distorcido", "3": "falso" };
   if (map[e.key]) { const b = document.querySelector(`.key[data-v="${map[e.key]}"]`); if (b && !b.disabled) b.click(); }
