@@ -24,20 +24,30 @@ export function buildGraph(debate, { width, height }) {
     const n = { id: "cand:" + cid, kind: "hub", label: debate.candidates[cid].name, color: debate.candidates[cid].color || COLORS.hub, x: cx + (i === 0 ? -1 : 1) * Math.max(width * 0.085, narrow ? 34 : 0), y: cy, fx: true, r: narrow ? 17 : 22 };
     nodes.push(n); byId.set(n.id, n);
   });
-  const rx = width * (narrow ? 0.34 : 0.37), ry = height * (narrow ? 0.37 : 0.35);
-  topics.forEach((tp, i) => {
-    const a = (i / topics.length) * Math.PI * 2 - Math.PI / 2;
-    const n = { id: "topic:" + tp, kind: "topic", label: tp, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry, r: 5, fx: true };
-    nodes.push(n); byId.set(n.id, n);
-  });
+  const rx = width * 0.37, ry = height * 0.35;
+  if (narrow) { // hubs become a header row; topic clouds sit on a grid below
+    nodes.filter((n) => n.kind === "hub").forEach((h, i) => { h.x = width * (i === 0 ? 0.3 : 0.7); h.y = 26; h.r = 16; });
+    const top = 64, rows = Math.ceil(topics.length / 2), rowH = (height - top - 8) / rows;
+    topics.forEach((tp, i) => {
+      const row = Math.floor(i / 2), col = i % 2, lastAlone = i === topics.length - 1 && topics.length % 2 === 1;
+      const n = { id: "topic:" + tp, kind: "topic", label: tp, x: lastAlone ? cx : width * (col === 0 ? 0.27 : 0.73), y: top + rowH * row + rowH * 0.58, r: 5, fx: true, cellH: rowH };
+      nodes.push(n); byId.set(n.id, n);
+    });
+  } else {
+    topics.forEach((tp, i) => {
+      const a = (i / topics.length) * Math.PI * 2 - Math.PI / 2;
+      const n = { id: "topic:" + tp, kind: "topic", label: tp, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry, r: 5, fx: true };
+      nodes.push(n); byId.set(n.id, n);
+    });
+  }
   debate.claims.forEach((c, i) => {
     const t = byId.get("topic:" + c.topic), hub = byId.get("cand:" + c.candidate);
     const n = { id: c.id, kind: "claim", claim: c, x: t.x + (Math.random() - 0.5) * 30, y: t.y + (Math.random() - 0.5) * 30, vx: 0, vy: 0, r: narrow ? 3 + Math.min(c.sources.length, 3) * 0.8 : 4 + Math.min(c.sources.length, 3) * 1.5, born: i };
     nodes.push(n); byId.set(n.id, n);
-    links.push({ a: n, b: t, k: 0.09, len: 0, kind: "topic" });          // strong pull into its topic cluster
-    links.push({ a: n, b: hub, k: 0.003, len: m * 0.45, kind: "hub" });  // faint line to the candidate, almost no pull
+    links.push({ a: n, b: t, k: narrow ? 0.14 : 0.09, len: 0, kind: "topic" }); // strong pull into its topic cluster
+    links.push({ a: n, b: hub, k: narrow ? 0 : 0.003, len: m * 0.45, kind: "hub" }); // line to the candidate; no pull on phones
   });
-  return { nodes, links, width, height, byId, alpha: 1 };
+  return { nodes, links, width, height, byId, alpha: 1, narrow };
 }
 
 export function step(g, dt = 1) {
@@ -105,6 +115,7 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
     if (!visible(l.a) || !visible(l.b)) continue;
     const c = l.a.kind === "claim" ? COLORS[l.a.claim.verdict] : COLORS.topic;
     const isLit = lit(l.a.id) || lit(l.b.id);
+    if (g.narrow && !isLit && !(l.kind === "hub" && filter.candidate && l.b.id === "cand:" + filter.candidate && passes(l.a))) continue;
     const dim = !passes(l.a) || !passes(l.b);
     ctx.strokeStyle = c; ctx.globalAlpha = isLit ? 0.95 : dim ? 0.03 : (l.kind === "hub" ? 0.22 : 0.10);
     ctx.lineWidth = (isLit ? 2 : 1) * z;
@@ -133,6 +144,7 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
     if (glow && passes(n)) { ctx.shadowColor = c; ctx.shadowBlur = (isLit ? 26 : 10) * z; }
     ctx.fillStyle = c; ctx.beginPath(); ctx.arc(n.x, n.y, r, 0, Math.PI * 2); ctx.fill();
     ctx.shadowBlur = 0;
+    if (g.narrow) { const hub = g.byId.get("cand:" + n.claim.candidate); ctx.strokeStyle = hub ? hub.color : "#fff"; ctx.lineWidth = 1.6; ctx.stroke(); }
     if (isLit) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 2 * z; ctx.stroke(); }
     if (isSel) { ctx.strokeStyle = c; ctx.globalAlpha = 0.5; ctx.lineWidth = 1.5 * z; ctx.beginPath(); ctx.arc(n.x, n.y, r + 7 * z * pulse, 0, Math.PI * 2); ctx.stroke(); }
     ctx.globalAlpha = 1;
@@ -150,6 +162,13 @@ export function draw(ctx, g, { progress = 1, hover = null, selected = null, filt
       const text = topicLabel(n.label);
       ctx.font = `800 ${12 * z}px Archivo, sans-serif`; ctx.textBaseline = "middle"; ctx.textAlign = "left";
       const tw = ctx.measureText(text).width, bw = tw + 14 * z, bh = 22 * z;
+      if (g.narrow) { // fixed spot above the cloud, inside its own cell
+        let bx2 = Math.max(4, Math.min(width - bw - 4, n.x - bw / 2)), by2 = Math.max(48, n.y - ext - bh - 6);
+        ctx.globalAlpha = 0.92; ctx.fillStyle = active ? "#f3f5fa" : "#1f2842";
+        ctx.beginPath(); ctx.roundRect ? ctx.roundRect(bx2, by2, bw, bh, 6 * z) : ctx.rect(bx2, by2, bw, bh); ctx.fill();
+        ctx.globalAlpha = 1; ctx.fillStyle = active ? "#090c14" : "#e6e9f2"; ctx.fillText(text, bx2 + 7 * z, by2 + bh / 2 + 1);
+        n.labelBox = { x: bx2, y: by2, w: bw, h: bh }; continue;
+      }
       let px = n.x + dx * (ext + 16 * z), py = n.y + dy * (ext + 14 * z);
       let bx = px - (dx < -0.35 ? bw : dx > 0.35 ? 0 : bw / 2), by = py - bh / 2;
       if (bx < 4 || bx + bw > width - 4) { // no room beside the cluster: put the label above or below it

@@ -344,6 +344,7 @@ function renderRaiox() {
     <div class="dash-bar" id="dash-bar"></div>
     <div class="dash-grid">
       <div class="panel d-graph"><div class="panel-head"><h2 class="h3">Malha</h2><p>Ponto é fala. Toque num ponto, num candidato ou num tema.</p></div>
+        <p class="graph-hint-m">Cor do ponto = veredito. Contorno = candidato: <b style="color:#ff6b72">vermelho, Lula</b>; <b style="color:#7aa2ff">azul, Flávio</b>.</p>
         <div class="graph-wrap"><canvas id="rx-canvas" aria-label="Malha das falas; a lista abaixo traz o mesmo conteúdo"></canvas></div></div>
       <div class="panel d-score" id="d-score"></div>
       <div class="panel d-time" id="d-time"></div>

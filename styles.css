@@ -537,7 +537,7 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 .ex-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .ex-grid { grid-template-columns: 1fr 1fr; } }
 
-@media (max-width: 899px) { .d-graph .graph-wrap { height: min(118vw, 470px); } }
+@media (max-width: 899px) { .d-graph .graph-wrap { height: min(150vw, 600px); } }
 
 /* ---------- home, desktop: one 12-column grid, blocks aligned top and bottom ---------- */
 @media (min-width: 900px) {
@@ -584,3 +584,6 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
 .fsheet-foot { display: flex; gap: 10px; justify-content: space-between; align-items: center; position: sticky; bottom: -18px; background: var(--surface); padding: 10px 0 4px; }
 .fsheet-foot .btn.accent { flex: 1; }
 @media (min-width: 900px) { .fsheet, .fsheet-bd { display: none !important; } }
+
+.graph-hint-m { display: none; }
+@media (max-width: 899px) { .graph-hint-m { display: block; font-size: 13px; color: var(--ink-2); } }
