@@ -339,7 +339,7 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
   .app { padding-bottom: 64px; }
 
   .hero { grid-template-columns: 5fr 7fr; column-gap: 36px; row-gap: 24px; align-items: start; padding-top: 28px;
-    grid-template-areas: "copy vs" "cta vs" "teaser tape" "facts tape"; }
+    grid-template-areas: "copy vs" "cta vs" "teaser teaser" "facts tape"; }
   .display { font-size: clamp(56px, 5.6vw, 84px); max-width: 11ch; }
   .lede { font-size: 20px; }
   .hero-cta .btn.big { width: auto; justify-self: start; min-width: 320px; }
@@ -521,3 +521,18 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
   .vs-note { font-size: 13px; margin-bottom: 8px; }
 }
 @media (max-width: 899px) { .hero-copy .kicker { display: none; } }
+
+/* sharing */
+.btn.wa { background: #25d366; color: #062b14; }
+.sharebar { display: flex; gap: 8px; flex-wrap: wrap; }
+.navshare { border: 0; cursor: pointer; font: inherit; font-size: 14px; font-weight: 800; color: var(--bg); background: var(--true); padding: 9px 12px; border-radius: 999px; margin-left: 4px; }
+.themes { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.themes .fbtn { text-decoration: none; }
+.hero-cta .btn.sm.wa { justify-self: start; }
+@media (max-width: 420px) { .navshare { padding: 9px 10px; font-size: 13px; } .nav a { padding: 10px 6px; } }
+
+/* home: daily examples, one per candidate */
+.examples { display: grid; gap: 10px; }
+.ex-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.ex-grid { display: grid; gap: 12px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .ex-grid { grid-template-columns: 1fr 1fr; } .hero-facts { align-self: start; } }

@@ -5,7 +5,8 @@ const FONT = "Archivo, sans-serif";
 const VLABEL = { verdadeiro: "FATO", distorcido: "DISTORCIDO", falso: "FAKE", divergente: "AGÊNCIAS DIVERGEM", nao_verificado: "NÃO VERIFICADO" };
 const TOPIC_LABEL = { economia: "Economia", seguranca: "Segurança", corrupcao: "Corrupção", politica_externa: "Política externa", costumes: "Família e costumes", saude: "Saúde", outro: "Outros" };
 
-export function siteUrl() { return location.origin + location.pathname; }
+export const SITE = "https://raioxdodebate.github.io/";
+export function siteUrl() { return SITE; }
 export const shortUrl = () => siteUrl().replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 // ---------- primitives ----------
@@ -40,7 +41,7 @@ function pill(ctx, x, y, text, color, size = 30) {
   return w;
 }
 function footerUrl(ctx, W, H, pad) {
-  ctx.fillStyle = "#6b748c"; ctx.font = `500 30px ${FONT}`; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+  ctx.fillStyle = "#2ee59d"; ctx.font = `800 34px ${FONT}`; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
   ctx.fillText(shortUrl(), pad, H - pad);
 }
 function miniGraph(ctx, debate, x, y, w, h, { progress = 1, labels = false, alpha = 1, hover = null, zoom = 2.2 } = {}) {
@@ -159,17 +160,93 @@ export async function drawTapeCard(canvas, { debate }) {
   footerUrl(ctx, W, H, pad);
 }
 
-// Open Graph preview (1200x630) used as og.png
-export function drawOgCard(canvas, { debate }) {
-  const W = canvas.width = 1200, H = canvas.height = 630; const ctx = canvas.getContext("2d"); const pad = 64;
+// ---------- link previews (1200x630, used as og:image) ----------
+async function ogBase(ctx, W, H) {
   bgGrid(ctx, W, H);
-  miniGraph(ctx, debate, 600, 30, 580, 570, { alpha: 0.95, zoom: 1.6, labels: false });
-  brand(ctx, pad, pad, 30);
-  ctx.fillStyle = "#fff"; ctx.font = `900 72px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
-  let y = wrap(ctx, "Você reconhece uma fake num debate?", pad, pad + 70, 540, 74);
-  ctx.fillStyle = "#a4adc2"; ctx.font = `500 30px ${FONT}`;
-  wrap(ctx, `${debate.claims.length} falas do ${debate.title}, checadas por ${Object.keys(debate.agencies).length} agências. Jogue, explore, compartilhe.`, pad, y + 20, 520, 40, 3);
-  // no URL here: og.png is static and the final domain is set at deploy time
+  const g = ctx.createLinearGradient(0, H - 8, W, H); g.addColorStop(0, COLORS.verdadeiro); g.addColorStop(0.5, COLORS.distorcido); g.addColorStop(1, COLORS.falso);
+  ctx.fillStyle = g; ctx.fillRect(0, H - 10, W, 10);
+}
+function ogPills(ctx, x, y, size = 26) {
+  let px = x;
+  for (const [label, color] of [["FATO", COLORS.verdadeiro], ["DISTORCIDO", COLORS.distorcido], ["FAKE", COLORS.falso]]) px += pill(ctx, px, y, label, color, size) + 14;
+}
+async function ogLogos(ctx, debate, x, y, h = 40) {
+  const ags = Object.entries(debate.agencies);
+  const imgs = await Promise.all(ags.map(([k, a]) => (k === "aosfatos" ? null : loadPhoto(a.logo))));
+  let px = x;
+  for (let i = 0; i < ags.length; i++) {
+    const im = imgs[i];
+    if (!im) { // logos that do not read at this size become a text chip
+      ctx.font = `800 20px ${FONT}`; const w = ctx.measureText(ags[i][1].name).width + 24;
+      ctx.fillStyle = "#ffffff"; rr(ctx, px, y, w, h, 9); ctx.fill();
+      ctx.fillStyle = "#090c14"; ctx.textBaseline = "middle"; ctx.textAlign = "left"; ctx.fillText(ags[i][1].name, px + 12, y + h / 2 + 1);
+      px += w + 10; continue;
+    }
+    const w = Math.min(130, (im.width / im.height) * (h - 12)) + 16;
+    ctx.fillStyle = "#ffffff"; rr(ctx, px, y, w, h, 9); ctx.fill();
+    const iw = w - 16, ih = Math.min(h - 12, iw * im.height / im.width);
+    ctx.drawImage(im, px + 8, y + (h - ih) / 2, iw, ih);
+    px += w + 10;
+  }
+}
+export async function drawOgCard(canvas, { debate }) {
+  const W = canvas.width = 1200, H = canvas.height = 630; const ctx = canvas.getContext("2d"); const pad = 64;
+  await ogBase(ctx, W, H);
+  miniGraph(ctx, debate, 640, 40, 540, 520, { alpha: 0.95, zoom: 1.6, labels: false });
+  brand(ctx, pad, 52, 30);
+  ctx.fillStyle = "#fff"; ctx.font = `900 92px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
+  ctx.fillText("Fato, distorcido", pad - 4, 104); ctx.fillText("ou fake?", pad - 4, 200);
+  ctx.fillStyle = "#dfe3ee"; ctx.font = `600 31px ${FONT}`;
+  wrap(ctx, `O debate presidencial checado por ${Object.keys(debate.agencies).length} agências, com o corte do vídeo oficial de cada fala.`, pad, 316, 560, 40, 3);
+  await ogLogos(ctx, debate, pad, 452, 42);
+  ctx.fillStyle = "#2ee59d"; ctx.font = `800 34px ${FONT}`; ctx.textBaseline = "alphabetic"; ctx.fillText(shortUrl(), pad, H - 44);
+}
+export async function drawQuizOg(canvas, { debate }) {
+  const W = canvas.width = 1200, H = canvas.height = 630; const ctx = canvas.getContext("2d"); const pad = 64;
+  await ogBase(ctx, W, H);
+  brand(ctx, pad, 52, 30);
+  ctx.fillStyle = "#fff"; ctx.font = `900 120px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left"; ctx.fillText("Você acerta?", pad - 6, 100);
+  ctx.fillStyle = "#dfe3ee"; ctx.font = `600 34px ${FONT}`;
+  ctx.fillText("10 falas reais do debate presidencial. Três botões.", pad, 250);
+  ctx.fillText(`Veredito de ${Object.keys(debate.agencies).length} agências de checagem.`, pad, 296);
+  const keys = [["✓  FATO", COLORS.verdadeiro], ["~  DISTORCIDO", COLORS.distorcido], ["✕  FAKE", COLORS.falso]];
+  const kw = (W - pad * 2 - 40) / 3;
+  keys.forEach(([label, color], i) => {
+    const x = pad + i * (kw + 20), y = 380;
+    ctx.fillStyle = color; rr(ctx, x, y + 10, kw, 110, 22); ctx.globalAlpha = 0.45; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.fillStyle = color; rr(ctx, x, y, kw, 110, 22); ctx.fill();
+    ctx.fillStyle = "#090c14"; ctx.font = `900 40px ${FONT}`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText(label, x + kw / 2, y + 57);
+  });
+  ctx.textAlign = "left"; ctx.fillStyle = "#2ee59d"; ctx.font = `800 34px ${FONT}`; ctx.textBaseline = "alphabetic"; ctx.fillText(shortUrl(), pad, H - 44);
+}
+export async function drawClaimOg(canvas, { debate, claim }) {
+  const W = canvas.width = 1200, H = canvas.height = 630; const ctx = canvas.getContext("2d"); const pad = 60;
+  const cand = debate.candidates[claim.candidate]; const color = cand.color || "#ffffff"; const vcolor = COLORS[claim.verdict];
+  await ogBase(ctx, W, H);
+  const photo = await loadPhoto(cand.photo);
+  if (photo) { // photo on the right, duotone in party colour, fading into the background
+    const pw = 380, ph = H - 10, s = Math.max(pw / photo.width, ph / photo.height);
+    ctx.save(); ctx.beginPath(); ctx.rect(W - pw, 0, pw, ph); ctx.clip();
+    ctx.filter = "grayscale(1) contrast(1.1)"; ctx.globalAlpha = 0.9; ctx.drawImage(photo, W - pw + (pw - photo.width * s) / 2, 0, photo.width * s, photo.height * s);
+    ctx.filter = "none"; ctx.globalAlpha = 1; ctx.fillStyle = hexA(color, 0.45); ctx.fillRect(W - pw, 0, pw, ph);
+    const fade = ctx.createLinearGradient(W - pw, 0, W - pw + 200, 0); fade.addColorStop(0, COLORS.bg); fade.addColorStop(1, "rgba(9,12,20,0)"); ctx.fillStyle = fade; ctx.fillRect(W - pw, 0, 200, ph);
+    ctx.restore();
+  }
+  ctx.font = `900 30px ${FONT}`; const nw = ctx.measureText(cand.name.toUpperCase()).width + 40;
+  ctx.fillStyle = color; rr(ctx, pad, 46, nw, 50, 10); ctx.fill();
+  ctx.fillStyle = "#fff"; ctx.textBaseline = "middle"; ctx.textAlign = "left"; ctx.fillText(cand.name.toUpperCase(), pad + 20, 72);
+  ctx.fillStyle = "#b9c1d6"; ctx.font = `600 26px ${FONT}`; ctx.fillText(`${cand.party} · ${debate.title}, em resumo:`, pad + nw + 16, 72);
+  ctx.fillStyle = "#fff"; ctx.font = `800 50px ${FONT}`; ctx.textBaseline = "top";
+  let y = wrap(ctx, claim.claim, pad, 128, 760, 60, 4);
+  y = Math.max(y + 18, 330);
+  const label = VLABEL[claim.verdict];
+  ctx.font = `900 40px ${FONT}`; const lw = ctx.measureText(label).width + 56;
+  ctx.fillStyle = vcolor; rr(ctx, pad, y, lw, 70, 14); ctx.fill();
+  ctx.fillStyle = "#090c14"; ctx.textBaseline = "middle"; ctx.fillText(label, pad + 28, y + 37);
+  ctx.fillStyle = "#dfe3ee"; ctx.font = `600 26px ${FONT}`; ctx.textBaseline = "top";
+  const agencies = claim.sources.map((s) => debate.agencies[s.agency].name).join(", ");
+  wrap(ctx, `Segundo ${agencies}.`, pad, y + 90, 760, 34, 2);
+  ctx.fillStyle = "#2ee59d"; ctx.font = `800 32px ${FONT}`; ctx.textBaseline = "alphabetic"; ctx.fillText(shortUrl(), pad, H - 40);
 }
 
 export function drawScoreboard(ctx, debate, x, y, w, t = 1, barH = 56) {
@@ -326,9 +403,9 @@ export async function recordClaimClip(debate, claim, { duration = 9000, fps = 30
     if (t > 6200) {
       const p5 = ease(Math.min(1, (t - 6200) / 500)); ctx.globalAlpha = p5;
       ctx.fillStyle = "#fff"; ctx.font = `800 44px ${FONT}`; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-      ctx.fillText(hasT ? `Veja o momento, aos ${mmss(claim.t)}:` : "Veja todas as falas checadas:", pad, H - pad - 150);
-      ctx.fillStyle = vcolor; ctx.font = `800 52px ${FONT}`; ctx.fillText(link, pad, H - pad - 80);
-      ctx.fillStyle = "#6b748c"; ctx.font = `500 30px ${FONT}`; ctx.fillText(shortUrl(), pad, H - pad - 16);
+      ctx.fillText("Todas as falas checadas do debate:", pad, H - pad - 150);
+      ctx.fillStyle = "#2ee59d"; ctx.font = `800 56px ${FONT}`; ctx.fillText(shortUrl(), pad, H - pad - 80);
+      ctx.fillStyle = "#8d96ad"; ctx.font = `500 28px ${FONT}`; ctx.fillText(hasT ? `Momento no vídeo: ${link}` : "", pad, H - pad - 16);
       ctx.globalAlpha = 1;
     }
   }

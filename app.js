@@ -25,7 +25,7 @@ const state = {
   filters: { candidate: "all", verdict: "all", topic: "all" },
 };
 let liveGraph = null;
-window.__rx = { state, graph: () => liveGraph };
+window.__rx = { state, graph: () => liveGraph, pickQuiz: (s, t) => pickQuiz(s, t) };
 
 const $app = document.getElementById("app");
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -49,22 +49,30 @@ function hashStr(s) { let h = 2166136261; for (const ch of s) { h ^= ch.charCode
 function shuffle(arr, rnd) { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function todaySeed() { const d = new Date(); return `${state.debate.id}|${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`; }
 
-function pickQuiz(seedStr) {
-  const rnd = mulberry32(hashStr(seedStr));
-  const pool = state.debate.claims.filter((c) => c.quiz && VERDICT[c.verdict].key);
-  const per = Math.floor(QUIZ_SIZE / cands().length);
-  let picked = [];
-  for (const cid of cands()) {
-    const mine = shuffle(pool.filter((c) => c.candidate === cid), rnd);
-    const chosen = [];
-    for (const v of ["verdadeiro", "distorcido", "falso"]) { const hit = mine.find((c) => c.verdict === v && !chosen.includes(c)); if (hit) chosen.push(hit); }
-    for (const c of mine) { if (chosen.length >= per) break; if (!chosen.includes(c)) chosen.push(c); }
-    picked = picked.concat(chosen.slice(0, per));
+const MINOR_TOPICS = ["outro", "politica_externa", "costumes"];
+const QUIZ_THEMES = ["economia", "seguranca", "corrupcao", "saude"];
+function quizPool(topic) { return state.debate.claims.filter((c) => c.quiz && VERDICT[c.verdict].key && (!topic || c.topic === topic)); }
+function pickQuiz(seedStr, topic = null) {
+  const rnd = mulberry32(hashStr(seedStr + "|" + (topic || "")));
+  const pool = shuffle(quizPool(topic), rnd);
+  const size = Math.min(QUIZ_SIZE, pool.length);
+  const perCand = Math.ceil(size / cands().length);
+  const quota = { verdadeiro: Math.round(size * 0.3), falso: Math.round(size * 0.3) };
+  quota.distorcido = size - quota.verdadeiro - quota.falso; // 3 / 4 / 3 on a 10-question quiz
+  const picked = [];
+  const count = (k, v) => picked.filter((c) => c[k] === v).length;
+  const ok = (c, strict) => !picked.includes(c) && count("candidate", c.candidate) < perCand && (!strict || count("verdict", c.verdict) < quota[c.verdict]);
+  if (!topic) { // every daily quiz: one health claim and one from a small topic
+    for (const want of [(c) => c.topic === "saude", (c) => MINOR_TOPICS.includes(c.topic)]) {
+      const c = pool.find((x) => want(x) && ok(x, true)); if (c) picked.push(c);
+    }
   }
-  while (picked.length < QUIZ_SIZE) { const rest = shuffle(pool.filter((c) => !picked.includes(c)), rnd); if (!rest.length) break; picked.push(rest[0]); }
+  for (const strict of [true, false]) for (const c of pool) { if (picked.length >= size) break; if (ok(c, strict)) picked.push(c); }
+  for (const c of pool) { if (picked.length >= size) break; if (!picked.includes(c)) picked.push(c); }
   return shuffle(picked, rnd).map((c) => c.id);
 }
-function startQuiz(seedStr) { state.quiz = { seed: seedStr, ids: pickQuiz(seedStr), i: 0, answers: {} }; track("quiz_start", { seed: seedStr.split("|")[1] }); }
+function quizTopicFromHash() { const t = new URLSearchParams(location.hash.split("?")[1] || "").get("tema"); return t && QUIZ_THEMES.includes(t) ? t : null; }
+function startQuiz(seedStr, topic = null) { state.quiz = { seed: seedStr, topic, ids: pickQuiz(seedStr, topic), i: 0, answers: {} }; track("quiz_start", { seed: seedStr.split("|")[1], topic }); }
 
 // ---------- router ----------
 const routes = { "/": renderHome, "/quiz": renderQuiz, "/resultado": renderResult, "/raiox": renderRaiox, "/metodologia": renderMethod };
@@ -88,6 +96,28 @@ function cand(cid) { return state.debate.candidates[cid]; }
 function chip(cid) { const c = cand(cid); return `<span class="chip party" style="--c:${c.color}">${esc(c.name)}</span>`; }
 function mmss(t) { t = Math.max(0, Math.round(t)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60; return (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(s).padStart(2, "0"); }
 function ytUrl(claim) { const v = state.debate.video; if (!v || claim.t == null) return null; return `https://www.youtube.com/watch?v=${v.youtubeId}&t=${Math.max(0, claim.t - 3)}s`; }
+function claimLink(id) { return siteUrl() + "f/" + id + "/"; }
+function waHref(text) { return "https://wa.me/?text=" + encodeURIComponent(text); }
+function xHref(text) { return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text); }
+function shareRow(text, link) {
+  return `<div class="sharebar"><a class="btn sm wa" href="${esc(waHref(text))}" target="_blank" rel="noopener">WhatsApp</a><a class="btn sm ghost" href="${esc(xHref(text))}" target="_blank" rel="noopener">X</a><button class="btn sm ghost" data-m="copylink">Copiar link</button></div>`;
+}
+const SITE_TEXT = () => "Fato, distorcido ou fake? Todas as falas checadas do debate presidencial, com veredito de 6 agências e o corte do vídeo oficial: " + siteUrl();
+function shareSite(link = siteUrl(), text = SITE_TEXT()) {
+  track("share", { what: "site", link });
+  const el = document.createElement("div"); el.className = "modal"; el.setAttribute("role", "dialog");
+  el.innerHTML = `<div class="box"><h2 class="h3">Compartilhar o Raio-X do Debate</h2><p class="small muted">${esc(link)}</p>
+    ${navigator.share ? `<button class="btn accent" data-m="native">Compartilhar</button>` : ""}
+    ${shareRow(text, link)}<div class="row"><button class="btn sm ghost" data-m="close">Fechar</button></div><div class="status" data-m="status"></div></div>`;
+  let close;
+  el.addEventListener("click", async (e) => {
+    const m = e.target.closest("[data-m]")?.dataset.m;
+    if (m === "close" || e.target === el) { close(); return; }
+    if (m === "native") { try { await navigator.share({ text, url: link }); } catch (_) {} }
+    if (m === "copylink") { try { await navigator.clipboard.writeText(link); el.querySelector('[data-m="status"]').textContent = "Link copiado."; } catch (_) {} }
+  });
+  close = openModal(el);
+}
 function videoActions(claim, { clip = true } = {}) {
   const url = ytUrl(claim); const v = state.debate.video;
   const blogo = v && v.broadcaster_logo ? `<img src="${esc(v.broadcaster_logo)}" alt="Band">` : "";
@@ -103,7 +133,7 @@ async function realClip(btn, id) {
   try {
     const r = await fetch(claim.clip); if (!r.ok) throw new Error(String(r.status));
     const blob = await r.blob();
-    showMedia({ blob, kind: "video", filename: `corte-${id}.mp4`, text: `${cand(claim.candidate).name} no ${state.debate.title}, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Imagens: Band. ${siteUrl()}` });
+    showMedia({ blob, kind: "video", filename: `corte-${id}.mp4`, text: `${cand(claim.candidate).name} no ${state.debate.title}, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
   } catch (_) {
     // clip not hosted here (preview host): fall back to the rendered clip
     makeClip(btn, id);
@@ -157,16 +187,20 @@ function tapeHtml() {
     <div class="tape-foot">Vereditos de ${Object.keys(state.debate.agencies).length} agências · ${state.debate.claims.length} falas</div>
   </div>`;
 }
-function dailyHook() {
+function dailyExamples() {
   const d = state.debate; const day = Math.floor(Date.now() / 86400000);
-  const cid = cands()[day % cands().length];
-  const pool = d.claims.filter((c) => c.candidate === cid && c.clip && VERDICT[c.verdict].key);
-  const rnd = mulberry32(hashStr(d.id + "|hook|" + day));
-  return pool.length ? pool[Math.floor(rnd() * pool.length)] : d.claims[0];
+  const verdicts = ["verdadeiro", "distorcido", "falso"];
+  const v = verdicts[day % verdicts.length]; // both examples share today's verdict
+  return cands().map((cid, k) => {
+    const rnd = mulberry32(hashStr(d.id + "|ex|" + day + "|" + cid));
+    let pool = d.claims.filter((c) => c.candidate === cid && c.clip && c.verdict === v);
+    if (!pool.length) pool = d.claims.filter((c) => c.candidate === cid && c.clip && VERDICT[c.verdict].key);
+    return pool[Math.floor(rnd() * pool.length)];
+  }).filter(Boolean);
 }
 function renderHome() {
   const d = state.debate; const ids = cands();
-  const hook = dailyHook();
+  const examples = dailyExamples();
   return `
   <section class="hero">
     <div class="hero-copy">
@@ -179,15 +213,22 @@ function renderHome() {
     <div class="hero-cta">
       <a class="btn big accent" href="#/quiz">Você acerta? Jogar o quiz</a>
       <a class="btn big ghost" href="#/raiox">Explorar o raio-X</a>
+      <div class="themes"><span class="muted small">Quiz por tema:</span>${QUIZ_THEMES.map((t) => `<a class="fbtn" href="#/quiz?tema=${t}">${esc(TOPIC[t])}</a>`).join("")}</div>
+      <button class="btn sm wa" data-act="shareSite">Mandar o site no WhatsApp ou copiar o link</button>
       <p class="small muted">Conta só o que as agências escolheram verificar. Toque num candidato pra ver fala por fala.</p>
     </div>
-    <article class="item ${hook.verdict} teaser-item hero-teaser">
-      <div class="top-line"><span>${chip(hook.candidate)} <span class="muted">disse, em resumo:</span></span><span class="vt ${hook.verdict}">${esc(VERDICT[hook.verdict].label)}</span></div>
-      <p class="q">${esc(hook.claim)}</p>
-      <p class="w">${esc(hook.why)}</p>
-      ${sources(hook)}
-      ${videoActions(hook)}
-    </article>
+    <section class="hero-teaser examples" aria-labelledby="ex-h">
+      <div class="ex-head"><h2 class="h3" id="ex-h">Exemplos do dia: uma fala de cada candidato</h2><a class="btn sm ghost" href="#/raiox">Ver as ${d.claims.length} falas no raio-X</a></div>
+      <p class="small muted">Sorteadas todo dia, com o mesmo veredito para os dois.</p>
+      <div class="ex-grid">${examples.map((c) => `
+        <article class="item ${c.verdict}">
+          <div class="top-line"><span>${chip(c.candidate)} <span class="muted">disse, em resumo:</span></span><span class="vt ${c.verdict}">${esc(VERDICT[c.verdict].label)}</span></div>
+          <p class="q">${esc(c.claim)}</p>
+          <p class="w">${esc(c.why)}</p>
+          ${sources(c)}
+          ${videoActions(c)}
+        </article>`).join("")}</div>
+    </section>
     <div class="facts hero-facts">
       <div class="fact"><b>${d.claims.length}</b><span>falas checadas</span></div>
       <div class="fact"><b>${Object.keys(d.agencies).length}</b><span>agências como fonte</span></div>
@@ -199,7 +240,8 @@ function lensFicha_unused() { return `<div class="panel">${tapeHtml()}<div class
 
 // ---------- quiz ----------
 function renderQuiz() {
-  if (!state.quiz) startQuiz(todaySeed());
+  const topic = quizTopicFromHash();
+  if (!state.quiz || state.quiz.topic !== topic) startQuiz(todaySeed(), topic);
   const q = state.quiz;
   if (q.i >= q.ids.length) { location.hash = "#/resultado"; return ""; }
   const claim = claimById(q.ids[q.i]); const ans = q.answers[claim.id]; const revealed = !!ans;
@@ -208,7 +250,7 @@ function renderQuiz() {
   return `
   <section class="quiz">
     <div class="progress" aria-label="Progresso">${progress}</div>
-    <div class="qmeta"><span>Fala ${q.i + 1} de ${q.ids.length}</span><span>${streak >= 2 ? `${streak} seguidas` : ""}</span></div>
+    <div class="qmeta"><span>${q.topic ? `Quiz de ${esc(TOPIC[q.topic])} · ` : ""}Fala ${q.i + 1} de ${q.ids.length}</span><span>${streak >= 2 ? `${streak} seguidas` : ""}</span></div>
     <article class="card ${revealed ? "revealed v-" + claim.verdict : ""}">
       <div class="who">${chip(claim.candidate)} <span>disse, em resumo:</span></div>
       <p class="claim">${esc(claim.claim)}</p>
@@ -251,7 +293,9 @@ function renderResult() {
     <div class="score-card"><div class="n">${n}<small> de ${total}</small></div><div class="title">${esc(t)}</div><div class="sub">${esc(sub)}</div></div>
     <canvas id="share-canvas" class="share-preview" width="1080" height="1080" aria-label="Imagem para compartilhar"></canvas>
     <div class="row"><button class="btn big accent" data-act="share">Compartilhar resultado</button></div>
-    <div class="row"><a class="btn ghost" href="#/raiox">Explorar o raio-X</a><button class="btn ghost" data-act="again">Jogar outras 10</button></div>
+    ${shareRow(resultText(), quizLink()).replace('data-m="copylink"', 'data-act="copyres"')}
+    <div class="row"><a class="btn ghost" href="#/raiox">Explorar o raio-X</a><button class="btn ghost" data-act="again">Jogar de novo</button></div>
+    <div class="themes"><span class="muted small">Jogar por tema:</span>${QUIZ_THEMES.map((t) => `<a class="fbtn" href="#/quiz?tema=${t}">${esc(TOPIC[t])}</a>`).join("")}</div>
     <div id="share-status" class="status" role="status"></div>
     <h2 class="h2">Suas respostas</h2>
     <div class="review">${review}</div>
@@ -333,7 +377,7 @@ function dBar() {
     ${sel("ag", "Todas as agências", Object.entries(d.agencies).map(([k, a]) => [k, a.name]))}
     ${sel("gv", "Todos os governos", GOV.map(([k, n, y]) => [k, `${n} (${y})`]))}
     <span class="dcount"><b>${n}</b> de ${d.claims.length} falas</span>
-    ${any ? `<button class="iconbtn" data-act="dclear">Limpar</button><button class="iconbtn" data-act="dlink">Copiar link desta visão</button>` : ""}`;
+    ${any ? `<button class="iconbtn" data-act="dclear">Limpar</button><button class="iconbtn" data-act="dlink">Compartilhar esta visão</button>` : ""}`;
 }
 
 function dScore() {
@@ -378,7 +422,8 @@ function dTopics() {
     }).join("");
     return `${setBtn(`tp:${tp}`, esc(TOPIC[tp]), "rl linkish", f.tp === tp)}${cells}`;
   }).join("");
-  return `<div class="panel-head"><h2 class="h3">Temas</h2><p>Toque num tema ou numa célula.</p></div><div class="heat">${head}${rows}</div>`;
+  const quizBtn = f.tp && QUIZ_THEMES.includes(f.tp) ? `<a class="btn sm accent" href="#/quiz?tema=${f.tp}">Jogar o quiz de ${esc(TOPIC[f.tp])}</a>` : "";
+  return `<div class="panel-head"><h2 class="h3">Temas</h2><p>Toque num tema ou numa célula.</p></div><div class="heat">${head}${rows}</div>${quizBtn}`;
 }
 
 function dAgencies() {
@@ -533,7 +578,7 @@ function renderMethod() {
       <li>Os números por agência contam as falas desta base que cada uma checou. Não devem ser somados entre si: a mesma fala pode ter várias fontes.</li>
     </ul>
     <h2 class="h3">O quiz</h2>
-    <p>São 10 falas por dia, 5 de cada candidato, sorteadas entre as que têm veredito claro. Todo mundo que joga no mesmo dia recebe as mesmas 10, então dá pra comparar resultado. "Jogar outras 10" sorteia um conjunto novo.</p>
+    <p>São 10 falas por dia, 5 de cada candidato, sorteadas entre as que têm veredito claro e corte do vídeo. O sorteio garante 3 ou 4 falas de cada veredito, pelo menos uma de saúde e uma de um tema menos citado. Todo mundo que joga no mesmo dia recebe as mesmas 10, então dá pra comparar resultado. Também dá pra jogar por tema: economia, segurança, corrupção e saúde.</p>
     <h2 class="h3">Imagens, cortes e vídeo</h2>
     <p>Tudo que você gera aqui é desenhado no seu navegador a partir dos mesmos dados, com a fonte escrita no próprio arquivo. Nada é enviado a servidor nenhum.</p>
     <p>Os cortes são trechos curtos do vídeo oficial do debate publicado no YouTube, com a legenda automática do trecho, o veredito, as fontes e o crédito "Imagens: Band" gravados no vídeo, para fins de checagem e comentário. A legenda é automática e pode ter erros de transcrição. O botão "Ver no debate" toca o trecho e dá o link para o momento exato no YouTube.</p>
@@ -598,17 +643,20 @@ async function showEmbed(claim) {
   });
   close = openModal(el);
 }
-function showMedia({ blob, kind, filename, text }) {
+function showMedia({ blob, kind, filename, text, link = siteUrl() }) {
   const url = URL.createObjectURL(blob);
   const el = document.createElement("div"); el.className = "modal"; el.setAttribute("role", "dialog");
   el.innerHTML = `<div class="box">${kind === "video" ? `<video src="${url}" controls autoplay muted playsinline loop></video>` : `<img src="${url}" alt="Pré-visualização">`}
-    <div class="row"><button class="btn accent" data-m="share">Compartilhar</button><a class="btn ghost" href="${url}" download="${esc(filename)}">Baixar</a><button class="btn ghost" data-m="close">Fechar</button></div>
+    <div class="row"><button class="btn accent" data-m="share">Compartilhar ${kind === "video" ? "o vídeo" : "a imagem"}</button><a class="btn ghost" href="${url}" download="${esc(filename)}">Baixar</a></div>
+    ${shareRow(text, link)}
+    <div class="row"><button class="btn sm ghost" data-m="close">Fechar</button></div>
     <div class="status" data-m="status"></div></div>`;
   let close;
   el.addEventListener("click", async (e) => {
     const m = e.target.closest("[data-m]")?.dataset.m;
     if (m === "close" || e.target === el) { close(); return; }
     if (m === "share") { track("share", { what: kind, file: filename }); await deliver(blob, filename, text, el.querySelector('[data-m="status"]')); }
+    if (m === "copylink") { try { await navigator.clipboard.writeText(link); el.querySelector('[data-m="status"]').textContent = "Link copiado."; } catch (_) {} }
   });
   close = openModal(el, () => URL.revokeObjectURL(url));
 }
@@ -617,18 +665,18 @@ async function makeClaimCard(id) {
   const claim = claimById(id); const c = document.createElement("canvas");
   await document.fonts.ready; drawClaimCard(c, { claim, debate: state.debate });
   const blob = await toBlob(c);
-  showMedia({ blob, kind: "image", filename: `raio-x-${id}.png`, text: `${state.debate.candidates[claim.candidate].name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. ${siteUrl()}` });
+  showMedia({ blob, kind: "image", filename: `raio-x-${id}.png`, text: `${state.debate.candidates[claim.candidate].name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
 }
 async function makeTapeCard() {
   track("card", { what: "tape" });
   const c = document.createElement("canvas"); await document.fonts.ready; await drawTapeCard(c, { debate: state.debate });
   const [a, b] = cands(); const A = tapeStats(a), B = tapeStats(b);
-  showMedia({ blob: await toBlob(c), kind: "image", filename: "ficha-do-debate.png", text: `Ficha técnica do ${state.debate.title}: ${cand(a).name} ${A.pct}% x ${cand(b).name} ${B.pct}% das falas checadas com problema. ${siteUrl()}` });
+  showMedia({ blob: await toBlob(c), kind: "image", filename: "ficha-do-debate.png", text: `Ficha técnica do ${state.debate.title}: ${cand(a).name} ${A.pct}% x ${cand(b).name} ${B.pct}% das falas checadas com problema. Veja fala por fala: ${siteUrl()}`, link: siteUrl() });
 }
 async function makeRaioxCard() {
   track("card", { what: "raiox" });
   const c = document.createElement("canvas"); await document.fonts.ready; drawRaioxCard(c, { debate: state.debate });
-  showMedia({ blob: await toBlob(c), kind: "image", filename: "raio-x-do-debate.png", text: `Raio-X do ${state.debate.title}: ${state.debate.claims.length} falas checadas, numa imagem. ${siteUrl()}` });
+  showMedia({ blob: await toBlob(c), kind: "image", filename: "raio-x-do-debate.png", text: `Raio-X do ${state.debate.title}: ${state.debate.claims.length} falas checadas, numa imagem. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
 }
 async function makeClip(btn, id) {
   track("clip", { what: "rendered", claim: id });
@@ -636,7 +684,7 @@ async function makeClip(btn, id) {
   try {
     await document.fonts.ready;
     const { blob, ext } = await recordClaimClip(state.debate, claim, { onProgress: (p) => { btn.textContent = `Gravando ${Math.round(p * 100)}%`; } });
-    showMedia({ blob, kind: "video", filename: `corte-${id}.${ext}`, text: `${cand(claim.candidate).name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}.${ytUrl(claim) ? " Veja o momento: " + ytUrl(claim) : ""} ${siteUrl()}` });
+    showMedia({ blob, kind: "video", filename: `corte-${id}.${ext}`, text: `${cand(claim.candidate).name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
   } catch (e) { alert("Não deu pra gravar: " + e.message); }
   btn.disabled = false; btn.textContent = old;
 }
@@ -645,15 +693,16 @@ async function makeVideo(btn) {
   try {
     await document.fonts.ready;
     const { blob, ext } = await recordRaioxVideo(state.debate, { onProgress: (p) => { status.textContent = `Gravando… ${Math.round(p * 100)}%`; } });
-    status.textContent = ""; showMedia({ blob, kind: "video", filename: `raio-x-do-debate.${ext}`, text: `Raio-X do ${state.debate.title} em 8 segundos. ${siteUrl()}` });
+    status.textContent = ""; showMedia({ blob, kind: "video", filename: `raio-x-do-debate.${ext}`, text: `Raio-X do ${state.debate.title} em 8 segundos. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
   } catch (e) { status.textContent = "Não deu pra gravar: " + e.message; }
   btn.disabled = false;
 }
+function resultText() { const n = score(), total = state.quiz.ids.length, tp = state.quiz.topic; return `Acertei ${n} de ${total} no quiz${tp ? " de " + TOPIC[tp] : ""} do Raio-X do Debate. Fato, distorcido ou fake: você acerta quantas? ${quizLink()}`; }
+function quizLink() { const tp = state.quiz && state.quiz.topic; return siteUrl() + "quiz/" + (tp ? "?tema=" + tp : ""); }
 async function shareResult() {
-  track("share", { what: "result", score: score() });
   const canvas = document.getElementById("share-canvas"); const status = document.getElementById("share-status");
-  const n = score(), total = state.quiz.ids.length;
-  await deliver(await toBlob(canvas), "raio-x-do-debate.png", `Acertei ${n} de ${total} no Raio-X do Debate. Você reconhece uma fake num debate? ${siteUrl()}`, status);
+  track("share", { what: "result", score: score() });
+  await deliver(await toBlob(canvas), "raio-x-do-debate.png", resultText(), status);
 }
 
 // ---------- after render / events ----------
@@ -678,21 +727,23 @@ $app.addEventListener("click", (e) => {
   const act = btn.dataset.act;
   if (act === "answer") { btn.classList.add("pressed"); btn.closest(".keypad").querySelectorAll(".key").forEach((k) => (k.disabled = true)); setTimeout(() => answer(btn.dataset.v), 110); }
   else if (act === "next") next();
-  else if (act === "again") { startQuiz(`${state.debate.id}|${Date.now()}|${Math.random()}`); location.hash = "#/quiz"; }
+  else if (act === "again") { const tp = state.quiz && state.quiz.topic; startQuiz(`${state.debate.id}|${Date.now()}|${Math.random()}`, tp); location.hash = "#/quiz" + (tp ? "?tema=" + tp : ""); }
   else if (act === "share") shareResult();
   else if (act === "claimcard") makeClaimCard(btn.dataset.id);
   else if (act === "watch") showEmbed(claimById(btn.dataset.id));
   else if (act === "dset") dashSet(btn.dataset.set);
   else if (act === "dsel") dashSelect(btn.dataset.id);
+  else if (act === "copyres") { navigator.clipboard?.writeText(quizLink()).then(() => { btn.textContent = "Link copiado"; }).catch(() => {}); }
   else if (act === "dclose") { state.graphSelected = null; dashUpdate(); }
   else if (act === "dclear") { state.dash = {}; state.graphSelected = null; dashUpdate(); }
-  else if (act === "dlink") { navigator.clipboard?.writeText(location.href).then(() => { btn.textContent = "Link copiado"; }).catch(() => {}); track("share", { what: "dash_link" }); }
+  else if (act === "dlink") { const link = siteUrl() + location.hash; shareSite(link, "Olha este recorte do raio-X do debate, checado por 6 agências: " + link); }
+  else if (act === "shareSite") shareSite();
   else if (act === "clip") makeClip(btn, btn.dataset.id);
   else if (act === "realclip") realClip(btn, btn.dataset.id);
   else if (act === "raioxcard") makeRaioxCard();
   else if (act === "tapecard") makeTapeCard();
   else if (act === "video") { track("video_summary"); makeVideo(btn); }
-  else if (act === "graphpng") { const c = document.getElementById("rx-canvas"); if (c) toBlob(c).then((blob) => showMedia({ blob, kind: "image", filename: "malha-do-debate.png", text: `A malha do ${state.debate.title}: cada ponto é uma fala checada. ${siteUrl()}` })); }
+  else if (act === "graphpng") { const c = document.getElementById("rx-canvas"); if (c) toBlob(c).then((blob) => showMedia({ blob, kind: "image", filename: "malha-do-debate.png", text: `A malha do ${state.debate.title}: cada ponto é uma fala checada. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" })); }
 });
 $app.addEventListener("change", (e) => {
   const sel = e.target.closest("select[data-dsel]"); if (!sel) return;
@@ -707,6 +758,7 @@ document.addEventListener("keydown", (e) => {
   if (map[e.key]) { const b = document.querySelector(`.key[data-v="${map[e.key]}"]`); if (b && !b.disabled) b.click(); }
   if (e.key === "Enter") { const n = document.querySelector('[data-act="next"]'); if (n) n.click(); }
 });
+document.getElementById("navshare")?.addEventListener("click", () => shareSite());
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 
 loadData().then(route).catch((err) => { $app.innerHTML = `<section class="prose"><h1 class="h2">Não deu pra carregar os dados</h1><p>Abra o site por um servidor (não por file://). Detalhe: ${esc(err.message)}</p></section>`; });
