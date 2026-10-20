@@ -58,7 +58,7 @@ export function drawResultCard(canvas, { score, total, title, marks, debate }) {
   bgGrid(ctx, W, H);
   miniGraph(ctx, debate, 0, 0, W, H, { alpha: 0.28 });
   const gap = 14, w = (W - pad * 2 - gap * (marks.length - 1)) / marks.length;
-  marks.forEach((hit, k) => { ctx.fillStyle = hit ? COLORS.verdadeiro : COLORS.falso; rr(ctx, pad + k * (w + gap), pad, w, 22, 8); ctx.fill(); });
+  marks.forEach((hit, k) => { ctx.fillStyle = hit ? COLORS.verdadeiro : "#3a4663"; rr(ctx, pad + k * (w + gap), pad, w, 22, 8); ctx.fill(); });
   brand(ctx, pad, 130);
   ctx.fillStyle = "#fff"; ctx.font = `900 360px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
   ctx.fillText(String(score), pad - 16, 200);

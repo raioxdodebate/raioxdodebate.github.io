@@ -88,8 +88,25 @@ function route() {
   });
   $app.innerHTML = fn();
   afterRender(path);
+  quizBar(path);
   pageview(path, path === "/raiox" ? { ...dash() } : {});
 }
+
+// ---------- funnel: sticky quiz bar on phones ----------
+function quizBar(path) {
+  let el = document.getElementById("quizbar");
+  const show = path === "/" || path === "/raiox" || path === "/metodologia";
+  if (!show) { if (el) el.remove(); document.body.classList.remove("has-quizbar"); return; }
+  if (!el) {
+    el = document.createElement("a"); el.id = "quizbar"; el.className = "quizbar"; el.href = "#/quiz";
+    el.innerHTML = `<span><b>Você acerta?</b> Quiz de 10 falas</span><span class="qb-go">Jogar</span>`;
+    el.addEventListener("click", () => track("quiz_cta", { via: "sticky", from: location.hash }));
+    document.body.appendChild(el);
+  }
+  document.body.classList.add("has-quizbar");
+}
+
+document.addEventListener("click", (e) => { const a = e.target.closest("[data-quizcta]"); if (a) track("quiz_cta", { via: a.dataset.quizcta, from: location.hash }); });
 
 // ---------- shared bits ----------
 function cand(cid) { return state.debate.candidates[cid]; }
@@ -222,7 +239,7 @@ function renderHome() {
       <p class="small muted">Sorteadas todo dia, com o mesmo veredito para os dois.</p>
       <div class="ex-grid">${examples.map((c) => `
         <article class="item ${c.verdict}">
-          <div class="top-line"><span>${chip(c.candidate)} <span class="muted">disse, em resumo:</span></span><span class="vt ${c.verdict}">${esc(VERDICT[c.verdict].label)}</span></div>
+          <div class="top-line"><span>${chip(c.candidate)} <span class="party-tag">${esc(cand(c.candidate).party)}</span></span><span class="vt ${c.verdict}">${esc(VERDICT[c.verdict].label)}</span></div>
           <p class="q">${esc(c.claim)}</p>
           <p class="w">${esc(c.why)}</p>
           ${sources(c)}
@@ -252,11 +269,14 @@ function renderQuiz() {
     <div class="progress" aria-label="Progresso">${progress}</div>
     <div class="qmeta"><span>${q.topic ? `Quiz de ${esc(TOPIC[q.topic])} · ` : ""}Fala ${q.i + 1} de ${q.ids.length}</span><span>${streak >= 2 ? `${streak} seguidas` : ""}</span></div>
     <article class="card ${revealed ? "revealed v-" + claim.verdict : ""}">
-      <div class="who">${chip(claim.candidate)} <span>disse, em resumo:</span></div>
+      <div class="who">${chip(claim.candidate)} <span class="party-tag">${esc(cand(claim.candidate).party)}</span></div>
       <p class="claim">${esc(claim.claim)}</p>
       ${revealed ? `
-        <div class="outcome ${ans.hit ? "hit" : "miss"}">${ans.hit ? "Acertou." : `Errou. Você marcou ${esc(VERDICT[ans.picked].label)}.`}</div>
-        ${verdictPill(claim.verdict)}
+        <div class="compare ${ans.hit ? "hit" : "miss"}">
+          <div class="cmp you"><span class="cmp-l">Sua resposta</span>${verdictPill(ans.picked)}</div>
+          <div class="cmp them"><span class="cmp-l">As agências</span>${verdictPill(claim.verdict)}</div>
+        </div>
+        <p class="cmp-msg">${ans.hit ? `${esc(praise(q))} Você e as agências chegaram ao mesmo veredito.` : `As agências classificaram essa fala como <b>${esc(VERDICT[claim.verdict].label)}</b>. Veja por quê:`}</p>
         <p class="why">${esc(claim.why)}</p>
         ${sources(claim)}
         ${videoActions(claim)}
@@ -270,6 +290,11 @@ function renderQuiz() {
       </div>`}
   </section>`;
 }
+function praise(q) {
+  const s = currentStreak();
+  if (s >= 3) return `${s} seguidas!`;
+  return ["Isso!", "Boa!", "Mandou bem!", "Exato!"][q.i % 4];
+}
 function currentStreak() { const q = state.quiz; let s = 0; for (let k = q.i - 1; k >= 0; k--) { const a = q.answers[q.ids[k]]; if (a && a.hit) s++; else break; } if (q.answers[q.ids[q.i]]?.hit) s++; return s; }
 function answer(v) { const q = state.quiz; const id = q.ids[q.i]; if (q.answers[id]) return; const hit = claimById(id).verdict === v; q.answers[id] = { picked: v, hit }; track("quiz_answer", { claim: id, picked: v, hit, n: q.i + 1 }); route(); }
 function next() { state.quiz.i++; if (state.quiz.i >= state.quiz.ids.length) { saveResult(); location.hash = "#/resultado"; } else { route(); window.scrollTo({ top: 0 }); } }
@@ -278,16 +303,16 @@ function next() { state.quiz.i++; if (state.quiz.i >= state.quiz.ids.length) { s
 function score() { const q = state.quiz; return q.ids.reduce((n, id) => n + (q.answers[id]?.hit ? 1 : 0), 0); }
 function title(n, total) {
   const r = n / total;
-  if (r >= 0.9) return ["Checador profissional", "Pode mandar o resultado pro grupo sem medo."];
-  if (r >= 0.7) return ["Detector de fake", "Poucas passam por você. Veja quais escaparam."];
-  if (r >= 0.4) return ["Olho meio treinado", "Metade do caminho. O raio-X mostra o resto."];
-  return ["Caiu em quase tudo", "Normal: as falas são feitas pra convencer. Veja a resposta de cada uma."];
+  if (r >= 0.9) return ["Olho de checador", "Você e as agências concordaram em quase tudo. Desafie o grupo."];
+  if (r >= 0.7) return ["Ótimo faro", "Você reconhece a maior parte das distorções. Veja as que passaram."];
+  if (r >= 0.4) return ["Bom começo", "Falas de debate são feitas pra convencer. Veja o que as agências encontraram."];
+  return ["Primeira rodada", "Falas de debate são feitas pra convencer. Veja o que as agências encontraram e jogue de novo."];
 }
 function saveResult() { track("quiz_finish", { score: score(), total: state.quiz.ids.length }); try { localStorage.setItem("raiox:last", JSON.stringify({ seed: state.quiz.seed, score: score(), total: state.quiz.ids.length, at: Date.now() })); } catch (_) {} }
 function renderResult() {
   if (!state.quiz || state.quiz.i < state.quiz.ids.length) { location.hash = "#/quiz"; return ""; }
   const n = score(); const total = state.quiz.ids.length; const [t, sub] = title(n, total);
-  const review = state.quiz.ids.map((id) => { const c = claimById(id); const a = state.quiz.answers[id]; return `<div class="review-item"><div class="mark ${a.hit ? "hit" : "miss"}">${a.hit ? "✓" : "✕"}</div><div><div class="t">${esc(state.debate.candidates[c.candidate].name)}, em resumo: ${esc(c.claim)}</div><div class="m">${esc(VERDICT[c.verdict].label)}${a.hit ? "" : ` · você marcou ${esc(VERDICT[a.picked].label)}`}</div></div><button class="iconbtn" data-act="claimcard" data-id="${c.id}">Card</button></div>`; }).join("");
+  const review = state.quiz.ids.map((id) => { const c = claimById(id); const a = state.quiz.answers[id]; return `<div class="review-item"><div class="mark ${a.hit ? "hit" : "miss"}">${a.hit ? "✓" : "•"}</div><div><div class="t">${esc(state.debate.candidates[c.candidate].name)}: ${esc(c.claim)}</div><div class="m">Agências: ${esc(VERDICT[c.verdict].label)}${a.hit ? " · você também" : ` · você: ${esc(VERDICT[a.picked].label)}`}</div></div><button class="iconbtn" data-act="claimcard" data-id="${c.id}">Card</button></div>`; }).join("");
   return `
   <section class="result">
     <div class="score-card"><div class="n">${n}<small> de ${total}</small></div><div class="title">${esc(t)}</div><div class="sub">${esc(sub)}</div></div>
@@ -339,7 +364,7 @@ function renderRaiox() {
   const d = state.debate;
   return `
   <section class="rx dash">
-    <div class="section-head"><h1 class="h2">Raio-X do ${esc(d.title)}</h1>
+    <div class="section-head"><div class="sh-row"><h1 class="h2">Raio-X do ${esc(d.title)}</h1><a class="btn sm accent" href="#/quiz" data-quizcta="dash">Você acerta? Jogar o quiz</a></div>
       <p class="muted small">${esc(d.subtitle)} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências. Toque em qualquer gráfico pra filtrar todos.</p></div>
     <div class="dash-bar" id="dash-bar"></div>
     <div class="dash-grid">
