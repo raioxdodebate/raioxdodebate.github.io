@@ -77,7 +77,7 @@ function startQuiz(seedStr, topic = null) { state.quiz = { seed: seedStr, topic,
 // ---------- router ----------
 const routes = { "/": renderHome, "/quiz": renderQuiz, "/resultado": renderResult, "/raiox": renderRaiox, "/metodologia": renderMethod };
 function route() {
-  document.body.classList.remove("drawer-open");
+  document.body.classList.remove("drawer-open"); state.fsheetOpen = false;
   if (liveGraph) { liveGraph.destroy(); liveGraph = null; }
   const path = (location.hash.replace(/^#/, "") || "/").split("?")[0];
   const fn = routes[path] || renderHome;
@@ -353,6 +353,8 @@ function renderRaiox() {
       <div class="panel d-list" id="d-list"></div>
     </div>
     <aside class="drawer" id="d-drawer" aria-label="Fala selecionada" hidden></aside>
+    <div class="fsheet-bd" id="fsheet-bd" data-act="fclose" hidden></div>
+    <div class="fsheet" id="fsheet" role="dialog" aria-label="Filtros" hidden></div>
     <div class="panel">
       <div class="panel-head"><h2 class="h3">Levar os dados pro grupo</h2><p>Imagem e vídeo gerados aqui, no seu navegador, direto dos dados.</p></div>
       <div class="export">
@@ -370,16 +372,40 @@ function dBar() {
   const sel = (k, all, opts) => `<label class="dsel"><span class="sr-only">${all}</span><select data-dsel="${k}"><option value="">${all}</option>${opts.map(([v, l]) => `<option value="${esc(v)}" ${f[k] === v ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></label>`;
   const n = d.claims.filter((c) => fits(c, f)).length;
   const any = DKEYS.some((k) => f[k]) || state.graphSelected;
-  return `
+  const nActive = DKEYS.filter((k) => f[k]).length;
+  const chips = DKEYS.filter((k) => f[k]).map((k) => `<button class="achip" data-act="dunset" data-k="${k}" aria-label="Tirar filtro ${esc(filterLabel(k, f[k]))}">${esc(filterLabel(k, f[k]))} <span aria-hidden="true">✕</span></button>`).join("");
+  const phone = `<div class="bar-m"><button class="btn sm fopen" data-act="fopen">Filtrar${nActive ? ` (${nActive})` : ""}</button><span class="dcount"><b>${n}</b> de ${d.claims.length}</span>${any ? `<button class="iconbtn" data-act="dclear">Limpar</button>` : ""}<button class="iconbtn" data-act="dlink">Compartilhar</button></div>${nActive ? `<div class="achips">${chips}</div>` : ""}`;
+  return phone + `<div class="bar-d">
     ${seg("c", cands().map((c) => [c, d.candidates[c].name]))}
     ${seg("v", ORDER.map((v) => [v, VERDICT[v].label, "vt " + v]))}
     ${sel("tp", "Todos os temas", topicsUsed().map((t) => [t, TOPIC[t]]))}
     ${sel("ag", "Todas as agências", Object.entries(d.agencies).map(([k, a]) => [k, a.name]))}
     ${sel("gv", "Todos os governos", GOV.map(([k, n, y]) => [k, `${n} (${y})`]))}
     <span class="dcount"><b>${n}</b> de ${d.claims.length} falas</span>
-    ${any ? `<button class="iconbtn" data-act="dclear">Limpar</button><button class="iconbtn" data-act="dlink">Compartilhar esta visão</button>` : ""}`;
+    ${any ? `<button class="iconbtn" data-act="dclear">Limpar</button><button class="iconbtn" data-act="dlink">Compartilhar esta visão</button>` : ""}</div>`;
 }
 
+function filterLabel(k, v) {
+  const d = state.debate;
+  return k === "c" ? d.candidates[v]?.name : k === "v" ? VERDICT[v]?.label : k === "tp" ? TOPIC[v] : k === "ag" ? d.agencies[v]?.name : k === "gv" ? GOV_NAME[v] : v;
+}
+function fSheet() {
+  const d = state.debate; const f = dash();
+  const group = (title, k, opts) => `<div class="fgroup"><h3 class="h3">${title}</h3><div class="chips">${opts.map(([v, l, cls]) => setBtn(`${k}:${v}`, esc(l), "fbtn " + (cls || ""), f[k] === v)).join("")}</div></div>`;
+  const n = d.claims.filter((c) => fits(c, f)).length;
+  return `<div class="fsheet-head"><h2 class="h3">Filtros</h2><button class="iconbtn" data-act="fclose">Fechar ✕</button></div>
+    ${group("Candidato", "c", cands().map((c) => [c, d.candidates[c].name]))}
+    ${group("Veredito", "v", ORDER.map((v) => [v, VERDICT[v].label, "vt " + v]))}
+    ${group("Tema", "tp", topicsUsed().map((t) => [t, TOPIC[t]]))}
+    ${group("Agência", "ag", Object.entries(d.agencies).map(([k, a]) => [k, a.name]))}
+    ${group("Governo a que o fato se refere", "gv", GOV.map(([k, nm, y]) => [k, `${nm} (${y})`]))}
+    <div class="fsheet-foot"><button class="btn sm ghost" data-act="dclear">Limpar tudo</button><button class="btn accent" data-act="fclose">Ver ${n} falas</button></div>`;
+}
+function fSheetSync() {
+  const el = document.getElementById("fsheet"), bd = document.getElementById("fsheet-bd"); if (!el) return;
+  el.hidden = !state.fsheetOpen; if (bd) bd.hidden = !state.fsheetOpen;
+  if (state.fsheetOpen) el.innerHTML = fSheet();
+}
 function dScore() {
   const d = state.debate; const f = dash();
   const rows = cands().map((cid) => {
@@ -473,7 +499,7 @@ function drawerSync() {
 function dashUpdate({ scroll = false } = {}) {
   const f = dash();
   setHTML("dash-bar", dBar()); setHTML("d-score", dScore()); setHTML("d-time", dTime()); setHTML("d-gov", dGov()); setHTML("d-topics", dTopics());
-  setHTML("d-agencies", dAgencies()); setHTML("d-list", dList()); drawerSync();
+  setHTML("d-agencies", dAgencies()); setHTML("d-list", dList()); drawerSync(); fSheetSync();
   if (liveGraph) { liveGraph.setFilter({ candidate: f.c || null, verdict: f.v || null, topic: f.tp || null, agency: f.ag || null, era: f.gv || null }); liveGraph.select(state.graphSelected || null); }
   writeDashToHash();
   if (scroll && state.graphSelected) document.querySelector("#d-drawer .drawer-head button")?.focus({ preventScroll: true });
@@ -734,6 +760,9 @@ $app.addEventListener("click", (e) => {
   else if (act === "dset") dashSet(btn.dataset.set);
   else if (act === "dsel") dashSelect(btn.dataset.id);
   else if (act === "copyres") { navigator.clipboard?.writeText(quizLink()).then(() => { btn.textContent = "Link copiado"; }).catch(() => {}); }
+  else if (act === "fopen") { state.fsheetOpen = true; track("dash_filters_open"); dashUpdate(); }
+  else if (act === "fclose") { state.fsheetOpen = false; dashUpdate(); }
+  else if (act === "dunset") { delete dash()[btn.dataset.k]; dashUpdate(); }
   else if (act === "dclose") { state.graphSelected = null; dashUpdate(); }
   else if (act === "dclear") { state.dash = {}; state.graphSelected = null; dashUpdate(); }
   else if (act === "dlink") { const link = siteUrl() + location.hash; shareSite(link, "Olha este recorte do raio-X do debate, checado por 6 agências: " + link); }
@@ -752,6 +781,7 @@ $app.addEventListener("change", (e) => {
 });
 // timeline dots are SVG circles: clicks bubble with data-act, handled above
 document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && state.fsheetOpen) { state.fsheetOpen = false; dashUpdate(); return; }
   if (e.key === "Escape" && document.body.classList.contains("drawer-open") && !document.querySelector(".modal")) { state.graphSelected = null; dashUpdate(); return; }
   if (!location.hash.startsWith("#/quiz") || !state.quiz) return;
   const map = { "1": "verdadeiro", "2": "distorcido", "3": "falso" };
