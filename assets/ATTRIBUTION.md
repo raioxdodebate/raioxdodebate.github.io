@@ -11,6 +11,7 @@
 
 - `logo-pt.svg` — Partido dos Trabalhadores. Commons: "Logo do Partido dos Trabalhadores.svg" (public domain as simple shapes; trademarked).
 - `logo-pl.svg` — Partido Liberal. Commons: "Partido Liberal (Brazil) logo.svg" (public domain as simple shapes; trademarked).
+- `logo-globo.svg` — TV Globo. Commons: "TV Globo 2025.svg" (public domain as simple shapes; trademarked).
 - `logo-band.svg` — Rede Bandeirantes. Commons: "Rede Bandeirantes logo 2018.svg" (public domain as simple shapes; trademarked).
 - `logo-lupa.jpg` — Agência Lupa. Commons: "Agência Lupa logo.jpg".
 - `logo-aosfatos.png` — Aos Fatos. Commons: "Logo do Aos Fatos.png" (CC BY 4.0).

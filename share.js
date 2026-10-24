@@ -66,7 +66,7 @@ export function drawResultCard(canvas, { score, total, title, marks, debate }) {
   ctx.fillStyle = "#a4adc2"; ctx.font = `600 100px ${FONT}`; ctx.fillText(`de ${total}`, pad + nw + 6, 430);
   ctx.fillStyle = "#fff"; ctx.font = `800 84px ${FONT}`; wrap(ctx, title, pad, 610, W - pad * 2, 92);
   ctx.fillStyle = "#c9ccd6"; ctx.font = `500 42px ${FONT}`;
-  wrap(ctx, `Acertei ${score} de ${total} falas checadas do ${debate.title}. Você consegue?`, pad, 820, W - pad * 2, 54);
+  wrap(ctx, `Acertei ${score} de ${total} falas checadas ${debate.parts ? "dos" : "do"} ${debate.title}. Você consegue?`, pad, 820, W - pad * 2, 54);
   footerUrl(ctx, W, H, pad);
 }
 
@@ -97,7 +97,7 @@ export function drawRaioxCard(canvas, { debate }) {
   bgGrid(ctx, W, H);
   brand(ctx, pad, pad);
   ctx.fillStyle = "#fff"; ctx.font = `900 92px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
-  let y = wrap(ctx, `Raio-X do ${debate.title}`, pad, pad + 56, W - pad * 2, 96);
+  let y = wrap(ctx, `Raio-X ${debate.parts ? "dos" : "do"} ${debate.title}`, pad, pad + 56, W - pad * 2, 96);
   ctx.fillStyle = "#a4adc2"; ctx.font = `500 36px ${FONT}`;
   ctx.fillText(`${debate.claims.length} falas checadas · ${Object.keys(debate.agencies).length} agências`, pad, y + 6);
   miniGraph(ctx, debate, pad, y + 60, W - pad * 2, 880 - y, { labels: true });
@@ -156,7 +156,7 @@ export async function drawTapeCard(canvas, { debate }) {
     y += 112;
   }
   ctx.fillStyle = "#b9c1d6"; ctx.font = `500 26px ${FONT}`; ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-  ctx.fillText(`${debate.title} · vereditos de 6 agências · só o que elas checaram`, pad, H - pad - 44);
+  ctx.fillText(`${debate.title} · vereditos de ${Object.keys(debate.agencies).length} agências · só o que elas checaram`, pad, H - pad - 44);
   footerUrl(ctx, W, H, pad);
 }
 
@@ -197,7 +197,7 @@ export async function drawOgCard(canvas, { debate }) {
   ctx.fillStyle = "#fff"; ctx.font = `900 92px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
   ctx.fillText("Fato, distorcido", pad - 4, 104); ctx.fillText("ou fake?", pad - 4, 200);
   ctx.fillStyle = "#dfe3ee"; ctx.font = `600 31px ${FONT}`;
-  wrap(ctx, `O debate presidencial checado por ${Object.keys(debate.agencies).length} agências, com o corte do vídeo oficial de cada fala.`, pad, 316, 560, 40, 3);
+  wrap(ctx, debate.parts ? `Os debates da Globo e da Band checados pelas agências, com o corte do vídeo oficial de cada fala.` : `O debate presidencial checado por ${Object.keys(debate.agencies).length} agências, com o corte do vídeo oficial de cada fala.`, pad, 316, 560, 40, 3);
   await ogLogos(ctx, debate, pad, 452, 42);
   ctx.fillStyle = "#2ee59d"; ctx.font = `800 34px ${FONT}`; ctx.textBaseline = "alphabetic"; ctx.fillText(shortUrl(), pad, H - 44);
 }
@@ -207,8 +207,8 @@ export async function drawQuizOg(canvas, { debate }) {
   brand(ctx, pad, 52, 30);
   ctx.fillStyle = "#fff"; ctx.font = `900 120px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left"; ctx.fillText("Você acerta?", pad - 6, 100);
   ctx.fillStyle = "#dfe3ee"; ctx.font = `600 34px ${FONT}`;
-  ctx.fillText("10 falas reais do debate presidencial. Três botões.", pad, 250);
-  ctx.fillText(`Veredito de ${Object.keys(debate.agencies).length} agências de checagem.`, pad, 296);
+  ctx.fillText(debate.parts ? "10 falas reais dos debates presidenciais. Três botões." : "10 falas reais do debate presidencial. Três botões.", pad, 250);
+  ctx.fillText(debate.parts ? "Veredito das agências de checagem." : `Veredito de ${Object.keys(debate.agencies).length} agências de checagem.`, pad, 296);
   const keys = [["✓  FATO", COLORS.verdadeiro], ["~  DISTORCIDO", COLORS.distorcido], ["✕  FAKE", COLORS.falso]];
   const kw = (W - pad * 2 - 40) / 3;
   keys.forEach(([label, color], i) => {
@@ -302,7 +302,7 @@ export async function recordRaioxVideo(debate, { duration = 8000, fps = 30, onPr
     // phase 1: network forms (0 - 3.2s)
     const p1 = Math.min(1, t / 3200);
     ctx.fillStyle = "#fff"; ctx.font = `900 96px ${FONT}`; ctx.textBaseline = "top"; ctx.textAlign = "left";
-    wrap(ctx, `Raio-X do ${debate.title}`, pad, pad + 64, W - pad * 2, 100);
+    wrap(ctx, `Raio-X ${debate.parts ? "dos" : "do"} ${debate.title}`, pad, pad + 64, W - pad * 2, 100);
     ctx.fillStyle = "#a4adc2"; ctx.font = `500 38px ${FONT}`;
     const shown = Math.floor(ease(p1) * debate.claims.length);
     ctx.fillText(`${shown} falas checadas por ${Object.keys(debate.agencies).length} agências`, pad, pad + 280);
@@ -353,8 +353,8 @@ export async function recordClaimClip(debate, claim, { duration = 9000, fps = 30
   const done = new Promise((res) => (rec.onstop = () => res(new Blob(chunks, { type: mime.split(";")[0] }))));
   const ease = (x) => 1 - Math.pow(1 - x, 3);
   const text = claim.claim;
-  const ytId = debate.video && debate.video.youtubeId; const hasT = claim.t != null && ytId;
-  const link = hasT ? `youtu.be/${ytId}?t=${Math.max(0, claim.t - 3)}` : shortUrl();
+  const ytId = claim.yt || (debate.video && debate.video.youtubeId); const hasT = claim.t != null && ytId;
+  const link = hasT ? `youtu.be/${ytId}?t=${Math.max(0, (claim.yt ? claim.yt_t : claim.t) - 3)}` : shortUrl();
 
   function frame(t) {
     // background: dark + party colour wash sweeping in

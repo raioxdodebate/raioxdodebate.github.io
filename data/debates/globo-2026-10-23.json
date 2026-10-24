@@ -1,0 +1,1759 @@
+{
+  "id": "globo-2026-10-23",
+  "title": "Debate da Globo",
+  "subtitle": "2º turno · Lula x Flávio Bolsonaro",
+  "date": "2026-10-23",
+  "broadcaster": "Globo",
+  "video": {
+    "youtubeId": "woYkhYICZ2k",
+    "local_id": "globo-2026-10-23",
+    "channel": "g1",
+    "title": "Debate na Globo, em 15 trechos oficiais do g1",
+    "broadcaster_logo": "assets/logo-globo.svg",
+    "duration_s": 6483,
+    "segments": [
+      {
+        "youtubeId": "woYkhYICZ2k",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre infraestrutura e exportação",
+        "offset": 0.0,
+        "duration": 438.857
+      },
+      {
+        "youtubeId": "26XCkA5BHm8",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre o salário mínimo (Sudeste)",
+        "offset": 438.857,
+        "duration": 437.371
+      },
+      {
+        "youtubeId": "Z2AA0h2wr4U",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre o tratamento ao Agronegócio (Centro-Oeste)",
+        "offset": 876.228,
+        "duration": 394.786
+      },
+      {
+        "youtubeId": "FIKMIfvhAkA",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre reajuste do salário mínimo (Sul)",
+        "offset": 1271.014,
+        "duration": 330.327
+      },
+      {
+        "youtubeId": "K-kGhpDV4zA",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre saneamento básico (Norte)",
+        "offset": 1601.341,
+        "duration": 397.967
+      },
+      {
+        "youtubeId": "vASlNIMp2PM",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre o que fará no Nordeste",
+        "offset": 1999.308,
+        "duration": 401.798
+      },
+      {
+        "youtubeId": "QhluFzoPl30",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre políticas sociais e licença-maternidade",
+        "offset": 2401.106,
+        "duration": 602.86
+      },
+      {
+        "youtubeId": "jctCsMD2nTE",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre dívida pública e juros",
+        "offset": 3003.966,
+        "duration": 409.855
+      },
+      {
+        "youtubeId": "1FBddn-4QeM",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre SUS e melhorias na saúde pública",
+        "offset": 3413.821,
+        "duration": 400.451
+      },
+      {
+        "youtubeId": "sFjChKegcxs",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre endividamento dos brasileiros",
+        "offset": 3814.272,
+        "duration": 395.227
+      },
+      {
+        "youtubeId": "2S2HvBYOk24",
+        "title": "Debate na Globo: Lula pergunta a Flávio Bolsonaro sobre ensino integral e educação",
+        "offset": 4209.499,
+        "duration": 447.843
+      },
+      {
+        "youtubeId": "T8oPN6v1L0c",
+        "title": "Debate na Globo: Flávio Bolsonaro pergunta a Lula sobre retomada de territórios",
+        "offset": 4657.342,
+        "duration": 407.069
+      },
+      {
+        "youtubeId": "rUnAbA73RH0",
+        "title": "Debate na Globo: Lula e Flávio trocam acusações em bloco com tema livre",
+        "offset": 5064.411,
+        "duration": 1125.309
+      },
+      {
+        "youtubeId": "NnDsZaMp9Vw",
+        "title": "Debate na Globo: Lula faz suas considerações finais",
+        "offset": 6189.72,
+        "duration": 118.468
+      },
+      {
+        "youtubeId": "Q7WHDg643ow",
+        "title": "Debate na Globo: Flávio Bolsonaro faz suas considerações finais",
+        "offset": 6308.188,
+        "duration": 174.475
+      }
+    ]
+  },
+  "candidates": {
+    "lula": {
+      "name": "Lula",
+      "full": "Luiz Inácio Lula da Silva",
+      "party": "PT",
+      "color": "#e3262e",
+      "photo": "assets/lula.jpg",
+      "photo_credit": "Palácio do Planalto / Ricardo Stuckert (CC BY 2.0)",
+      "party_logo": "assets/logo-pt.svg"
+    },
+    "flavio": {
+      "name": "Flávio",
+      "full": "Flávio Bolsonaro",
+      "party": "PL",
+      "color": "#1f52d9",
+      "photo": "assets/flavio.jpg",
+      "photo_credit": "Agência Senado (uso livre com atribuição)",
+      "party_logo": "assets/logo-pl.svg"
+    }
+  },
+  "agencies": {
+    "lupa": {
+      "name": "Agência Lupa",
+      "logo": "assets/logo-lupa.jpg",
+      "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+    },
+    "estadao": {
+      "name": "Estadão Verifica",
+      "logo": "assets/logo-estadao.svg",
+      "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+    },
+    "g1": {
+      "name": "g1 Fato ou Fake",
+      "logo": "assets/logo-g1.png",
+      "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+    },
+    "aosfatos": {
+      "name": "Aos Fatos",
+      "logo": "assets/logo-aosfatos.png",
+      "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/"
+    }
+  },
+  "sources_note": "Checagens de Agência Lupa, Aos Fatos, g1 Fato ou Fake e Estadão Verifica. A Folha publicou, em parceria, as checagens da Lupa; contamos uma vez. O UOL Confere ainda não tinha publicado o texto das checagens.",
+  "claims": [
+    {
+      "id": "g01",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "divergente",
+      "quiz": false,
+      "claim": "Relatório do TCU aponta mais de 11.500 obras paralisadas do atual governo.",
+      "why": "Lista de Alto Risco do TCU contou 11.944 obras paralisadas em 2024, mas abrange obras federais de vários governos; dado de abril de 2026 indica 4.215.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#a4b43b35-457f-4eb8-82cf-2cf54c34aba8"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "mais de 11.500 obras paralisadas do atual governo | existem mais de 11.500 obras paralisadas do atual governo",
+      "t": 85,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 85,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g01.mp4",
+      "clip_start": 83,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g02",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Governo Bolsonaro recebeu cerca de 14 mil obras inacabadas em 2019 e entregou pouco mais de 8 mil.",
+      "why": "Auditoria do TCU de 2019 contou 14.403 obras paralisadas; painel do tribunal registrava 8.674 paralisadas em agosto de 2022, de 22.559 monitoradas.",
+      "sources": [
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "entregou o Brasil com um pouco mais de 8 mil obras",
+      "t": 71,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 71,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g02.mp4",
+      "clip_start": 69,
+      "clip_dur": 22.7
+    },
+    {
+      "id": "g03",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Por causa da inflação, a barra de chocolate encolheu de 120g para 80g.",
+      "why": "Barras de 80g já eram vendidas em 2022, sob Bolsonaro; a redução é gradual desde os anos 1990, quando havia barras acima de 200g.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "A barra de chocolate, que antes tinha 120g, agora tem só 80g",
+      "t": 826,
+      "yt": "26XCkA5BHm8",
+      "yt_t": 387,
+      "yt_off": 438.857,
+      "clip": "assets/clips/g03.mp4",
+      "clip_start": 824,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g04",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Lula já gastou mais de R$ 400 bilhões para tentar se reeleger.",
+      "why": "Levantamento do Estadão soma R$ 405 bilhões em medidas com impacto orçamentário no ano eleitoral, incluindo R$ 73,2 bilhões em renúncias; nem tudo foi desembolsado nem prova fim eleitoral.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "já gastou mais de R$ 400 bilhões para tentar se reeleger",
+      "t": 1412,
+      "yt": "FIKMIfvhAkA",
+      "yt_t": 140,
+      "yt_off": 1271.014,
+      "clip": "assets/clips/g04.mp4",
+      "clip_start": 1410,
+      "clip_dur": 12.7
+    },
+    {
+      "id": "g05",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Bolsonaro garantiu benefício mínimo de 600 reais no Bolsa Família durante seu governo.",
+      "why": "Auxílio Brasil ficou perto de R$ 200 até 2021, foi a R$ 400 em 2022 e a R$ 600 só temporariamente via PEC; valor fixo veio em 2023.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#85732cda-6184-4f00-9688-f8cd5e4e11b2"
+        },
+        {
+          "agency": "lupa",
+          "label": "Exagerado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Enganoso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#NÃOÉBEMASSIM",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "foi o Bolsonaro que deu no mínimo 600 reais | passou o Bolsa Família para, no mínimo, R$ 600 | foi o Bolsonaro que deu no mínimo R$ 600",
+      "t": 2329,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 329,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g05.mp4",
+      "clip_start": 2327,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g06",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Bolsonaro fez o Marco Legal do Saneamento Básico.",
+      "why": "Lei de 2020 originou-se do PL 4.162/2019, enviado pelo Executivo de Bolsonaro; revisou lei de 2007 e fixou metas de 99% de água e 90% de esgoto até 2033.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "E nós fizemos o Marco Legal do Saneamento Básico | Sabe quem votou contra isso lá no Congresso Nacional?",
+      "t": 1633,
+      "yt": "K-kGhpDV4zA",
+      "yt_t": 31,
+      "yt_off": 1601.341,
+      "clip": "assets/clips/g06.mp4",
+      "clip_start": 1631,
+      "clip_dur": 12.4
+    },
+    {
+      "id": "g07",
+      "candidate": "flavio",
+      "topic": "saude",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "90 milhões de brasileiros não têm esgoto tratado e 40 milhões não têm água tratada.",
+      "why": "Trata Brasil (2025) estima 90 milhões sem coleta de esgoto, correto, mas cerca de 34 milhões sem água potável, não 40 milhões.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Impreciso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 1625,
+      "yt": "K-kGhpDV4zA",
+      "yt_t": 23,
+      "yt_off": 1601.341,
+      "clip": "assets/clips/g07.mp4",
+      "clip_start": 1623,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g08",
+      "candidate": "flavio",
+      "topic": "saude",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O governo Lula adiou de 2033 para 2050 a meta de 90% de atendimento de esgoto.",
+      "why": "O Marco do Saneamento (Lei 14.026/2020) mantém meta de 99% com água e 90% com esgoto até 31/12/2033; a data não mudou.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 1781,
+      "yt": "K-kGhpDV4zA",
+      "yt_t": 179,
+      "yt_off": 1601.341,
+      "clip": "assets/clips/g08.mp4",
+      "clip_start": 1779,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g09",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O Centro-Oeste é a região que mais produz alimentos no Brasil.",
+      "why": "Centro-Oeste tem o maior Valor Bruto da Produção Agropecuária, estimado em R$ 431,2 bilhões pelo Ministério da Agricultura; Mato Grosso responde por R$ 225,2 bilhões.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [],
+      "quote": "A região Centro-Oeste é a região que mais produz alimentos",
+      "t": 896,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 19,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g09.mp4",
+      "clip_start": 894,
+      "clip_dur": 18.6
+    },
+    {
+      "id": "g10",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo Lula está deixando uma dívida pública de 11 trilhões de reais.",
+      "why": "Banco Central: dívida bruta do governo geral chegou a R$ 11,1 trilhões (82,9% do PIB) em agosto de 2026, ante R$ 7,2 trilhões (73,5%) em dezembro de 2022.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#44f96996-4bfa-44cb-970f-e443c34c622b"
+        },
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "deixando uma dívida de 11 trilhões de reais | deixando uma dívida aí de 11 trilhões de reais",
+      "t": 3031,
+      "yt": "jctCsMD2nTE",
+      "yt_t": 27,
+      "yt_off": 3003.966,
+      "clip": "assets/clips/g10.mp4",
+      "clip_start": 3029,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g11",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "A taxa básica de juros do Brasil hoje está em torno de 14%.",
+      "why": "Selic está em 13,75% ao ano, perto de 14%; mesmo patamar vigorou de agosto a dezembro de 2022, no governo Bolsonaro.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula3",
+        "bolsonaro"
+      ],
+      "quote": "juros oficial no Brasil hoje está aí em torno de 14%",
+      "t": 3045,
+      "yt": "jctCsMD2nTE",
+      "yt_t": 41,
+      "yt_off": 3003.966,
+      "clip": "assets/clips/g11.mp4",
+      "clip_start": 3043,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g12",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O Brasil tem uma das maiores taxas de juros do mundo.",
+      "why": "Levantamento de setembro aponta o Brasil com o maior juro real do mundo, 9,3%; em juro nominal fica em terceiro lugar.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 793,
+      "yt": "26XCkA5BHm8",
+      "yt_t": 354,
+      "yt_off": 438.857,
+      "clip": "assets/clips/g12.mp4",
+      "clip_start": 791,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g13",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Se Bolsonaro tivesse continuado, a previsão era juros de cerca de 7%; hoje estão em 14%.",
+      "why": "Focus de outubro de 2022 projetava Selic de 7,75% em 2025, expectativa de mercado e não meta; a Selic já estava em 13,75% em 2022 e assim ficou até 2023.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Impreciso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "uma taxa em torno de 7%",
+      "t": 3134,
+      "yt": "jctCsMD2nTE",
+      "yt_t": 130,
+      "yt_off": 3003.966,
+      "clip": "assets/clips/g13.mp4",
+      "clip_start": 3132,
+      "clip_dur": 16.7
+    },
+    {
+      "id": "g14",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Bolsonaro concluiu as obras da transposição do São Francisco e levou água ao Nordeste.",
+      "why": "Bolsonaro inaugurou trechos, como o Eixo Norte em 2020, mas a obra segue inacabada; o projeto foi assinado em 2004 e o Eixo Norte começou em 2007, sob Lula.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Enganoso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#NÃOÉBEMASSIM",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "lula12",
+        "bolsonaro"
+      ],
+      "quote": "Sabe quem concluiu as obras | prometeu que ia entregar a transposição no Rio São Francisco até 2009",
+      "t": 2304,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 304,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g14.mp4",
+      "clip_start": 2302,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g15",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Mais de 80 milhões de brasileiros estão com as contas atrasadas.",
+      "why": "Serasa registrou 83,9 milhões de inadimplentes em agosto de 2026, cerca de 51% da população adulta.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Impreciso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "mais de 80 milhões de brasileiros que estão com as contas atrasadas",
+      "t": 3898,
+      "yt": "sFjChKegcxs",
+      "yt_t": 83,
+      "yt_off": 3814.272,
+      "clip": "assets/clips/g15.mp4",
+      "clip_start": 3896,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g16",
+      "candidate": "flavio",
+      "topic": "saude",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Bolsonaro não debochou de quem tinha falta de ar na pandemia.",
+      "why": "Bolsonaro imitou pessoas sufocando em ao menos duas lives, em 18 de março e 6 de maio, ao criticar orientação de Mandetta sobre procurar hospital na Covid-19.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#6f56f01d-0531-4819-aaf6-db742c093bbb"
+        },
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Falso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FAKE",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "estava debochando das pessoas que estavam sem ar. É mentira | Bolsonaro ter aquele vídeo dele suspirando | Naquele momento, que não tinha vacina, não tinha remédio",
+      "t": 2138,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 138,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g16.mp4",
+      "clip_start": 2136,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g17",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Lula está deixando o país quebrado.",
+      "why": "Dívida bruta chegou a 82,9% do PIB, maior desde 2021, com déficit de R$ 61,6 bilhões em 2025, mas o PIB cresceu 3,2%, 3,4% e 2,3% e o desemprego caiu.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "deixar o país quebrado desse jeito",
+      "t": 1408,
+      "yt": "FIKMIfvhAkA",
+      "yt_t": 136,
+      "yt_off": 1271.014,
+      "clip": "assets/clips/g17.mp4",
+      "clip_start": 1406,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g18",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Lula é o pai do Tigrinho e foi quem criou e liberou os cassinos online.",
+      "why": "Apostas online foram legalizadas em 2018 pela lei 13.756, de Temer; Bolsonaro não regulamentou, Lula aprovou a Lei das Bets (14.790/23) e em 2026 editou MP proibindo-as.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#df25ca48-1f03-4789-a8ed-74325ea160dd"
+        },
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "temer",
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "Ele é o pai do Tigrinho | Ele [Lula] é o pai do Tigrinho",
+      "t": 4300,
+      "yt": "2S2HvBYOk24",
+      "yt_t": 90,
+      "yt_off": 4209.499,
+      "clip": "assets/clips/g18.mp4",
+      "clip_start": 4298,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g19",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O atual governo diz que ladrão de celular não deve ser preso porque rouba para comprar cerveja.",
+      "why": "Boato já desmentido pela Lupa em 2020: trechos de entrevista de Lula de 2017 foram editados; ele falava de desesperança e, separadamente, de torcidas bebendo cerveja juntas.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Falso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "o ladrão de celular não tem que ser preso",
+      "t": 4855,
+      "yt": "T8oPN6v1L0c",
+      "yt_t": 197,
+      "yt_off": 4657.342,
+      "clip": "assets/clips/g19.mp4",
+      "clip_start": 4853,
+      "clip_dur": 17.8
+    },
+    {
+      "id": "g20",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "Segundo áudio, R$ 30 milhões foram ao Instituto Lula para financiar um filme sobre Lula.",
+      "why": "Veja citou supostos relatos de Vorcaro sobre R$ 30 milhões, sem prova de pagamento ou encontro; PGR e PF negaram existir o depoimento.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Insustentável",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "Lula explica esses R$ 30 milhões, onde foram parar?",
+      "t": 5649,
+      "yt": "rUnAbA73RH0",
+      "yt_t": 584,
+      "yt_off": 5064.411,
+      "clip": "assets/clips/g20.mp4",
+      "clip_start": 5647,
+      "clip_dur": 23.1
+    },
+    {
+      "id": "g21",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Jair Bolsonaro definiu pedágio zero para motociclistas em todas as concessões de rodovias.",
+      "why": "Portaria de agosto de 2021 isentou motos só em novas concessões federais em licitação, não em todas as rodovias federais nem nas estaduais.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Enganoso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "",
+      "t": 242,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 242,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g21.mp4",
+      "clip_start": 240,
+      "clip_dur": 20.7
+    },
+    {
+      "id": "g22",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Bolsonaro instalou mais de 21.300 pontos de internet pelo Brasil.",
+      "why": "Segundo o Ministério das Comunicações, o Wi-Fi Brasil tinha 21,3 mil pontos de internet via satélite instalados até dezembro de 2022, em cerca de 3,2 mil cidades.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#2ee52957-73ac-4062-898a-b46db4541aaa"
+        },
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#NÃOÉBEMASSIM",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "Nós instalamos mais de 21.300 pontos de internet | Nós instalamos mais de 21,3 mil pontos de acesso",
+      "t": 260,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 260,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g22.mp4",
+      "clip_start": 258,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g23",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Lula implementou a carga tributária mais alta da história.",
+      "why": "Segundo o Tesouro, carga bruta do governo geral subiu de 32,22% para 32,40% do PIB entre 2024 e 2025, maior nível da série desde 2010.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 732,
+      "yt": "26XCkA5BHm8",
+      "yt_t": 293,
+      "yt_off": 438.857,
+      "clip": "assets/clips/g23.mp4",
+      "clip_start": 730,
+      "clip_dur": 17.4
+    },
+    {
+      "id": "g24",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Lula virou as costas para as tragédias de 2024 no Sul e não entregou nem 30% do prometido.",
+      "why": "Lula editou MP permitindo repassar até R$ 6,5 bilhões ao RS; em setembro liberou R$ 1,5 bilhão e cobrou projetos do governador Eduardo Leite.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 1496,
+      "yt": "FIKMIfvhAkA",
+      "yt_t": 224,
+      "yt_off": 1271.014,
+      "clip": "assets/clips/g24.mp4",
+      "clip_start": 1494,
+      "clip_dur": 18.9
+    },
+    {
+      "id": "g25",
+      "candidate": "flavio",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Lula só fez reajuste de R$ 3 por dia no Bolsa Família durante a campanha.",
+      "why": "Em outubro o governo anunciou reajuste de 15,04%, mínimo de R$ 600 para R$ 691, primeira correção pela inflação desde março de 2023.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 2722,
+      "yt": "QhluFzoPl30",
+      "yt_t": 320,
+      "yt_off": 2401.106,
+      "clip": "assets/clips/g25.mp4",
+      "clip_start": 2720,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g26",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo Lula registrou recorde de mulheres assassinadas.",
+      "why": "Feminicídios bateram recorde em 2025 (1.571), em parte por melhor registro; homicídios de mulheres caíram de 3.934 em 2022 para 3.529 em 2025.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#9ec92b9d-22ac-4746-aba1-2fa83e755bf1"
+        },
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "recorde de mulheres assassinadas",
+      "t": 2756,
+      "yt": "QhluFzoPl30",
+      "yt_t": 354,
+      "yt_off": 2401.106,
+      "clip": "assets/clips/g26.mp4",
+      "clip_start": 2754,
+      "clip_dur": 20.6
+    },
+    {
+      "id": "g27",
+      "candidate": "flavio",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "A facada em Jair Bolsonaro em 2018 foi dada por um ex-integrante do PSOL.",
+      "why": "Adélio Bispo foi filiado ao PSOL de 2007 a 2014, não na época do ataque; a PF concluiu duas vezes que agiu sozinho, sem ligação partidária.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 3680,
+      "yt": "1FBddn-4QeM",
+      "yt_t": 266,
+      "yt_off": 3413.821,
+      "clip": "assets/clips/g27.mp4",
+      "clip_start": 3678,
+      "clip_dur": 12.2
+    },
+    {
+      "id": "g28",
+      "candidate": "flavio",
+      "topic": "corrupcao",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Lula disse que bebeu uísque que vale R$ 500 mil.",
+      "why": "Mensagens de Vorcaro mostram pedido de uísque de R$ 500 mil para Lula; Lula disse não saber se ganhou, mas que se ganhou já bebeu.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 5388,
+      "yt": "rUnAbA73RH0",
+      "yt_t": 323,
+      "yt_off": 5064.411,
+      "clip": "assets/clips/g28.mp4",
+      "clip_start": 5386,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g31",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo Lula herdou cerca de seis mil obras paradas da gestão anterior.",
+      "why": "TCU contava 8.603 obras paralisadas em abril de 2023 (8.674 em agosto de 2022); os 6 mil citados equivalem a educação, infraestrutura urbana, mobilidade e turismo.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#6817c0fd-91bc-4fdc-a2db-3297803d8498"
+        },
+        {
+          "agency": "lupa",
+          "label": "Subestimado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Subestimado",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "nós herdamos seis mil obras paradas | Nós herdamos 6.000 obras paradas | Nós herdamos 6 mil obras paradas",
+      "t": 189,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 189,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g31.mp4",
+      "clip_start": 187,
+      "clip_dur": 14.2
+    },
+    {
+      "id": "g32",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Lula tinha acabado com a fome no Brasil em 2012.",
+      "why": "A FAO tirou o Brasil do Mapa da Fome em 2014, não 2012; desnutridos caíram de 19 milhões (2002) para 3,4 milhões (2013). Em 2012 governava Dilma.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Exagerado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#NÃOÉBEMASSIM",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "lula12",
+        "dilma"
+      ],
+      "quote": "Eu tinha acabado com a fome nesse país em 2012 | Eu tinha acabado com a fome nesse país em 2012",
+      "t": 1246,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 369,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g32.mp4",
+      "clip_start": 1244,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g33",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Quando Lula voltou à Presidência em 2023, havia 33 milhões de pessoas passando fome.",
+      "why": "Inquérito da Rede Penssan divulgado em junho de 2022 registrou 33,1 milhões em insegurança alimentar grave e 125,2 milhões com algum grau de insegurança.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "tinha 33 milhões de pessoas passando fome | Eu voltei em 2023 com 33 milhões de pessoas passando fome",
+      "t": 1246,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 369,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g33.mp4",
+      "clip_start": 1244,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g34",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Lula abriu 700 novos mercados para o Brasil.",
+      "why": "Ministério da Agricultura anunciou 700 novos mercados para produtos agropecuários desde 2023, em 99 destinos, após autorizações sanitárias.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "Abrimos 700 novos mercados nesse país | Abrimos 700 novos mercados neste país",
+      "t": 992,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 115,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g34.mp4",
+      "clip_start": 990,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g35",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O superávit comercial brasileiro chegou a quase R$ 85 bilhões.",
+      "why": "Lula trocou a moeda e citou projeção: o MDIC estima US$ 84,4 bilhões para 2026; o realizado de janeiro a setembro foi US$ 62,4 bilhões.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Subestimado",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "Nosso superávit comercial foi para quase R$ 85 bilhões",
+      "t": 1000,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 123,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g35.mp4",
+      "clip_start": 998,
+      "clip_dur": 15.8
+    },
+    {
+      "id": "g36",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo Lula está fazendo a BR-319, rodovia entre Porto Velho e Manaus que ninguém teve coragem de fazer.",
+      "why": "BR-319 foi inaugurada em 1976 e ficou intrafegável em 1988; licença prévia do trecho do meio saiu em 2022, sob Bolsonaro; asfaltamento retomado em 2024.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "que liga Porto Velho a Manaus, que é a BR-319",
+      "t": 365,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 365,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g36.mp4",
+      "clip_start": 363,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g37",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Flávio Bolsonaro chamou o Bolsa Família de bolsa farelo.",
+      "why": "Flávio usou a expressão bolsa farelo ao votar sozinho contra o Renda Melhor na Alerj, em 2011, e em 2013 ao acusar o PT de perpetuar a pobreza.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#b013dc2f-9120-44e0-8ccb-2b2280bb9cac"
+        },
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "chamou o Bolsa Família de Bolsa Farelo | chamou o Bolsa Família de ‘bolsa farelo",
+      "t": 2582,
+      "yt": "QhluFzoPl30",
+      "yt_t": 180,
+      "yt_off": 2401.106,
+      "clip": "assets/clips/g37.mp4",
+      "clip_start": 2580,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g38",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "A economia brasileira não cresceu acima de 3% desde que Lula deixou a Presidência em 2010.",
+      "why": "PIB superou 3% em 2011 (3,97%, Dilma), 2021 (4,6%) e 2022 (3,02%, Bolsonaro), além de 2023 (3,24%) e 2024 (3,4%).",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#0b45cc05-ec6c-43ba-a4dc-b26ed62c5068"
+        },
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Enganoso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "dilma",
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "a economia não crescia acima de 3% desde que eu deixei | A economia não crescia acima de 3% desde que eu deixei",
+      "t": 3392,
+      "yt": "jctCsMD2nTE",
+      "yt_t": 388,
+      "yt_off": 3003.966,
+      "clip": "assets/clips/g38.mp4",
+      "clip_start": 3390,
+      "clip_dur": 17.2
+    },
+    {
+      "id": "g39",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O Brasil nunca exportou tanto quanto no atual governo.",
+      "why": "Série do MDIC desde 1997 mostra recorde em 2025, com US$ 348,3 bilhões, acima dos US$ 339,7 bilhões de 2023; janeiro a setembro de 2026 também é recorde.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#741ba88f-6f61-4547-a875-67367d0e9bb9"
+        },
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        },
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "nunca se exportou tanto nesse país | Nunca se exportou tanto neste país",
+      "t": 973,
+      "yt": "Z2AA0h2wr4U",
+      "yt_t": 96,
+      "yt_off": 876.228,
+      "clip": "assets/clips/g39.mp4",
+      "clip_start": 971,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g40",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "falso",
+      "quiz": true,
+      "claim": "O tigrinho foi criado pelo governo Bolsonaro em 2022.",
+      "why": "Apostas online foram legalizadas em 2018, sob Temer; o governo Bolsonaro apenas deixou o setor operar sem regras nem impostos.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Falso",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "temer",
+        "bolsonaro"
+      ],
+      "quote": "O ‘tigrinho’ foi criado por vocês",
+      "t": 4324,
+      "yt": "2S2HvBYOk24",
+      "yt_t": 114,
+      "yt_off": 4209.499,
+      "clip": "assets/clips/g40.mp4",
+      "clip_start": 4322,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g41",
+      "candidate": "lula",
+      "topic": "politica_externa",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "A pobreza na Argentina chegou a 40% sob o governo de Javier Milei.",
+      "why": "Indec: pobreza já era 41,7% no fim de 2023, antes de Milei; subiu a 52,9% no início de 2024 e caiu depois, a 32,3% no primeiro semestre de 2026.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#afca5dac-48f4-4f2d-9f52-ba648cf496a1"
+        },
+        {
+          "agency": "lupa",
+          "label": "Falta contexto",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [],
+      "quote": "na Argentina a pobreza chegou a 40% | Na Argentina, a pobreza chegou a 40%",
+      "t": 1330,
+      "yt": "FIKMIfvhAkA",
+      "yt_t": 58,
+      "yt_off": 1271.014,
+      "clip": "assets/clips/g41.mp4",
+      "clip_start": 1328,
+      "clip_dur": 13.6
+    },
+    {
+      "id": "g42",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Lula fez a lei da pequena e média empresa para estimular o empreendedorismo.",
+      "why": "Lula sancionou a Lei Complementar 123/2006, que criou o Simples Nacional; a Lupa nota que ele omitiu que a lei tem 20 anos.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "lula12"
+      ],
+      "quote": "Nós fizemos a lei da pequena e média empresa",
+      "t": 4120,
+      "yt": "sFjChKegcxs",
+      "yt_t": 305,
+      "yt_off": 3814.272,
+      "clip": "assets/clips/g42.mp4",
+      "clip_start": 4118,
+      "clip_dur": 13.0
+    },
+    {
+      "id": "g43",
+      "candidate": "lula",
+      "topic": "saude",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "No governo Bolsonaro se dizia que quem tomasse vacina viraria gay e jacaré.",
+      "why": "Em 17 de dezembro de 2020, Bolsonaro ironizou a vacina da Pfizer citando virar jacaré e homem falar fino; o Brasil só começou a vacinar em janeiro de 2021.",
+      "sources": [
+        {
+          "agency": "lupa",
+          "label": "Verdadeiro",
+          "url": "https://www.agencialupa.org/checagem/2026/10/23/ao-vivo-checagem-do-ultimo-debate-entre-lula-e-flavio-bolsonaro-no-segundo-turno/"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "quem tomava vacina ia virar gay. E ia virar jacaré",
+      "t": 3581,
+      "yt": "1FBddn-4QeM",
+      "yt_t": 167,
+      "yt_off": 3413.821,
+      "clip": "assets/clips/g43.mp4",
+      "clip_start": 3579,
+      "clip_dur": 11.2
+    },
+    {
+      "id": "g44",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo federal está bancando o túnel de Santos, inclusive com financiamento do BNDES.",
+      "why": "Dos R$ 6,8 bilhões da obra, R$ 5,1 bilhões são públicos, divididos igualmente entre União e Estado de SP; o resto é privado.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Enganoso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 385,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 385,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g44.mp4",
+      "clip_start": 383,
+      "clip_dur": 14.0
+    },
+    {
+      "id": "g45",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Em 2003 o Nordeste era a região com mais pobres, desnutridos, evasão escolar e menos ensino superior.",
+      "why": "Mapa da Pobreza do IBGE (2003): 77% dos municípios nordestinos com mais da metade da população pobre; região tinha 41% das crianças fora da escola.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "fhc"
+      ],
+      "quote": "",
+      "t": 2044,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 44,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g45.mp4",
+      "clip_start": 2042,
+      "clip_dur": 23.8
+    },
+    {
+      "id": "g46",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O Ceará é o estado que mais aprova alunos para o ITA.",
+      "why": "Na primeira fase do vestibular do ITA deste ano, Fortaleza liderou com 281 aprovados, à frente de São José dos Campos e São Paulo.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 2218,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 218,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g46.mp4",
+      "clip_start": 2216,
+      "clip_dur": 19.1
+    },
+    {
+      "id": "g47",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O Brasil só teve sua primeira universidade em 1920.",
+      "why": "A primeira universidade federal foi criada em 1920 (Decreto 14.343), mas já havia instituições de ensino superior que originaram UFPR (1912) e UFBA (1808).",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 2894,
+      "yt": "QhluFzoPl30",
+      "yt_t": 492,
+      "yt_off": 2401.106,
+      "clip": "assets/clips/g47.mp4",
+      "clip_start": 2892,
+      "clip_dur": 12.7
+    },
+    {
+      "id": "g48",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Flávio teve a chance de votar pela ampliação do auxílio-maternidade e votou contra.",
+      "why": "Em maio de 2009, na Alerj, Flávio foi o único voto contrário (54 a 1) à PEC 4/09, que ampliou em dois meses a licença-maternidade de servidoras do RJ.",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-flavio-bolsonaro-lula-debate-globo/#60e997ba-dedb-457c-8296-c4aca1d2c875"
+        },
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "Ele teve a chance de votar para aumentar o auxílio maternidade",
+      "t": 2517,
+      "yt": "QhluFzoPl30",
+      "yt_t": 115,
+      "yt_off": 2401.106,
+      "clip": "assets/clips/g48.mp4",
+      "clip_start": 2515,
+      "clip_dur": 23.1
+    },
+    {
+      "id": "g49",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "O governo Bolsonaro anulou o Fundo Amazônia e sua gestão retomou a iniciativa.",
+      "why": "Em 2019 o revogaço de 250 decretos extinguiu os comitês do fundo e o paralisou; em janeiro de 2023 Lula assinou decreto retomando-o.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        },
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "bolsonaro",
+        "lula3"
+      ],
+      "quote": "Eles anularam o Fundo Amazônia",
+      "t": 1963,
+      "yt": "K-kGhpDV4zA",
+      "yt_t": 361,
+      "yt_off": 1601.341,
+      "clip": "assets/clips/g49.mp4",
+      "clip_start": 1961,
+      "clip_dur": 18.8
+    },
+    {
+      "id": "g50",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "O governo Lula herdou a taxa de juros em 13%.",
+      "why": "A Selic ficou em 13,75% no segundo semestre de 2022, último ano do governo Bolsonaro, por decisão do Copom.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Impreciso",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "bolsonaro"
+      ],
+      "quote": "",
+      "t": 3307,
+      "yt": "jctCsMD2nTE",
+      "yt_t": 303,
+      "yt_off": 3003.966,
+      "clip": "assets/clips/g50.mp4",
+      "clip_start": 3305,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g51",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Levou um computador quântico para a Paraíba.",
+      "why": "Parceria entre governos federal e estadual instalou na Paraíba centro com o primeiro computador quântico do país, para UFPB, UFCG e IFPB.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Verdadeiro",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "",
+      "t": 2091,
+      "yt": "vASlNIMp2PM",
+      "yt_t": 91,
+      "yt_off": 1999.308,
+      "clip": "assets/clips/g51.mp4",
+      "clip_start": 2089,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g52",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Sem reajuste acima da inflação, o salário mínimo hoje seria de R$ 900.",
+      "why": "Refere-se ao mínimo de R$ 200 de janeiro de 2003; corrigido só pelo IGP-M, segundo calculadora do BC, daria R$ 905,13.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [
+        "lula12"
+      ],
+      "quote": "",
+      "t": 546,
+      "yt": "26XCkA5BHm8",
+      "yt_t": 107,
+      "yt_off": 438.857,
+      "clip": "assets/clips/g52.mp4",
+      "clip_start": 544,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "g53",
+      "candidate": "lula",
+      "topic": "outro",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Flávio Bolsonaro comprou uma casa de R$ 10 milhões.",
+      "why": "Flávio declarou R$ 8,1 milhões em bens, incluindo mansão de R$ 6,2 milhões no Lago Sul; os R$ 10 milhões podem vir de acusação de Richarlison.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Exagerado",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 6032,
+      "yt": "rUnAbA73RH0",
+      "yt_t": 967,
+      "yt_off": 5064.411,
+      "clip": "assets/clips/g53.mp4",
+      "clip_start": 6030,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g54",
+      "candidate": "lula",
+      "topic": "politica_externa",
+      "verdict": "distorcido",
+      "quiz": true,
+      "claim": "Na Argentina o povo está comendo carne de burro.",
+      "why": "Há consumo pontual na Patagônia desde abril, com quilo a R$ 27 contra R$ 69 da carne bovina, mas a prática não é generalizada.",
+      "sources": [
+        {
+          "agency": "estadao",
+          "label": "Falta contexto",
+          "url": "https://www.estadao.com.br/estadao-verifica/debate-tv-globo-checagem-tempo-real-ao-vivo/"
+        }
+      ],
+      "eras": [],
+      "quote": "",
+      "t": 1335,
+      "yt": "FIKMIfvhAkA",
+      "yt_t": 63,
+      "yt_off": 1271.014,
+      "clip": "assets/clips/g54.mp4",
+      "clip_start": 1333,
+      "clip_dur": 10.0
+    },
+    {
+      "id": "g55",
+      "candidate": "lula",
+      "topic": "economia",
+      "verdict": "verdadeiro",
+      "quiz": true,
+      "claim": "Novo PAC de R$ 1,7 trilhão já executou quase R$ 800 bilhões em ferrovias, rodovias, hidrovias, portos e aeroportos.",
+      "why": "Painel do PAC mostra R$ 1,3 trilhão executado até junho de 2026, acima do citado; maior parte privada (R$ 765 bi). Só 33,6% das obras concluídas.",
+      "sources": [
+        {
+          "agency": "g1",
+          "label": "#FATO",
+          "url": "https://g1.globo.com/fato-ou-fake/eleicoes/noticia/2026/10/23/veja-o-que-e-fato-ou-fake-nas-falas-de-flavio-bolsonaro-e-lula-no-debate-da-globo-no-2o-turno-das-eleicoes-2026.ghtml"
+        }
+      ],
+      "eras": [
+        "lula3"
+      ],
+      "quote": "Quase R$ 800 bilhões já foram executados neste país",
+      "t": 153,
+      "yt": "woYkhYICZ2k",
+      "yt_t": 153,
+      "yt_off": 0.0,
+      "clip": "assets/clips/g55.mp4",
+      "clip_start": 151,
+      "clip_dur": 18.6
+    }
+  ]
+}

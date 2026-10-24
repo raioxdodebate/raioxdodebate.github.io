@@ -37,10 +37,53 @@ function tally(claims) { const t = {}; for (const c of claims) t[c.verdict] = (t
 // ---------- data ----------
 async function loadData() {
   const idx = await (await fetch("data/index.json")).json();
-  const entry = idx.debates.find((d) => d.id === idx.default) || idx.debates[0];
-  state.debate = await (await fetch("data/" + entry.file)).json();
+  state.index = idx; state.debates = {};
+  const all = await Promise.all(idx.debates.map(async (e) => {
+    const d = await (await fetch("data/" + e.file)).json();
+    d.key = e.key; d.label = e.label || d.broadcaster; d.claims.forEach((c) => (c.debate = d.id)); return d;
+  }));
+  all.forEach((d) => (state.debates[d.id] = d));
+  if (all.length > 1) state.debates.ambos = combineDebates(all);
+  state.debate = state.debates[pickDebateId()];
   try { state.config = await (await fetch("data/config.json")).json(); } catch (_) { state.config = {}; }
   initAnalytics(state.config);
+}
+
+// ---------- several debates ----------
+function combineDebates(list) {
+  return {
+    id: "ambos", key: "ambos", parts: list.map((d) => d.id),
+    title: "Debates " + list.map((d) => "da " + d.label).join(" e "), label: "Os dois",
+    short: "Os dois", subtitle: list[0].subtitle, broadcaster: list.map((d) => d.broadcaster).join(" e "),
+    date: list[0].date, dateLabel: list.map((d) => dateBR(d.date)).join(" e "),
+    candidates: list[0].candidates, agencies: Object.assign({}, ...list.map((d) => d.agencies)),
+    claims: list.flatMap((d) => d.claims), video: null,
+  };
+}
+function debateKeys() { return [...state.index.debates.map((e) => e.key), ...(state.debates.ambos ? ["ambos"] : [])]; }
+function idForKey(k) { if (k === "ambos" && state.debates.ambos) return "ambos"; const e = state.index.debates.find((x) => x.key === k || x.id === k); return e ? e.id : null; }
+function pickDebateId() {
+  const fromUrl = new URLSearchParams(location.search).get("d") || new URLSearchParams(location.hash.split("?")[1] || "").get("d");
+  let saved = null; try { saved = localStorage.getItem("raiox:debate"); } catch (_) {}
+  return idForKey(fromUrl) || idForKey(saved) || state.index.default;
+}
+function setDebate(id, { silent = false } = {}) {
+  if (!state.debates[id] || state.debate.id === id) return;
+  state.debate = state.debates[id]; state.quiz = null; state.graphSelected = null;
+  try { localStorage.setItem("raiox:debate", state.debate.key); } catch (_) {}
+  if (!silent) track("debate", { debate: state.debate.key });
+}
+function debOf(claim) { return state.debates[claim.debate] || state.debate; }
+function vidOf(claim) { return debOf(claim).video; }
+function agencyCount() { return Object.keys(state.debate.agencies).length; }
+function debateSwitch() {
+  const el = document.getElementById("dswitch"); if (!el || !state.debates.ambos) { if (el) el.hidden = true; return; }
+  el.hidden = false;
+  el.innerHTML = `<span class="dlabel">Debate</span>` + debateKeys().map((k) => {
+    const d = state.debates[idForKey(k)]; const on = d.id === state.debate.id;
+    const label = k === "ambos" ? "Os dois" : `${esc(d.label)} <small>${d.date.slice(8, 10)}/${d.date.slice(5, 7)}</small>`;
+    return `<button class="dbtn ${on ? "on" : ""}" data-act="debate" data-d="${k}" aria-pressed="${on}">${label}</button>`;
+  }).join("");
 }
 
 // ---------- seeded random ----------
@@ -78,6 +121,10 @@ function startQuiz(seedStr, topic = null) { state.quiz = { seed: seedStr, topic,
 const routes = { "/": renderHome, "/quiz": renderQuiz, "/resultado": renderResult, "/raiox": renderRaiox, "/metodologia": renderMethod };
 function route() {
   document.body.classList.remove("drawer-open"); state.fsheetOpen = false;
+  const fid = new URLSearchParams(location.hash.split("?")[1] || "").get("f");
+  if (fid && !claimById(fid)) { const owner = Object.values(state.debates).find((d) => d.id !== "ambos" && d.claims.some((c) => c.id === fid)); if (owner) setDebate(owner.id, { silent: true }); }
+  const dk = new URLSearchParams(location.hash.split("?")[1] || "").get("d"); if (dk && idForKey(dk)) setDebate(idForKey(dk), { silent: true });
+  debateSwitch();
   if (liveGraph) { liveGraph.destroy(); liveGraph = null; }
   const path = (location.hash.replace(/^#/, "") || "/").split("?")[0];
   const fn = routes[path] || renderHome;
@@ -112,14 +159,17 @@ document.addEventListener("click", (e) => { const a = e.target.closest("[data-qu
 function cand(cid) { return state.debate.candidates[cid]; }
 function chip(cid) { const c = cand(cid); return `<span class="chip party" style="--c:${c.color}">${esc(c.name)}</span>`; }
 function mmss(t) { t = Math.max(0, Math.round(t)); const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60; return (h ? h + ":" : "") + String(m).padStart(h ? 2 : 1, "0") + ":" + String(s).padStart(2, "0"); }
-function ytUrl(claim) { const v = state.debate.video; if (!v || claim.t == null) return null; return `https://www.youtube.com/watch?v=${v.youtubeId}&t=${Math.max(0, claim.t - 3)}s`; }
+// a debate published as several official segments: claim.yt is the segment, claim.yt_t the second inside it
+function ytId(claim) { const v = vidOf(claim); return claim.yt || (v && v.youtubeId); }
+function ytT(claim) { return claim.yt ? claim.yt_t : claim.t; }
+function ytUrl(claim) { const v = vidOf(claim); if (!v || claim.t == null || !ytId(claim)) return null; return `https://www.youtube.com/watch?v=${ytId(claim)}&t=${Math.max(0, ytT(claim) - 3)}s`; }
 function claimLink(id) { return siteUrl() + "f/" + id + "/"; }
 function waHref(text) { return "https://wa.me/?text=" + encodeURIComponent(text); }
 function xHref(text) { return "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text); }
 function shareRow(text, link) {
   return `<div class="sharebar"><a class="btn sm wa" href="${esc(waHref(text))}" target="_blank" rel="noopener">WhatsApp</a><a class="btn sm ghost" href="${esc(xHref(text))}" target="_blank" rel="noopener">X</a><button class="btn sm ghost" data-m="copylink">Copiar link</button></div>`;
 }
-const SITE_TEXT = () => "Fato, distorcido ou fake? Todas as falas checadas do debate presidencial, com veredito de 6 agências e o corte do vídeo oficial: " + siteUrl();
+const SITE_TEXT = () => `Fato, distorcido ou fake? Todas as falas checadas dos debates presidenciais, com veredito de ${agencyCount()} agências e o corte do vídeo oficial: ` + siteUrl();
 function shareSite(link = siteUrl(), text = SITE_TEXT()) {
   track("share", { what: "site", link });
   const el = document.createElement("div"); el.className = "modal"; el.setAttribute("role", "dialog");
@@ -136,10 +186,10 @@ function shareSite(link = siteUrl(), text = SITE_TEXT()) {
   close = openModal(el);
 }
 function videoActions(claim, { clip = true } = {}) {
-  const url = ytUrl(claim); const v = state.debate.video;
-  const blogo = v && v.broadcaster_logo ? `<img src="${esc(v.broadcaster_logo)}" alt="Band">` : "";
+  const url = ytUrl(claim); const v = vidOf(claim);
+  const blogo = v && v.broadcaster_logo ? `<img src="${esc(v.broadcaster_logo)}" alt="${esc(debOf(claim).broadcaster)}">` : "";
   return `<div class="actions">
-    ${url ? `<button class="ytbtn" data-act="watch" data-id="${claim.id}">${blogo}Ver no debate · ${mmss(claim.t)}</button>` : `<span class="ytbtn ghost" title="Ainda sem o minuto exato">${blogo}Minuto em breve</span>`}
+    ${url ? `<button class="ytbtn" data-act="watch" data-id="${claim.id}">${blogo}Ver no debate · ${mmss(ytT(claim))}</button>` : `<span class="ytbtn ghost" title="Ainda sem o minuto exato">${blogo}Minuto em breve</span>`}
     ${claim.clip ? `<button class="iconbtn" data-act="realclip" data-id="${claim.id}">Baixar corte do vídeo</button>` : (clip ? `<button class="iconbtn" data-act="clip" data-id="${claim.id}">Gerar corte</button>` : "")}
     <button class="iconbtn" data-act="claimcard" data-id="${claim.id}">Card</button>
   </div>`;
@@ -150,7 +200,7 @@ async function realClip(btn, id) {
   try {
     const r = await fetch(claim.clip); if (!r.ok) throw new Error(String(r.status));
     const blob = await r.blob();
-    showMedia({ blob, kind: "video", filename: `corte-${id}.mp4`, text: `${cand(claim.candidate).name} no ${state.debate.title}, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
+    showMedia({ blob, kind: "video", filename: `corte-${id}.mp4`, text: `${cand(claim.candidate).name} no ${debOf(claim).title}, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
   } catch (_) {
     // clip not hosted here (preview host): fall back to the rendered clip
     makeClip(btn, id);
@@ -221,7 +271,7 @@ function renderHome() {
   return `
   <section class="hero">
     <div class="hero-copy">
-      <div class="kicker">${esc(d.title)} · ${esc(dateBR(d.date))} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências</div>
+      <div class="kicker">${esc(d.title)} · ${esc(d.dateLabel || dateBR(d.date))} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências</div>
       <h1 class="display">Fato, distorcido ou fake? O debate checado por ${Object.keys(d.agencies).length} agências.</h1>
       <p class="lede">Cada fala do debate que as agências de checagem verificaram, com veredito, fonte e o corte do vídeo oficial no momento exato.</p>
     </div>
@@ -364,7 +414,7 @@ function renderRaiox() {
   const d = state.debate;
   return `
   <section class="rx dash">
-    <div class="section-head"><div class="sh-row"><h1 class="h2">Raio-X do ${esc(d.title)}</h1><a class="btn sm accent" href="#/quiz" data-quizcta="dash">Você acerta? Jogar o quiz</a></div>
+    <div class="section-head"><div class="sh-row"><h1 class="h2">Raio-X ${d.parts ? "dos" : "do"} ${esc(d.title)}</h1><a class="btn sm accent" href="#/quiz" data-quizcta="dash">Você acerta? Jogar o quiz</a></div>
       <p class="muted small">${esc(d.subtitle)} · ${d.claims.length} falas checadas por ${Object.keys(d.agencies).length} agências. Toque em qualquer gráfico pra filtrar todos.</p></div>
     <div class="dash-bar" id="dash-bar"></div>
     <div class="dash-grid">
@@ -445,19 +495,25 @@ function dScore() {
   return `<div class="panel-head"><h2 class="h3">Placar</h2><p>Toque numa faixa.</p></div>${rows}${legend()}`;
 }
 
-function dTime() {
-  const d = state.debate; const f = dash(); const W = 1000, H = 150, padL = 70, padR = 16;
-  const x = (t) => padL + (W - padL - padR) * (t / DUR);
+function tlSvg(deb, claims, f) {
+  const d = state.debate; const W = 1000, H = 150, padL = 70, padR = 16; const DUR_ = (deb.video && deb.video.duration_s) || DUR;
+  const x = (t) => padL + (W - padL - padR) * (t / DUR_);
   const rowY = Object.fromEntries(cands().map((c, i) => [c, 50 + i * 60]));
-  const ticks = []; for (let m = 0; m * 60 <= DUR; m += 15) ticks.push(`<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="20" y2="${H - 18}" class="tick"/><text x="${x(m * 60)}" y="${H - 4}" class="tl" text-anchor="middle">${m === 0 ? "0" : m + "min"}</text>`);
+  const ticks = []; for (let m = 0; m * 60 <= DUR_; m += 15) ticks.push(`<line x1="${x(m * 60)}" x2="${x(m * 60)}" y1="20" y2="${H - 18}" class="tick"/><text x="${x(m * 60)}" y="${H - 4}" class="tl" text-anchor="middle">${m}min</text>`);
   const lanes = cands().map((c) => `<text x="8" y="${rowY[c] + 5}" class="ln">${esc(d.candidates[c].name)}</text><line x1="${padL}" x2="${W - padR}" y1="${rowY[c]}" y2="${rowY[c]}" class="lane"/>`).join("");
-  const dots = d.claims.filter((c) => c.t != null).sort((a, b) => a.t - b.t).map((c) => {
+  const dots = claims.filter((c) => c.t != null).sort((a, b) => a.t - b.t).map((c) => {
     const on = fits(c, f); const sel = state.graphSelected === c.id;
     return `<circle cx="${x(c.t).toFixed(1)}" cy="${rowY[c.candidate]}" r="${sel ? 11 : 8}" class="tdot ${c.verdict} ${on ? "" : "off"} ${sel ? "sel" : ""}" data-act="dsel" data-id="${c.id}"><title>${mmss(c.t)} · ${esc(c.claim)}</title></circle>`;
   }).join("");
+  return `<div class="tl-wrap"><svg viewBox="0 0 ${W} ${H}" class="tl-svg" role="img" aria-label="Linha do tempo do ${esc(deb.title)}">${ticks.join("")}${lanes}${dots}</svg></div>`;
+}
+function dTime() {
+  const d = state.debate; const f = dash();
+  const parts = d.parts ? d.parts.map((id) => state.debates[id]) : [d];
+  const body = parts.map((deb) => `${d.parts ? `<h3 class="tl-title">${esc(deb.title)} · ${esc(dateBR(deb.date))}</h3>` : ""}${tlSvg(deb, d.claims.filter((c) => c.debate === deb.id), f)}`).join("");
   const missing = d.claims.filter((c) => c.t == null && fits(c, f)).length;
   return `<div class="panel-head"><h2 class="h3">Minuto a minuto</h2><p>Cada fala no momento em que foi dita. Toque pra abrir.</p></div>
-    <div class="tl-wrap"><svg viewBox="0 0 ${W} ${H}" class="tl-svg" role="img" aria-label="Linha do tempo do debate">${ticks.join("")}${lanes}${dots}</svg></div>
+    ${body}
     ${missing ? `<p class="small muted">${missing} fala${missing > 1 ? "s" : ""} do filtro sem minuto localizado.</p>` : ""}`;
 }
 
@@ -607,7 +663,8 @@ function renderMethod() {
     <p>Este site não checa nada por conta própria. Ele organiza, numa tela só, as checagens que agências profissionais publicaram sobre o debate. Nenhum veredito é gerado por inteligência artificial.</p>
     <h2 class="h3">De onde vêm os vereditos</h2>
     <div class="aglogos">${Object.values(d.agencies).map((a) => `<a href="${esc(a.url)}" target="_blank" rel="noopener">${a.logo ? `<img src="${esc(a.logo)}" alt="">` : ""}${esc(a.name)}</a>`).join("")}</div>
-    <p>Usamos as seis checagens publicadas sobre este debate, lidas fala a fala nas páginas originais. Cada fala mostra o rótulo exato que cada agência deu, com link para a checagem. Quando a agência tem link para o item, o link vai direto a ele.</p>
+    <p>Usamos as checagens publicadas sobre ${d.parts ? "cada debate" : "este debate"}, lidas fala a fala nas páginas originais. Cada fala mostra o rótulo exato que cada agência deu, com link para a checagem. Quando a agência tem link para o item, o link vai direto a ele.</p>
+    ${(d.parts ? d.parts.map((id) => state.debates[id]) : [d]).filter((x) => x.sources_note && x.id.startsWith("globo")).map((x) => `<p class="small muted">${esc(x.title)}: ${esc(x.sources_note)}</p>`).join("")}
     <h2 class="h3">Como os rótulos foram unificados</h2>
     <p>Cada agência tem a própria escala. Agrupamos os rótulos em três classes:</p>
     <div class="maptable">
@@ -633,18 +690,18 @@ function renderMethod() {
     <p>São 10 falas por dia, 5 de cada candidato, sorteadas entre as que têm veredito claro e corte do vídeo. O sorteio garante 3 ou 4 falas de cada veredito, pelo menos uma de saúde e uma de um tema menos citado. Todo mundo que joga no mesmo dia recebe as mesmas 10, então dá pra comparar resultado. Também dá pra jogar por tema: economia, segurança, corrupção e saúde.</p>
     <h2 class="h3">Imagens, cortes e vídeo</h2>
     <p>Tudo que você gera aqui é desenhado no seu navegador a partir dos mesmos dados, com a fonte escrita no próprio arquivo. Nada é enviado a servidor nenhum.</p>
-    <p>Os cortes são trechos curtos do vídeo oficial do debate publicado no YouTube, com a legenda automática do trecho, o veredito, as fontes e o crédito "Imagens: Band" gravados no vídeo, para fins de checagem e comentário. A legenda é automática e pode ter erros de transcrição. O botão "Ver no debate" toca o trecho e dá o link para o momento exato no YouTube.</p>
+    <p>Os cortes são trechos curtos do vídeo oficial do debate publicado no YouTube, com a legenda automática do trecho, o veredito, as fontes e o crédito da emissora gravados no vídeo, para fins de checagem e comentário. A legenda é automática e pode ter erros de transcrição. O botão "Ver no debate" toca o trecho e dá o link para o momento exato no YouTube.</p>
     <h2 class="h3">Fotos e marcas</h2>
     <ul>${Object.values(d.candidates).filter((c) => c.photo_credit).map((c) => `<li>${esc(c.full)}: ${esc(c.photo_credit)}</li>`).join("")}
     <li>Logos de partidos, emissora e agências são marcas dos respectivos donos, usadas só para identificar quem é quem. Nenhum deles endossa este site.</li></ul>
-    ${d.video ? `<p class="small muted">Vídeo do debate: "${esc(d.video.title || "")}", canal ${esc(d.video.channel)} no YouTube.</p>` : ""}
+    ${(d.parts ? d.parts.map((id) => state.debates[id]) : [d]).filter((x) => x.video).map((x) => `<p class="small muted">Vídeo do ${esc(x.title)}: "${esc(x.video.title || "")}", canal ${esc(x.video.channel)} no YouTube.</p>`).join("")}
     <h2 class="h3">Estatísticas de uso</h2>
     <p>Quando ativadas, coletamos estatísticas anônimas de uso (páginas vistas, origem do acesso, dispositivo, país, cliques no quiz, nos cortes e nos compartilhamentos) com a ferramenta PostHog, sem guardar IP nem qualquer dado que identifique você. Isso serve só para saber o que funciona e corrigir o que não funciona. Navegadores com "Não rastrear" ativado ficam de fora.</p>
     <h2 class="h3">Quem fez</h2>
     <p>Projeto independente de <a href="https://www.linkedin.com/in/deniciosantos/" target="_blank" rel="noopener">Denicio Santos</a>. Sem vínculo com candidatos, partidos, emissoras ou agências de checagem.</p>
     <h2 class="h3">Achou um erro?</h2>
     <p>Se um veredito está diferente do que a agência publicou, ou uma fala foi resumida de forma injusta, o problema é nosso, não da agência. Abra o link da fonte, compare e avise pelo <a href="https://www.linkedin.com/in/deniciosantos/" target="_blank" rel="noopener">LinkedIn</a>.</p>
-    <p class="small muted">Site independente, sem vínculo com candidatos, partidos, emissoras ou agências de checagem. Dados do ${esc(d.title)} de ${esc(new Date(d.date + "T12:00:00").toLocaleDateString("pt-BR"))}.</p>
+    <p class="small muted">Site independente, sem vínculo com candidatos, partidos, emissoras ou agências de checagem. Dados: ${esc(d.title)}, ${esc(d.dateLabel || dateBR(d.date))}.</p>
   </section>`;
 }
 
@@ -675,15 +732,15 @@ async function hasClip(claim) {
 }
 async function showEmbed(claim) {
   track("watch", { claim: claim.id, t: claim.t });
-  const v = state.debate.video; const start = Math.max(0, (claim.t || 0) - 3);
+  const v = vidOf(claim); const start = Math.max(0, (ytT(claim) || 0) - 3);
   const real = await hasClip(claim);
   const el = document.createElement("div"); el.className = "modal"; el.setAttribute("role", "dialog");
   const player = real
-    ? `<video class="clipv" src="${esc(claim.clip)}" controls playsinline preload="metadata"></video><p class="small muted">Trecho do debate (imagens: Band), com legenda e veredito. Abaixo, o vídeo completo no momento da fala.</p>`
-    : `<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${esc(v.youtubeId)}?start=${start}&rel=0" title="Debate no YouTube" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
+    ? `<video class="clipv" src="${esc(claim.clip)}" controls playsinline preload="metadata"></video><p class="small muted">Trecho do debate (imagens: ${esc(debOf(claim).broadcaster)}), com legenda e veredito. Abaixo, o vídeo completo no momento da fala.</p>`
+    : `<div class="embed"><iframe src="https://www.youtube-nocookie.com/embed/${esc(ytId(claim))}?start=${start}&rel=0" title="Debate no YouTube" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe></div>`;
   el.innerHTML = `<div class="box">
     ${player}
-    <div class="who">${chip(claim.candidate)} <span class="muted small">aos ${mmss(claim.t)} · ${esc(v.channel)}</span></div>
+    <div class="who">${chip(claim.candidate)} <span class="muted small">aos ${mmss(ytT(claim))} · ${esc(v.channel)}</span></div>
     <p class="q">${esc(claim.claim)}</p>
     <div class="row"><a class="btn sm ghost" href="${esc(ytUrl(claim))}" target="_blank" rel="noopener">Abrir no YouTube</a><button class="btn sm ghost" data-m="copy">Copiar link do minuto</button><button class="btn sm" data-m="close">Fechar</button></div>
     <div class="status" data-m="status"></div></div>`;
@@ -715,7 +772,7 @@ function showMedia({ blob, kind, filename, text, link = siteUrl() }) {
 async function makeClaimCard(id) {
   track("card", { what: "claim", claim: id });
   const claim = claimById(id); const c = document.createElement("canvas");
-  await document.fonts.ready; drawClaimCard(c, { claim, debate: state.debate });
+  await document.fonts.ready; drawClaimCard(c, { claim, debate: debOf(claim) });
   const blob = await toBlob(c);
   showMedia({ blob, kind: "image", filename: `raio-x-${id}.png`, text: `${state.debate.candidates[claim.candidate].name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
 }
@@ -728,14 +785,14 @@ async function makeTapeCard() {
 async function makeRaioxCard() {
   track("card", { what: "raiox" });
   const c = document.createElement("canvas"); await document.fonts.ready; drawRaioxCard(c, { debate: state.debate });
-  showMedia({ blob: await toBlob(c), kind: "image", filename: "raio-x-do-debate.png", text: `Raio-X do ${state.debate.title}: ${state.debate.claims.length} falas checadas, numa imagem. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
+  showMedia({ blob: await toBlob(c), kind: "image", filename: "raio-x-do-debate.png", text: `Raio-X ${state.debate.parts ? "dos" : "do"} ${state.debate.title}: ${state.debate.claims.length} falas checadas, numa imagem. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
 }
 async function makeClip(btn, id) {
   track("clip", { what: "rendered", claim: id });
   const claim = claimById(id); const old = btn.textContent; btn.disabled = true;
   try {
     await document.fonts.ready;
-    const { blob, ext } = await recordClaimClip(state.debate, claim, { onProgress: (p) => { btn.textContent = `Gravando ${Math.round(p * 100)}%`; } });
+    const { blob, ext } = await recordClaimClip(debOf(claim), claim, { onProgress: (p) => { btn.textContent = `Gravando ${Math.round(p * 100)}%`; } });
     showMedia({ blob, kind: "video", filename: `corte-${id}.${ext}`, text: `${cand(claim.candidate).name} disse, em resumo: ${claim.claim} — ${VERDICT[claim.verdict].label}, segundo ${claim.sources.map((s) => state.debate.agencies[s.agency].name).join(" e ")}. Veja a checagem e o vídeo: ${claimLink(id)}`, link: claimLink(id) });
   } catch (e) { alert("Não deu pra gravar: " + e.message); }
   btn.disabled = false; btn.textContent = old;
@@ -745,7 +802,7 @@ async function makeVideo(btn) {
   try {
     await document.fonts.ready;
     const { blob, ext } = await recordRaioxVideo(state.debate, { onProgress: (p) => { status.textContent = `Gravando… ${Math.round(p * 100)}%`; } });
-    status.textContent = ""; showMedia({ blob, kind: "video", filename: `raio-x-do-debate.${ext}`, text: `Raio-X do ${state.debate.title} em 8 segundos. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
+    status.textContent = ""; showMedia({ blob, kind: "video", filename: `raio-x-do-debate.${ext}`, text: `Raio-X ${state.debate.parts ? "dos" : "do"} ${state.debate.title} em 8 segundos. Explore: ${siteUrl()}#/raiox`, link: siteUrl() + "#/raiox" });
   } catch (e) { status.textContent = "Não deu pra gravar: " + e.message; }
   btn.disabled = false;
 }
@@ -789,9 +846,10 @@ $app.addEventListener("click", (e) => {
   else if (act === "fopen") { state.fsheetOpen = true; track("dash_filters_open"); dashUpdate(); }
   else if (act === "fclose") { state.fsheetOpen = false; dashUpdate(); }
   else if (act === "dunset") { delete dash()[btn.dataset.k]; dashUpdate(); }
+  else if (act === "debate") { const id = idForKey(btn.dataset.d); if (id) { setDebate(id); route(); } }
   else if (act === "dclose") { state.graphSelected = null; dashUpdate(); }
   else if (act === "dclear") { state.dash = {}; state.graphSelected = null; dashUpdate(); }
-  else if (act === "dlink") { const link = siteUrl() + location.hash; shareSite(link, "Olha este recorte do raio-X do debate, checado por 6 agências: " + link); }
+  else if (act === "dlink") { const link = siteUrl() + location.hash; shareSite(link, `Olha este recorte do raio-X do debate, checado por ${agencyCount()} agências: ` + link); }
   else if (act === "shareSite") shareSite();
   else if (act === "clip") makeClip(btn, btn.dataset.id);
   else if (act === "realclip") realClip(btn, btn.dataset.id);
@@ -815,6 +873,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Enter") { const n = document.querySelector('[data-act="next"]'); if (n) n.click(); }
 });
 document.getElementById("navshare")?.addEventListener("click", () => shareSite());
+document.getElementById("dswitch")?.addEventListener("click", (e) => { const b = e.target.closest('[data-act="debate"]'); if (!b) return; const id = idForKey(b.dataset.d); if (id) { setDebate(id); route(); } });
 window.addEventListener("hashchange", () => { route(); window.scrollTo({ top: 0 }); });
 
 loadData().then(route).catch((err) => { $app.innerHTML = `<section class="prose"><h1 class="h2">Não deu pra carregar os dados</h1><p>Abra o site por um servidor (não por file://). Detalhe: ${esc(err.message)}</p></section>`; });

@@ -1,6 +1,21 @@
 {
-  "default": "band-2026-10-18",
+  "default": "globo-2026-10-23",
   "debates": [
-    { "id": "band-2026-10-18", "title": "Debate da Band", "date": "2026-10-18", "file": "debates/band-2026-10-18.json" }
+    {
+      "id": "globo-2026-10-23",
+      "key": "globo",
+      "title": "Debate da Globo",
+      "date": "2026-10-23",
+      "file": "debates/globo-2026-10-23.json",
+      "label": "Globo"
+    },
+    {
+      "id": "band-2026-10-18",
+      "key": "band",
+      "title": "Debate da Band",
+      "date": "2026-10-18",
+      "file": "debates/band-2026-10-18.json",
+      "label": "Band"
+    }
   ]
 }

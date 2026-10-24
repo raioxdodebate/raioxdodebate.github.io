@@ -612,3 +612,15 @@ a { color: inherit; } button { font: inherit; color: inherit; } h1, h2, h3, p { 
   body.drawer-open .quizbar, body:has(.fsheet:not([hidden])) .quizbar, body:has(.modal) .quizbar, body:has(.notice) .quizbar { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .cmp, .compare.hit .cmp.them .verdict { animation: none; } }
+
+/* ---------- debate switch ---------- */
+.dbar { max-width: 1180px; margin: 0 auto; padding: 0 16px; width: 100%; }
+.dswitch { display: flex; gap: 8px; align-items: center; overflow-x: auto; padding: 4px 0 10px; scrollbar-width: none; }
+.dswitch[hidden] { display: none; }
+.dswitch .dlabel { font-size: 13px; color: var(--ink-2); font-weight: 700; margin-right: 2px; }
+.dbtn { flex: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 7px 14px; font-weight: 800; font-size: 14px; cursor: pointer; }
+.dbtn small { font-weight: 600; color: var(--ink-2); margin-left: 4px; }
+.dbtn.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.dbtn.on small { color: var(--bg); opacity: .75; }
+.tl-title { font-size: 14px; color: var(--ink-2); margin: 10px 0 2px; }
+@media (max-width: 520px) { .dswitch .dlabel { display: none; } .dbtn { padding: 7px 12px; font-size: 14px; } }
