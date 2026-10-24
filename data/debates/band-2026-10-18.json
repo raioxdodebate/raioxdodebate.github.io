@@ -178,13 +178,14 @@
       ],
       "eras": [
         "lula3"
-      ]
+      ],
+      "t": 5963
     },
     {
       "id": "b05",
       "candidate": "flavio",
       "topic": "corrupcao",
-      "verdict": "falso",
+      "verdict": "distorcido",
       "quiz": true,
       "claim": "Um áudio de Vorcaro mostraria R$ 30 milhões por fora para o Instituto Lula.",
       "why": "A alegação se apoia numa reportagem não confirmada; PGR e PF negam que o suposto depoimento exista.",
@@ -192,11 +193,6 @@
         {
           "agency": "lupa",
           "label": "Insustentável"
-        },
-        {
-          "agency": "aosfatos",
-          "label": "Falso",
-          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#fcf47e5b-3c7f-4276-8ad5-292216a7bcec"
         },
         {
           "agency": "g1",
@@ -265,6 +261,11 @@
         {
           "agency": "uol",
           "label": "Enganoso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#ae98f6ac-9518-41a1-ba91-5de7b9a7857c"
         }
       ],
       "t": 376,
@@ -311,7 +312,7 @@
       "topic": "economia",
       "verdict": "verdadeiro",
       "quiz": true,
-      "claim": "Perdoou R$ 12,6 bilhões em dívidas de MEIs.",
+      "claim": "Perdoou R$ 12,7 bilhões em dívidas de MEIs.",
       "why": "O Congresso aprovou o perdão (PLC 186/2026), que aguarda sanção.",
       "sources": [
         {
@@ -1126,6 +1127,11 @@
         {
           "agency": "uol",
           "label": "Enganoso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#3e41fa21-03b6-49e7-9a52-2759f1def7aa"
         }
       ],
       "t": 2009,
@@ -1156,7 +1162,8 @@
       ],
       "eras": [
         "lula3"
-      ]
+      ],
+      "t": 6053
     },
     {
       "id": "b40",
@@ -1698,6 +1705,11 @@
         {
           "agency": "estadao",
           "label": "Falso"
+        },
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#0260751c-3e12-45d8-a2bb-18f56dc6ab8e"
         }
       ],
       "t": 2051,
@@ -1719,7 +1731,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Falso"
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#0b58bb62-4782-403b-9785-f3987338fdff"
         },
         {
           "agency": "g1",
@@ -1745,7 +1758,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#2b248f92-061f-4c55-bacd-98ff14f17e6d"
         },
         {
           "agency": "g1",
@@ -1881,7 +1895,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Verdadeiro"
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#0c207f75-0afd-43fd-9e88-c7198cbc06b6"
         },
         {
           "agency": "estadao",
@@ -2155,7 +2170,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#d0cd531e-6788-4d05-9dab-68433594e0ac"
         }
       ],
       "t": 1172,
@@ -2178,14 +2194,16 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#fe9365e0-b514-4cb5-92e7-168c76e13d4a"
         }
       ],
       "verdict": "distorcido",
       "quiz": false,
       "eras": [
         "bolsonaro"
-      ]
+      ],
+      "t": 1271
     },
     {
       "id": "a03",
@@ -2196,7 +2214,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Falso"
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#dfcd83e3-8bdf-40ff-989c-b8927a3ae579"
         }
       ],
       "t": 2383,
@@ -2218,7 +2237,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#119cc342-9528-4876-94da-12af9e102b86"
         }
       ],
       "t": 3335,
@@ -2237,7 +2257,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#561a4a04-d71a-46b4-b07b-afb8c3da06b8"
         }
       ],
       "t": 421,
@@ -2256,7 +2277,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Verdadeiro"
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#a76581cc-26e1-4c66-84f3-1489ee3e4766"
         },
         {
           "agency": "g1",
@@ -2282,7 +2304,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#7e318c11-def9-4d49-8f13-525016d9ae2a"
         }
       ],
       "t": 6508,
@@ -2304,7 +2327,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Não é bem assim"
+          "label": "Não é bem assim",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#467ef1fa-9070-436d-8ee1-9e6c2e39e34b"
         }
       ],
       "t": 1046,
@@ -2326,7 +2350,8 @@
       "sources": [
         {
           "agency": "aosfatos",
-          "label": "Verdadeiro"
+          "label": "Verdadeiro",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#b8ec554c-62b7-428c-8cbf-0d9ce0ee188c"
         }
       ],
       "t": 2045,
@@ -2338,6 +2363,76 @@
       "clip": "assets/clips/a09.mp4",
       "clip_start": 2043,
       "clip_dur": 14.7
+    },
+    {
+      "id": "a10",
+      "candidate": "flavio",
+      "topic": "economia",
+      "eras": [],
+      "claim": "Promete que no seu governo será possível vender pela internet e ter loja virtual em casa.",
+      "why": "Vender online e gerir loja virtual em casa já é possível; desde 2016 a lei permite ao MEI usar a residência como endereço do negócio.",
+      "quote": "quer revender alguma coisinha na internet, uma lojinha virtual",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#abae6bd2-77c1-4c8f-8ed9-6b1e5228829d"
+        }
+      ],
+      "verdict": "falso",
+      "quiz": true,
+      "t": 5384,
+      "clip": "assets/clips/a10.mp4",
+      "clip_start": 5382,
+      "clip_dur": 17.9
+    },
+    {
+      "id": "a11",
+      "candidate": "flavio",
+      "topic": "politica_externa",
+      "eras": [
+        "lula3"
+      ],
+      "claim": "Lula foi aos Estados Unidos para defender o Comando Vermelho e o PCC.",
+      "why": "Lula se opôs a classificar PCC e CV como terroristas pelos EUA, mas não defendeu as facções; com Trump, propôs ampliar cooperação contra o crime organizado.",
+      "quote": "Ele foi para lá para defender CV e PCC",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#6c5c65cf-2c84-4155-8897-999987b6ae24"
+        }
+      ],
+      "verdict": "falso",
+      "quiz": true,
+      "t": 5512,
+      "clip": "assets/clips/a11.mp4",
+      "clip_start": 5510,
+      "clip_dur": 24.0
+    },
+    {
+      "id": "a12",
+      "candidate": "flavio",
+      "topic": "seguranca",
+      "eras": [
+        "lula3"
+      ],
+      "claim": "O governo atual trata quem abusa de crianças como doente, e não como criminoso.",
+      "why": "Em agosto, Lula sancionou lei que endureceu penas para abuso e exploração sexual infantil; pedofilia ser transtorno médico não exclui responsabilidade criminal.",
+      "quote": "os pedófilos, eles são pessoas doentes",
+      "sources": [
+        {
+          "agency": "aosfatos",
+          "label": "Falso",
+          "url": "https://www.aosfatos.org/noticias/checamos-lula-flavio-bolsonaro-debate-band/#3e49785b-7f5c-4979-8887-f747d6deec3d"
+        }
+      ],
+      "verdict": "falso",
+      "quiz": true,
+      "t": 5932,
+      "clip": "assets/clips/a12.mp4",
+      "clip_start": 5930,
+      "clip_dur": 18.6
     }
   ],
   "sources_note": "Vereditos de seis checagens publicadas sobre este debate: Agência Lupa, Aos Fatos, g1 Fato ou Fake, Estadão Verifica, UOL Confere e Folha. Lidas nas páginas originais em 20/10/2026."
